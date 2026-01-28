@@ -13,6 +13,25 @@
             touch-action: pan-y; 
         }
 
+        /* --- RESTORED BACKGROUND POEM --- */
+        #bg-poem {
+            position: fixed;
+            top: 30%; 
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            text-align: center;
+            color: #333;
+            /* Initial state: visible behind the tree */
+            opacity: 0.6; 
+            font-size: 16px; 
+            line-height: 2;
+            z-index: 0; /* Lowest layer */
+            pointer-events: none;
+            transition: opacity 1.5s ease-in-out;
+            font-family: 'Times New Roman', serif;
+        }
+
         /* --- NAVIGATION --- */
         nav {
             position: fixed; 
@@ -71,6 +90,7 @@
             }
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
+            #bg-poem { font-size: 14px; width: 90%; }
         }
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
@@ -194,20 +214,46 @@
             pointer-events: none; 
         }
 
-        /* SVG Kinetic Typography */
+        /* 1. SVG Kinetic Typography Container */
         .willow-svg-container {
             position: absolute;
-            top: -50px; left: -50px;
-            width: 100%; height: 100%;
+            top: -20px; left: -20px;
+            width: 110%; height: 110%; /* Slightly larger to handle sway edges */
             overflow: hidden;
-            animation: textSway 6s ease-in-out infinite alternate-reverse;
         }
 
-        svg { width: 100%; height: 100%; }
-        .willow-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; fill: #2e8b57; letter-spacing: 2px; }
-        @keyframes textSway { 0% { transform: translateX(0); } 100% { transform: translateX(10px); } }
+        svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible; /* Important for text to not get clipped */
+        }
 
-        /* Atmospheric Shadow Layer */
+        /* Branch Groups - These allow us to sway individual branches */
+        /* Transform origin is crucial: should be roughly where the branch "hangs" from */
+        .branch-group {
+            transform-origin: 200px 0px; /* Adjust based on where your branches generally start */
+            animation: branchSway 6s ease-in-out infinite alternate;
+        }
+        
+        /* Variations for natural feel */
+        .branch-1 { animation-duration: 5s; animation-delay: 0s; }
+        .branch-2 { animation-duration: 7s; animation-delay: -1s; }
+        .branch-3 { animation-duration: 6s; animation-delay: -3s; }
+        .branch-4 { animation-duration: 8s; animation-delay: -2s; }
+
+        @keyframes branchSway {
+            0% { transform: rotate(-2deg); }
+            100% { transform: rotate(2deg); }
+        }
+
+        .willow-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            fill: #2e8b57;
+            letter-spacing: 2px;
+        }
+
+        /* 2. Atmospheric Shadow Layer (Dappled Light) */
         .shadow-overlay {
             position: absolute;
             top: -50%; left: -50%;
@@ -221,67 +267,45 @@
             background-size: 50% 50%;
             animation: shadowSway 5s ease-in-out infinite alternate;
         }
+
         @keyframes shadowSway {
             0% { transform: translateX(0) rotate(0deg); }
             100% { transform: translateX(50px) rotate(3deg); }
         }
 
-        /* --- UPDATED PIGEON ANIMATION (Lottie Ready) --- */
-        
-        /* 1. The Wrapper: Handles the Motion Path (Trajectory) */
+        /* --- PIGEON ANIMATION (Lottie Ready) --- */
         .pigeon-wrapper {
             position: absolute;
-            width: 60px; /* Adjust size based on your final asset */
+            width: 60px;
             height: 60px;
             z-index: 50;
-            
-            /* Start off-screen */
-            offset-path: path('M -100 800 C 400 600 800 200 1600 -100'); /* The Organic S-Curve */
-            offset-rotate: auto; /* Beak points forward */
-            
-            /* The Animation: 
-               - Name: pigeonFly
-               - Duration: 5s
-               - Timing: Custom Bezier for "Fast start, maintain momentum"
-            */
+            offset-path: path('M -100 800 C 400 600 800 200 1600 -100'); 
+            offset-rotate: auto; 
             animation: pigeonFly 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            animation-delay: 2s; /* Wait a bit before starting */
-            opacity: 0; /* Hidden until animation starts */
+            animation-delay: 2s;
+            opacity: 0;
         }
 
-        /* 2. The Sprite Container: Handles Scale/Perspective & Wing Flap */
         .pigeon-sprite {
             width: 100%;
             height: 100%;
-            /* Simulate perspective: Shrink as it flies away */
             animation: pigeonScale 5s linear forwards;
-            animation-delay: 2s; /* Sync with flight */
-            
-            /* Center the placeholder content */
+            animation-delay: 2s;
             display: flex; 
             align-items: center; 
             justify-content: center;
             font-size: 40px; 
         }
 
-        /* Keyframes for the Path Motion */
         @keyframes pigeonFly {
-            0% { 
-                offset-distance: 0%; 
-                opacity: 1; 
-            }
-            100% { 
-                offset-distance: 100%; 
-                opacity: 1; 
-            }
+            0% { offset-distance: 0%; opacity: 1; }
+            100% { offset-distance: 100%; opacity: 1; }
         }
 
-        /* Keyframes for Perspective Scaling */
         @keyframes pigeonScale {
             0% { transform: scale(1.0); }
             100% { transform: scale(0.6); }
         }
-
     </style>
 </head>
 <body>
@@ -290,33 +314,56 @@
         <source src="music.mp3" type="audio/mpeg">
     </audio>
 
+    <div id="bg-poem">
+        <div style="margin-top: 15px;">所谓幸福， <br>
+            不过是一个人同他生活的一种协调。</div>
+    </div>
+
     <div id="landing-scene">
         
         <div class="willow-svg-container">
             <svg viewBox="0 0 800 600" preserveAspectRatio="xMinYMin slice">
                 <defs>
-                    <path id="curve1" d="M 50,-50 Q 200,100 200,400" fill="transparent" />
-                    <path id="curve2" d="M 100,-50 Q 300,150 280,500" fill="transparent" />
-                    <path id="curve3" d="M 0,0 Q 100,200 80,450" fill="transparent" />
-                    <path id="curve4" d="M 150,-20 Q 350,100 400,550" fill="transparent" />
-                    <path id="curve5" d="M 120,-30 Q 220,100 220,300" fill="transparent" />
+                    <path id="curve1" d="M 50,-50 C 50,150 250,250 200,550" fill="transparent" />
+                    
+                    <path id="curve2" d="M 150,-50 C 150,200 400,300 300,600" fill="transparent" />
+                    
+                    <path id="curve3" d="M 0,-20 C 0,100 120,200 50,500" fill="transparent" />
+
+                    <path id="curve4" d="M 200,-30 C 250,150 500,200 450,650" fill="transparent" />
+                    
+                    <path id="curve5" d="M 100,-40 C 100,100 220,200 180,400" fill="transparent" />
                 </defs>
 
-                <text class="willow-text" font-size="16">
-                    <textPath href="#curve1" startOffset="10%">Spring is near, and so are you.</textPath>
-                </text>
-                <text class="willow-text" font-size="18" fill="#3cb371">
-                    <textPath href="#curve2" startOffset="5%">All things turn into expectations.</textPath>
-                </text>
-                <text class="willow-text" font-size="15" fill="#556b2f">
-                    <textPath href="#curve3" startOffset="15%">Spring -- an experience in immortality.</textPath>
-                </text>
-                <text class="willow-text" font-size="14">
-                    <textPath href="#curve4" startOffset="20%">An optimist is the human personification of spring.</textPath>
-                </text>
-                <text class="willow-text" font-size="17" opacity="0.8">
-                    <textPath href="#curve5" startOffset="10%">April hath put a spirit of youth in everything.</textPath>
-                </text>
+                <g class="branch-group branch-1">
+                    <text class="willow-text" font-size="16">
+                        <textPath href="#curve1" startOffset="5%">Spring is near, and so are you.</textPath>
+                    </text>
+                </g>
+
+                <g class="branch-group branch-2">
+                    <text class="willow-text" font-size="18" fill="#3cb371">
+                        <textPath href="#curve2" startOffset="2%">All things turn into expectations.</textPath>
+                    </text>
+                </g>
+
+                <g class="branch-group branch-3">
+                    <text class="willow-text" font-size="15" fill="#556b2f">
+                        <textPath href="#curve3" startOffset="10%">Spring -- an experience in immortality.</textPath>
+                    </text>
+                </g>
+
+                <g class="branch-group branch-4">
+                    <text class="willow-text" font-size="14">
+                        <textPath href="#curve4" startOffset="15%">An optimist is the human personification of spring.</textPath>
+                    </text>
+                </g>
+
+                <g class="branch-group branch-2">
+                    <text class="willow-text" font-size="17" opacity="0.8">
+                        <textPath href="#curve5" startOffset="5%">April hath put a spirit of youth in everything.</textPath>
+                    </text>
+                </g>
             </svg>
         </div>
 
@@ -453,46 +500,4 @@
     const openBtn = document.getElementById('openBtn');
     const uiContainer = document.getElementById('ui-container');
 
-    muteBtn.addEventListener('click', () => {
-        bgMusic.muted = !bgMusic.muted;
-        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
-    });
-    
-    // --- STARTUP SEQUENCE ---
-    window.onload = function() {
-        // 1. Try to play music (Autoplay check)
-        bgMusic.play().catch(e => console.log("Autoplay waiting for interaction"));
-
-        // 2. The Pigeon flight starts automatically via CSS animation-delay (2s)
-        
-        // 3. Show the Open Button after the pigeon flight completes (approx 2s + 3s = 5s)
-        setTimeout(() => {
-            uiContainer.classList.add('show');
-        }, 5000); 
-    };
-
-    openBtn.addEventListener('click', function() {
-        // Fade out button
-        this.style.opacity = '0';
-        setTimeout(() => this.style.display = 'none', 500);
-        
-        // FADE OUT LANDING SCENE (Tree, Shadows, Pigeon)
-        document.getElementById('landing-scene').style.opacity = '0';
-        setTimeout(() => {
-             document.getElementById('landing-scene').style.display = 'none';
-        }, 2000);
-
-        // Ensure music is playing
-        if (bgMusic.paused) {
-            bgMusic.play().catch(e => console.log("Playback error:", e));
-        }
-        
-        // Reveal the main invitation card + nav
-        document.getElementById('invitation-card').classList.add('fade-in');
-        document.querySelector('nav').classList.add('fade-in');
-        document.getElementById('muteBtn').classList.add('fade-in');
-    });
-
-</script>
-</body>
-</html>
+    muteBtn
