@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Will & Zoey</title>
+    <script src="matter.min.js"></script>
+    <style>
+        body { 
+            margin: 0; 
+            overflow-x: hidden; 
+            background-color: #f0eee6; 
+            font-family: 'Courier New', Courier, monospace;
+            touch-action: pan-y; 
+        }
+
+        /* --- BACKGROUND POEM (UPDATED) --- */
+        #bg-poem {
+            position: fixed;
+            /* 改为 30% 或 35%，让它位于屏幕偏上方，刚好在英文动画上面 */
+            top: 30%; 
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            text-align: center;
+            color: #333;
+            
+            /* 初始状态设为不可见 */
+            opacity: 0; 
+            
+            font-size: 16px; 
+            line-height: 2;
+            z-index: 0; 
+            pointer-events: none;
+            transition: opacity 1.5s ease-in-out; /* 稍微调快一点渐变 */
+            font-family: 'Times New Roman', serif;
+        }
+        
+        /* 新增一个类，用于显示诗句 */
+        #bg-poem.visible {
+            opacity: 0.6; /* 显示时的透明度 */
+        }
+        
+        #bg-poem.fade-out {
+            opacity: 0 !important;
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed; 
+            top: 40px;
+            right: 80px; 
+            z-index: 200; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 2s ease-in-out;
+        }
+
+        nav.fade-in { opacity: 1; pointer-events: auto; }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 40px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: #666; }
+        .nav-links a.active { border-bottom: 2px solid #333; padding-bottom: 5px; }
+
+        .menu-icon {
+            display: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #333;
+            user-select: none;
+            position: relative;
+            z-index: 300; 
+        }
+
+        /* --- MOBILE MENU --- */
+        @media (max-width: 768px) {
+            nav { right: 20px; }
+            .menu-icon { display: block; }
+            .nav-links {
+                display: none; 
+                position: fixed;
+                top: 0; left: 0; width: 100vw; height: 100vh;
+                background-color: #f0eee6; 
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 50px; 
+                z-index: 200; 
+            }
+            .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
+            .nav-links a { font-size: 24px; }
+            
+            /* Adjust poem size for mobile */
+            #bg-poem { font-size: 14px; width: 90%; }
+        }
+        @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
+
+        /* --- MUTE BUTTON --- */
+        #muteBtn {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 200;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+            opacity: 0; 
+            transition: opacity 2s ease-in-out;
+            background: none; border: none; padding: 10px;
+        }
+        #muteBtn.fade-in { opacity: 0.7; }
+        #muteBtn:hover { opacity: 1; }
+
+        /* --- HOME SECTION (Animation) --- */
+        #home-page {
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; /* Above the poem */
+        }
+        
+        /* Canvas is now transparent to show the poem behind it */
+        canvas { display: block; background: transparent; }
+
+        #ui-container {
+            position: absolute;
+            z-index: 20; 
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        button {
+            padding: 12px 24px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 16px;
+            background: rgba(240, 238, 230, 0.8);
+            border: 1px solid #333;
+            cursor: pointer;
+            transition: opacity 0.5s ease;
+            letter-spacing: 2px;
+            color: #333;
+            text-transform: uppercase;
+            backdrop-filter: blur(2px);
+        }
+        button:hover { background-color: #333; color: #f0eee6; }
+
+        #invitation-card {
+            position: absolute;
+            z-index: 10;
+            text-align: center;
+            color: #4a4a4a;
+            font-family: 'Times New Roman', Times, serif; 
+            opacity: 0; 
+            transition: opacity 2s ease-in-out;
+            width: 100%; max-width: 500px;
+            top: 45%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; 
+            /* Ensure card background covers the poem when it fades in */
+            /* background: rgba(240, 238, 230, 0.9); */
+            /* padding: 20px; */
+            /* border-radius: 10px; */
+        }
+        .fade-in { opacity: 1 !important; }
+
+        /* Shared Card Styles */
+        /* Main Title (Chinese) */
+        h1 { 
+            font-size: 24px; /* Larger for Main Headline */
+            letter-spacing: 5px; 
+            margin-bottom: 5px; /* Small gap between Title 1 & 2 */
+            text-transform: uppercase; 
+            font-weight: normal; 
+        }
+
+        /* Sub Title (English) */
+        .sub-title {
+            font-size: 14px;
+            letter-spacing: 3px;
+            color: #666;
+            margin-bottom: 40px; /* Spacing before names */
+            text-transform: uppercase;
+        }
+
+        .names { margin-bottom: 20px; }
+
+        /* Names Headline 1 (Chinese - Big) */
+        .names h2 { 
+            font-size: 28px; 
+            margin: 5px 0; 
+            font-weight: normal; 
+            letter-spacing: 3px; 
+        }
+
+        /* Names Headline 2 (English - Small) */
+        .names .en { 
+            font-size: 16px; 
+            opacity: 0.8; 
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .date { font-size: 16px; letter-spacing: 2px; margin-bottom: 50px; border-bottom: 1px solid #ccc; display: inline-block; padding-bottom: 10px; }
+        .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #666; }
+        .schedule .time { margin-right: 15px; font-weight: bold; color: #333; }
+
+        /* --- CONTENT PAGES --- */
+        .content-page {
+            display: none; 
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            min-height: 100vh;
+            background-color: #f0eee6; 
+            z-index: 100; 
+            box-sizing: border-box;
+            padding-top: 150px; 
+            padding-bottom: 50px;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .content-page.active { display: flex; opacity: 1; }
+
+        /* Attire & Address Styles */
+        .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
+        .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
+        .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
+        .figure-caption { font-size: 14px; letter-spacing: 1px; color: #555; }
+        .address-container { width: 90%; max-width: 800px; text-align: left; }
+        .map-figure { width: 100%; margin-bottom: 50px; border: 1px solid #ccc; }
+        .map-figure img { width: 100%; height: auto; display: block; background-color: #ddd; }
+        .info-section { margin-bottom: 40px; border-left: 2px solid #333; padding-left: 20px; }
+        .info-section h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 3px; margin: 0 0 10px 0; font-weight: bold; }
+        .info-section p { font-size: 14px; line-height: 1.6; color: #555; margin: 0; }
+        /* --- NEW ATTIRE PAGE STYLES --- */
+        
+        /* Color Palette Circles */
+        .color-palette {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0 15px 0;
+            flex-wrap: wrap;
+        }
+        .color-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #ccc; /* Subtle border for lighter colors */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        /* Description Text */
+        .attire-description {
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 50px;
+            max-width: 80%;
+            line-height: 1.6;
+            letter-spacing: 1px;
+        }
+
+        /* Gallery Sections */
+        .attire-section {
+            width: 100%;
+            max-width: 900px;
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        .attire-section h2 {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            border-bottom: 1px solid #ccc; /* Optional divider line */
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* Swipeable Gallery Container */
+        .gallery-container {
+            display: flex;
+            overflow-x: auto;       /* Enables horizontal scrolling/swiping */
+            gap: 20px;
+            padding: 10px 5%;       /* Side padding so first image isn't glued to edge */
+            scroll-snap-type: x mandatory; /* Makes images snap into place */
+            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+            
+            /* Hide scrollbars for a clean look */
+            scrollbar-width: none;  /* Firefox */
+        }
+        .gallery-container::-webkit-scrollbar {
+            display: none;          /* Chrome, Safari, Opera */
+        }
+
+        /* Individual Gallery Images */
+        .gallery-item {
+            flex: 0 0 auto;         /* Prevents images from shrinking */
+            width: 70%;             /* On mobile, show 70% of the image to encourage swiping */
+            max-width: 300px;       /* On desktop, limit width */
+            scroll-snap-align: center; /* Snaps image to center of screen */
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="bg-poem">
+        <div style="margin-top: 15px;">所谓幸福， <br>
+            不过是一个人同他生活的一种协调。</div>
+    </div>
+
+    <div id="muteBtn">🔊</div>
+
+    <nav>
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a onclick="showPage('home')" id="link-home" class="active">主页</a></li>
+            <li><a onclick="showPage('attire')" id="link-attire">穿什么</a></li>
+            <li><a onclick="showPage('address')" id="link-address">哪儿见</a></li>
+        </ul>
+    </nav>
+
+    <div id="home-page">
+        <div id="ui-container">
+            <button id="openBtn">Open Invitation</button>
+        </div>
+        <div id="invitation-card">
+            <h1>婚礼邀请</h1>
+            <div class="sub-title">Invitation</div>
+
+            <div class="names">
+                <h2>叶 子 & 张 维 翀</h2>
+                <div class="en">Zoey & Will</div>
+            </div>
+            <div class="date">2026.09.12</div>
+            <div class="schedule">
+                <div>Schedule</div>
+                <div><span class="time">18:00</span> Sign in / 签到</div>
+                <div><span class="time">19:00</span> Ceremony / 仪式</div>
+                <div><span class="time">20:00</span> Dinner & Party / 晚宴</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="attire-page" class="content-page">
+        <h1>Dress Code</h1>
+        
+        <div class="color-palette">
+            <div class="color-circle" style="background-color: #D8BCAB;"></div>
+            <div class="color-circle" style="background-color: #E8DCCA;"></div>
+            <div class="color-circle" style="background-color: #B8C5C8;"></div>
+            <div class="color-circle" style="background-color: #8FA3A8;"></div>
+            <div class="color-circle" style="background-color: #555555;"></div>
+            <div class="color-circle" style="background-color: #333333;"></div>
+        </div>
+        
+        <p class="attire-description">
+            上方是我们推荐的婚礼配色，期待您盛装出席。<br>
+            唯一的着装要求是请避免穿着蓝色牛仔裤和运动服饰。<br>
+            Our color recommendations are shown above.<br>
+            We encourage you to dress up in whatever makes you feel both festive and like yourself. <br>
+            The only thing we ask is that you avoid blue jeans and athletic wear.
+        </p>
+
+        <div class="attire-section">
+            <h2>Men's dress code</h2>
+            <div class="gallery-container">
+                <div class="gallery-item"><img src="images/men_image_1.png" alt="Men Style 1"></div>
+                <div class="gallery-item"><img src="images/men_image_2.png" alt="Men Style 2"></div>
+                <div class="gallery-item"><img src="images/men_image_3.png" alt="Men Style 3"></div>
+            </div>
+        </div>
+
+        <div class="attire-section">
+            <h2>Women's dress code</h2>
+            <div class="gallery-container">
+                <div class="gallery-item"><img src="images/women_image_1.png" alt="Women Style 1"></div>
+                <div class="gallery-item"><img src="images/women_image_2.png" alt="Women Style 2"></div>
+                <div class="gallery-item"><img src="images/women_image_3.png" alt="Women Style 3"></div>
+                <div class="gallery-item"><img src="images/women_image_4.png" alt="Women Style 4"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="address-page" class="content-page">
+        <div class="address-container">
+            <h1>Location</h1>
+            <div class="map-figure">
+                <img src="https://placehold.co/800x400/ccc/999?text=Map+Location" alt="Event Location Map">
+            </div>
+            <div class="info-section">
+                <h2>The Venue</h2>
+                <p> 仪式将于东景缘的主殿举行。从正门进入后根据指示牌方向即可到达。<br> 
+                    The ceremony will be held at the Main Hall of The Temple. Please arrive through the main gate and follow the signs to the garden area.</p>
+            </div>
+            <div class="info-section">
+                <h2>Transportation</h2>
+                <p> 打车：导航至北京市东城区沙滩北街二十三号智珠寺。 <br> 
+                    地铁：地铁F线到达南锣鼓巷站后，从F出口出站。步行路线可参考地图。<br> 
+                    自驾：东景缘提供的提车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考地图。<br> 
+                    Taxi: Navigate to  Zhizhusi, Shatan Beijie #23, Dongcheng DIstrict, Beijing.<br> 
+                    Subway: Take Subway Line F to Nanluoguxiang Station and use Exit F. Please refer to the map for walking instructions.<br> 
+                    Drive: Limited parking is available off-site for those who prefer to drive. Please refer to the map for parking and walking instructions.</p>
+            </div>
+            <div class="info-section">
+                <h2>Accommodation</h2>
+                <p> 我们为外地宾客在附近的酒店预留了房间。如果您需要住宿，请提前告知，以便我们为您预订。<br> 
+                    We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking. </p>          </div>
+        </div>
+    </div>
+
+<script>
+    // --- NAVIGATION LOGIC ---
+    function showPage(pageId) {
+        document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+        document.getElementById(`link-${pageId}`).classList.add('active');
+        const navLinks = document.getElementById('navLinks');
+        if (navLinks.classList.contains('show')) toggleMenu();
+        document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active'));
+        if (pageId !== 'home') {
+            const target = document.getElementById(`${pageId}-page`);
+            target.classList.add('active');
+        }
+    }
+
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
+    }
+
+    // --- AUDIO & UI LOGIC ---
+    const bgMusic = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+
+    muteBtn.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+    });
+
+    document.getElementById('openBtn').addEventListener('click', function() {
+        this.style.opacity = '0';
+        setTimeout(() => this.style.display = 'none', 500);
+        
+        // --- 播放音乐 ---
+        bgMusic.play().catch(e => console.log("Autoplay blocked:", e));
+        
+        // --- 新增: 点击按钮后，显示中文诗句 ---
+        // 这样它就会和掉落的文字动画一起出现
+        document.getElementById('bg-poem').classList.add('visible');
+
+        textVisible = true;
+        triggerTime = Date.now();
+    });
+
+    if (typeof Matter === 'undefined') alert("Error: 'matter.min.js' not found.");
+
+    const { Engine, World, Bodies, Body, Common, Mouse, MouseConstraint } = Matter;
+
+    let width = window.innerWidth;
+    let height = window.innerHeight;
+    const baseWidth = 600; 
+    let scale = Math.min(1, width / baseWidth);
+
+    const engine = Engine.create();
+    engine.gravity.y = 1; 
+    const world = engine.world;
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+    document.getElementById('home-page').appendChild(canvas);
+
+    const c_default = 0x0001, c_falling = 0x0002, c_landed  = 0x0004; 
+
+    let ground = Bodies.rectangle(width / 2, height + 30, width, 100, { 
+        isStatic: true, collisionFilter: { category: c_default } 
+    });
+    World.add(world, [ground]);
+
+    const mouse = Mouse.create(canvas);
+    const mouseConstraint = MouseConstraint.create(engine, {
+        mouse: mouse, constraint: { stiffness: 0.2, render: { visible: false } }
+    });
+    World.add(world, mouseConstraint);
+    mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
+    mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
+
+    const quote = [
+        "Happiness is nothing more than the harmony",
+        "between a person and the life they lead.",
+    ];
+
+    let letters = [];
+    let textVisible = false;
+    let triggerTime = 0;
+    let opacity = 0;
+    let cardShown = false; 
+
+    function initLetters() {
+        letters.forEach(l => World.remove(world, l.body));
+        letters = [];
+        scale = Math.min(1, width / baseWidth);
+        const charSize = 18 * scale;      
+        const charSpacing = 11 * scale;   
+        const lineHeight = 35 * scale;    
+        const bodyWidth = 10 * scale;     
+        const bodyHeight = 16 * scale;    
+        const totalBlockHeight = quote.length * lineHeight;
+        const startY = (height - totalBlockHeight) / 2;
+
+        ctx.font = `${charSize}px 'Courier New'`;
+
+        quote.forEach((line, lineIdx) => {
+            const chars = line.split('');
+            const lineWidth = chars.length * charSpacing;
+            const xOffset = (width / 2) - (lineWidth / 2); 
+            
+            chars.forEach((char, charIdx) => {
+                if (char === " ") return;
+                const x = xOffset + (charIdx * charSpacing) + (charSpacing / 2);
+                const y = startY + (lineIdx * lineHeight);
+                const b = Bodies.rectangle(x, y, bodyWidth, bodyHeight, {
+                    isStatic: true,
+                    chamfer: { radius: 2 * scale },
+                    frictionAir: 0.05, restitution: 0.0, friction: 0.5,    
+                    collisionFilter: { category: c_falling, mask: c_default | c_landed }
+                });
+                letters.push({ body: b, char: char, lineIdx: lineIdx, released: false, isLanded: false, fontSize: charSize });
+                World.add(world, b);
+            });
+        });
+    }
+    initLetters();
+
+    const lineDelays = {}; 
+    let accumulatedDelay = 0;
+    for (let i = quote.length - 1; i >= 0; i--) {
+        lineDelays[i] = accumulatedDelay;
+        accumulatedDelay += (500 + (quote[i].length * 30)); 
+    }
+    const totalReleaseTime = accumulatedDelay;
+
+    window.addEventListener('resize', () => {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        ctx.scale(dpr, dpr);
+        Body.setPosition(ground, { x: width / 2, y: height + 30 });
+        Body.setVertices(ground, [
+            { x: 0, y: height }, { x: width, y: height }, 
+            { x: width, y: height + 60 }, { x: 0, y: height + 60 }
+        ]);
+        if (!textVisible) initLetters();
+    });
+
+    function update() {
+        const now = Date.now();
+        if (textVisible) {
+            const elapsed = now - triggerTime;
+            if (opacity < 1) opacity += 0.05;
+            if (elapsed > 6000) {
+                const dropElapsed = elapsed - 6000;
+                if (!cardShown && dropElapsed > totalReleaseTime + 300) {
+                    document.getElementById('invitation-card').classList.add('fade-in');
+                    document.querySelector('nav').classList.add('fade-in');
+                    document.getElementById('muteBtn').classList.add('fade-in');
+                    
+                    // --- FADE OUT THE BACKGROUND POEM ---
+                    document.getElementById('bg-poem').classList.add('fade-out');
+                    
+                    cardShown = true;
+                }
+                letters.forEach(l => {
+                    if (!l.released) {
+                        const sequenceDelay = lineDelays[l.lineIdx];
+                        const distFromCenter = Math.abs(l.body.position.x - width / 2);
+                        const vShapeDelay = distFromCenter * 8; 
+                        if (dropElapsed > sequenceDelay + vShapeDelay) {
+                            l.released = true;
+                            Body.setStatic(l.body, false);
+                            Body.setAngularVelocity(l.body, Common.random(-0.02, 0.02));
+                        }
+                    }
+                    if (l.released && !l.isLanded) {
+                        if (l.body.speed < 0.2 && l.body.position.y > height - 100) {
+                            l.isLanded = true;
+                            l.body.collisionFilter.category = c_landed;
+                            l.body.collisionFilter.mask = c_default | c_falling | c_landed;
+                        }
+                    }
+                });
+            }
+        }
+        Engine.update(engine);
+        draw();
+        requestAnimationFrame(update);
+    }
+
+    function draw() {
+        // --- CHANGED: Clear rect instead of Fill rect ---
+        // This makes the canvas transparent so the Poem behind it is visible
+        ctx.clearRect(0, 0, width, height);
+        
+        if (textVisible) {
+            ctx.fillStyle = `rgba(51, 51, 51, ${opacity})`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            letters.forEach(l => {
+                const { x, y } = l.body.position;
+                const angle = l.body.angle;
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.font = `${l.fontSize}px 'Courier New'`;
+                ctx.fillText(l.char, 0, 0);
+                ctx.restore();
+            });
+        }
+    }
+    update();
+</script>
+</body>
+</html>
