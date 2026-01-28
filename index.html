@@ -83,11 +83,6 @@
         left: 0 !important;     /* Re-centers it slightly */
         top: 0 !important;
     }
-    
-    /* Optional: Scale text down slightly more if needed */
-    .willow-text {
-        font-size: 14px !important; /* Sets a max font size for mobile */
-    }
         }
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
@@ -256,16 +251,18 @@
     z-index: 55;
     pointer-events: none;
     
-    /* UPDATED: Soft Sunlight Gradients (Yellowish-White) */
+    /* Sunlight Gradients */
     background-image: 
         radial-gradient(circle at 50% 50%, rgba(255, 255, 240, 0.6) 0%, rgba(255, 255, 240, 0) 60%),
         radial-gradient(circle at 20% 80%, rgba(250, 250, 210, 0.4) 0%, rgba(250, 250, 210, 0) 50%),
         radial-gradient(circle at 80% 20%, rgba(255, 250, 205, 0.4) 0%, rgba(255, 250, 205, 0) 50%);
         
-    background-size: 50% 50%;
+    background-size: 50% 50%;     /* Keeps it as one "square" size */
+    background-repeat: no-repeat; /* ADD THIS: Stops the 4-square repetition */
+    background-position: top right; /* ADD THIS: Moves it to the top right corner */
+    
     animation: shadowSway 5s ease-in-out infinite alternate;
 }
-
         @keyframes shadowSway {
             0% { transform: translateX(0) rotate(0deg); }
             100% { transform: translateX(50px) rotate(3deg); }
