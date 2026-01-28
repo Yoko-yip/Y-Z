@@ -77,6 +77,17 @@
             }
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
+            .willow-svg-container {
+        height: 60% !important; /* Reduces vertical height, shrinking the tree */
+        width: 100% !important;
+        left: 0 !important;     /* Re-centers it slightly */
+        top: 0 !important;
+    }
+    
+    /* Optional: Scale text down slightly more if needed */
+    .willow-text {
+        font-size: 14px !important; /* Sets a max font size for mobile */
+    }
         }
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
