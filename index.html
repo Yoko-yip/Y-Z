@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Will & Zoey</title>
-    <script src="matter.min.js"></script>
     <style>
         body { 
             margin: 0; 
@@ -13,27 +12,6 @@
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
         }
-
-        /* --- BACKGROUND POEM (Original - Keep Hidden Initially if needed or blend) --- */
-        /* We will fade this in/out as part of the transition */
-        #bg-poem {
-            position: fixed;
-            top: 30%; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            text-align: center;
-            color: #333;
-            opacity: 0; 
-            font-size: 16px; 
-            line-height: 2;
-            z-index: 0; 
-            pointer-events: none;
-            transition: opacity 1.5s ease-in-out;
-            font-family: 'Times New Roman', serif;
-        }
-        #bg-poem.visible { opacity: 0.6; }
-        #bg-poem.fade-out { opacity: 0 !important; }
 
         /* --- NAVIGATION --- */
         nav {
@@ -93,7 +71,6 @@
             }
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
-            #bg-poem { font-size: 14px; width: 90%; }
         }
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
@@ -120,12 +97,10 @@
             z-index: 1; 
         }
         
-        canvas { display: block; background: transparent; }
-
         #ui-container {
             position: absolute;
             z-index: 50; 
-            bottom: 15%; /* Moved to bottom as requested */
+            bottom: 15%; 
             left: 50%;
             transform: translateX(-50%);
             opacity: 0; /* Hidden initially */
@@ -172,7 +147,7 @@
         .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #666; }
         .schedule .time { margin-right: 15px; font-weight: bold; color: #333; }
 
-        /* --- CONTENT PAGES (Attire, Address) --- */
+        /* --- CONTENT PAGES --- */
         .content-page {
             display: none; 
             position: absolute;
@@ -193,7 +168,6 @@
         .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
         .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
         .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
-        .figure-caption { font-size: 14px; letter-spacing: 1px; color: #555; }
         .address-container { width: 90%; max-width: 800px; text-align: left; }
         .map-figure { width: 100%; margin-bottom: 50px; border: 1px solid #ccc; }
         .map-figure img { width: 100%; height: auto; display: block; background-color: #ddd; }
@@ -211,116 +185,101 @@
         .gallery-item { flex: 0 0 auto; width: 70%; max-width: 300px; scroll-snap-align: center; }
         .gallery-item img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #e0e0e0; }
 
-        /* --- NEW LANDING ANIMATION (Willow & Birds) --- */
+        /* --- LANDING SCENE (SVG Tree & Shadows) --- */
         #landing-scene {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 40; /* Below UI but above Canvas/Poem */
-            pointer-events: none; /* Let clicks pass through if needed, though button is above */
-            transition: opacity 1.5s ease-out;
+            z-index: 40; 
+            transition: opacity 2s ease-in-out;
+            pointer-events: none; 
         }
 
-        /* The Willow Tree Text Structure */
-        .willow-container {
+        /* SVG Kinetic Typography */
+        .willow-svg-container {
             position: absolute;
-            top: -50px; /* Hanging from top */
-            left: 20%;  /* Positioning */
-            width: 600px;
-            height: 600px;
-            /* Debug: border: 1px solid red; */
+            top: -50px; left: -50px;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            animation: textSway 6s ease-in-out infinite alternate-reverse;
         }
+
+        svg { width: 100%; height: 100%; }
+        .willow-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; fill: #2e8b57; letter-spacing: 2px; }
+        @keyframes textSway { 0% { transform: translateX(0); } 100% { transform: translateX(10px); } }
+
+        /* Atmospheric Shadow Layer */
+        .shadow-overlay {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            z-index: 41;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.15) 60%),
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.1) 40%),
+                radial-gradient(circle at 80% 20%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.1) 50%);
+            background-size: 50% 50%;
+            animation: shadowSway 5s ease-in-out infinite alternate;
+        }
+        @keyframes shadowSway {
+            0% { transform: translateX(0) rotate(0deg); }
+            100% { transform: translateX(50px) rotate(3deg); }
+        }
+
+        /* --- UPDATED PIGEON ANIMATION (Lottie Ready) --- */
         
-        .willow-branch {
+        /* 1. The Wrapper: Handles the Motion Path (Trajectory) */
+        .pigeon-wrapper {
             position: absolute;
-            top: 0;
-            left: 50%;
-            transform-origin: top center;
-            writing-mode: vertical-rl;
-            text-orientation: mixed;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 14px;
-            color: #2e8b57; /* SeaGreen - Willow color */
-            opacity: 0.8;
-            white-space: nowrap;
-            animation: sway 6s ease-in-out infinite alternate;
+            width: 60px; /* Adjust size based on your final asset */
+            height: 60px;
+            z-index: 50;
+            
+            /* Start off-screen */
+            offset-path: path('M -100 800 C 400 600 800 200 1600 -100'); /* The Organic S-Curve */
+            offset-rotate: auto; /* Beak points forward */
+            
+            /* The Animation: 
+               - Name: pigeonFly
+               - Duration: 5s
+               - Timing: Custom Bezier for "Fast start, maintain momentum"
+            */
+            animation: pigeonFly 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+            animation-delay: 2s; /* Wait a bit before starting */
+            opacity: 0; /* Hidden until animation starts */
         }
 
-        /* Branch variations for natural look */
-        .branch-1 { height: 300px; transform: rotate(10deg); animation-delay: 0s; font-size: 16px; }
-        .branch-2 { height: 400px; transform: rotate(-5deg) translateX(-20px); animation-delay: 1s; color: #3cb371; }
-        .branch-3 { height: 250px; transform: rotate(25deg) translateX(40px); animation-delay: 2s; opacity: 0.6; }
-        .branch-4 { height: 350px; transform: rotate(-15deg) translateX(-50px); animation-delay: 0.5s; font-size: 12px; }
-        .branch-5 { height: 280px; transform: rotate(5deg) translateX(10px); animation-delay: 3s; color: #556b2f; }
-        .branch-6 { height: 450px; transform: rotate(-25deg) translateX(-80px); animation-delay: 1.5s; }
-
-        @keyframes sway {
-            0% { transform: rotate(var(--r, 0deg)) translateX(var(--tx, 0)) skewX(0deg); }
-            100% { transform: rotate(calc(var(--r, 0deg) + 5deg)) translateX(calc(var(--tx, 0) + 10px)) skewX(2deg); }
+        /* 2. The Sprite Container: Handles Scale/Perspective & Wing Flap */
+        .pigeon-sprite {
+            width: 100%;
+            height: 100%;
+            /* Simulate perspective: Shrink as it flies away */
+            animation: pigeonScale 5s linear forwards;
+            animation-delay: 2s; /* Sync with flight */
+            
+            /* Center the placeholder content */
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 40px; 
         }
 
-        /* Birds */
-        .bird {
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            opacity: 0; /* Hidden initially */
-        }
-        
-        /* Using placeholder characters/shapes for birds if images missing */
-        .bird-shape {
-            font-size: 24px;
-            color: #333;
+        /* Keyframes for the Path Motion */
+        @keyframes pigeonFly {
+            0% { 
+                offset-distance: 0%; 
+                opacity: 1; 
+            }
+            100% { 
+                offset-distance: 100%; 
+                opacity: 1; 
+            }
         }
 
-        /* Single Pigeon Flight */
-        #pigeon-solo {
-            left: -50px;
-            bottom: 50px;
-            animation: flyAcross 3s linear forwards;
-            animation-delay: 3s; /* Wait 3 seconds */
-        }
-
-        @keyframes flyAcross {
-            0% { left: -50px; bottom: 50px; opacity: 1; transform: scale(0.8) rotate(15deg); }
-            50% { opacity: 1; }
-            100% { left: 110%; bottom: 80%; opacity: 1; transform: scale(0.5) rotate(0deg); }
-        }
-
-        /* Circular Birds Group */
-        #birds-group {
-            position: absolute;
-            bottom: 10%;
-            right: 10%;
-            width: 150px;
-            height: 150px;
-            opacity: 0;
-            animation: birdCircleAppear 1s ease-in forwards;
-            animation-delay: 6s; /* Appear after pigeon flight (3s wait + 3s flight) */
-        }
-        
-        @keyframes birdCircleAppear { to { opacity: 1; } }
-
-        .circling-bird {
-            position: absolute;
-            font-size: 20px;
-            animation: circleMotion 6s linear infinite;
-        }
-        
-        .c-bird-1 { animation-delay: 0s; }
-        .c-bird-2 { animation-delay: -2s; }
-        .c-bird-3 { animation-delay: -4s; }
-
-        @keyframes circleMotion {
-            0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
-            100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
-        }
-
-        /* Mobile Adjustments for Willow */
-        @media (max-width: 768px) {
-            .willow-container { left: -50px; transform: scale(0.8); }
-            #ui-container { bottom: 20%; }
+        /* Keyframes for Perspective Scaling */
+        @keyframes pigeonScale {
+            0% { transform: scale(1.0); }
+            100% { transform: scale(0.6); }
         }
 
     </style>
@@ -332,30 +291,43 @@
     </audio>
 
     <div id="landing-scene">
-        <div class="willow-container">
-            <div class="willow-branch branch-1" style="--r: 10deg; --tx: 0;">Spring is near, and so are you.</div>
-            <div class="willow-branch branch-2" style="--r: -5deg; --tx: -20px;">All things turn into expectations.</div>
-            <div class="willow-branch branch-3" style="--r: 25deg; --tx: 40px;">Spring -- an experience in immortality.</div>
-            <div class="willow-branch branch-4" style="--r: -15deg; --tx: -50px;">An optimist is the human personification of spring.</div>
-            <div class="willow-branch branch-5" style="--r: 5deg; --tx: 10px;">April hath put a spirit of youth in everything.</div>
-            <div class="willow-branch branch-6" style="--r: -25deg; --tx: -80px;">Like a beautiful emerald grass.</div>
-            <div class="willow-branch branch-1" style="--r: 15deg; --tx: 20px; left: 60%; opacity: 0.5;">Love spring anywhere.</div>
+        
+        <div class="willow-svg-container">
+            <svg viewBox="0 0 800 600" preserveAspectRatio="xMinYMin slice">
+                <defs>
+                    <path id="curve1" d="M 50,-50 Q 200,100 200,400" fill="transparent" />
+                    <path id="curve2" d="M 100,-50 Q 300,150 280,500" fill="transparent" />
+                    <path id="curve3" d="M 0,0 Q 100,200 80,450" fill="transparent" />
+                    <path id="curve4" d="M 150,-20 Q 350,100 400,550" fill="transparent" />
+                    <path id="curve5" d="M 120,-30 Q 220,100 220,300" fill="transparent" />
+                </defs>
+
+                <text class="willow-text" font-size="16">
+                    <textPath href="#curve1" startOffset="10%">Spring is near, and so are you.</textPath>
+                </text>
+                <text class="willow-text" font-size="18" fill="#3cb371">
+                    <textPath href="#curve2" startOffset="5%">All things turn into expectations.</textPath>
+                </text>
+                <text class="willow-text" font-size="15" fill="#556b2f">
+                    <textPath href="#curve3" startOffset="15%">Spring -- an experience in immortality.</textPath>
+                </text>
+                <text class="willow-text" font-size="14">
+                    <textPath href="#curve4" startOffset="20%">An optimist is the human personification of spring.</textPath>
+                </text>
+                <text class="willow-text" font-size="17" opacity="0.8">
+                    <textPath href="#curve5" startOffset="10%">April hath put a spirit of youth in everything.</textPath>
+                </text>
+            </svg>
         </div>
 
-        <div id="pigeon-solo" class="bird">
-            <div class="bird-shape">🕊️</div> 
+        <div class="shadow-overlay"></div>
+
+        <div class="pigeon-wrapper">
+            <div class="pigeon-sprite">
+                🕊️ 
+            </div>
         </div>
 
-        <div id="birds-group">
-            <div class="circling-bird c-bird-1">🕊️</div>
-            <div class="circling-bird c-bird-2">🐦</div>
-            <div class="circling-bird c-bird-3">🦅</div>
-        </div>
-    </div>
-
-    <div id="bg-poem">
-        <div style="margin-top: 15px;">所谓幸福， <br>
-            不过是一个人同他生活的一种协调。</div>
     </div>
 
     <div id="muteBtn">🔊</div>
@@ -486,17 +458,17 @@
         muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
     });
     
-    // --- NEW STARTUP SEQUENCE ---
+    // --- STARTUP SEQUENCE ---
     window.onload = function() {
-        // 1. Try to play music (Autoplay policy may block this, click handler is backup)
+        // 1. Try to play music (Autoplay check)
         bgMusic.play().catch(e => console.log("Autoplay waiting for interaction"));
 
-        // 2. The Pigeon animation starts automatically via CSS (delay 3s)
+        // 2. The Pigeon flight starts automatically via CSS animation-delay (2s)
         
-        // 3. Show the Open Button after the pigeon flight (approx 3.5s - 4s)
+        // 3. Show the Open Button after the pigeon flight completes (approx 2s + 3s = 5s)
         setTimeout(() => {
             uiContainer.classList.add('show');
-        }, 4000); 
+        }, 5000); 
     };
 
     openBtn.addEventListener('click', function() {
@@ -504,198 +476,23 @@
         this.style.opacity = '0';
         setTimeout(() => this.style.display = 'none', 500);
         
-        // FADE OUT LANDING ANIMATION (Willow & Birds)
+        // FADE OUT LANDING SCENE (Tree, Shadows, Pigeon)
         document.getElementById('landing-scene').style.opacity = '0';
         setTimeout(() => {
              document.getElementById('landing-scene').style.display = 'none';
-        }, 1500);
+        }, 2000);
 
-        // Ensure music is playing (if autoplay failed)
+        // Ensure music is playing
         if (bgMusic.paused) {
             bgMusic.play().catch(e => console.log("Playback error:", e));
         }
         
-        // Show Background Poem (Original Logic)
-        document.getElementById('bg-poem').classList.add('visible');
-
-        // Start Physics Text (Original Logic)
-        textVisible = true;
-        triggerTime = Date.now();
+        // Reveal the main invitation card + nav
+        document.getElementById('invitation-card').classList.add('fade-in');
+        document.querySelector('nav').classList.add('fade-in');
+        document.getElementById('muteBtn').classList.add('fade-in');
     });
 
-    if (typeof Matter === 'undefined') alert("Error: 'matter.min.js' not found.");
-
-    const { Engine, World, Bodies, Body, Common, Mouse, MouseConstraint } = Matter;
-
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-    const baseWidth = 600; 
-    let scale = Math.min(1, width / baseWidth);
-
-    const engine = Engine.create();
-    engine.gravity.y = 1; 
-    const world = engine.world;
-
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
-    ctx.scale(dpr, dpr);
-    document.getElementById('home-page').appendChild(canvas);
-
-    const c_default = 0x0001, c_falling = 0x0002, c_landed  = 0x0004; 
-
-    let ground = Bodies.rectangle(width / 2, height + 30, width, 100, { 
-        isStatic: true, collisionFilter: { category: c_default } 
-    });
-    World.add(world, [ground]);
-
-    const mouse = Mouse.create(canvas);
-    const mouseConstraint = MouseConstraint.create(engine, {
-        mouse: mouse, constraint: { stiffness: 0.2, render: { visible: false } }
-    });
-    World.add(world, mouseConstraint);
-    mouse.element.removeEventListener("mousewheel", mouse.mousewheel);
-    mouse.element.removeEventListener("DOMMouseScroll", mouse.mousewheel);
-
-    const quote = [
-        "Happiness is nothing more than the harmony",
-        "between a person and the life they lead.",
-    ];
-
-    let letters = [];
-    let textVisible = false;
-    let triggerTime = 0;
-    let opacity = 0;
-    let cardShown = false; 
-
-    function initLetters() {
-        letters.forEach(l => World.remove(world, l.body));
-        letters = [];
-        scale = Math.min(1, width / baseWidth);
-        const charSize = 18 * scale;      
-        const charSpacing = 11 * scale;   
-        const lineHeight = 35 * scale;    
-        const bodyWidth = 10 * scale;     
-        const bodyHeight = 16 * scale;    
-        const totalBlockHeight = quote.length * lineHeight;
-        const startY = (height - totalBlockHeight) / 2;
-
-        ctx.font = `${charSize}px 'Courier New'`;
-
-        quote.forEach((line, lineIdx) => {
-            const chars = line.split('');
-            const lineWidth = chars.length * charSpacing;
-            const xOffset = (width / 2) - (lineWidth / 2); 
-            
-            chars.forEach((char, charIdx) => {
-                if (char === " ") return;
-                const x = xOffset + (charIdx * charSpacing) + (charSpacing / 2);
-                const y = startY + (lineIdx * lineHeight);
-                const b = Bodies.rectangle(x, y, bodyWidth, bodyHeight, {
-                    isStatic: true,
-                    chamfer: { radius: 2 * scale },
-                    frictionAir: 0.05, restitution: 0.0, friction: 0.5,    
-                    collisionFilter: { category: c_falling, mask: c_default | c_landed }
-                });
-                letters.push({ body: b, char: char, lineIdx: lineIdx, released: false, isLanded: false, fontSize: charSize });
-                World.add(world, b);
-            });
-        });
-    }
-    initLetters();
-
-    const lineDelays = {}; 
-    let accumulatedDelay = 0;
-    for (let i = quote.length - 1; i >= 0; i--) {
-        lineDelays[i] = accumulatedDelay;
-        accumulatedDelay += (500 + (quote[i].length * 30)); 
-    }
-    const totalReleaseTime = accumulatedDelay;
-
-    window.addEventListener('resize', () => {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        const dpr = window.devicePixelRatio || 1;
-        canvas.width = width * dpr;
-        canvas.height = height * dpr;
-        canvas.style.width = `${width}px`;
-        canvas.style.height = `${height}px`;
-        ctx.scale(dpr, dpr);
-        Body.setPosition(ground, { x: width / 2, y: height + 30 });
-        Body.setVertices(ground, [
-            { x: 0, y: height }, { x: width, y: height }, 
-            { x: width, y: height + 60 }, { x: 0, y: height + 60 }
-        ]);
-        if (!textVisible) initLetters();
-    });
-
-    function update() {
-        const now = Date.now();
-        if (textVisible) {
-            const elapsed = now - triggerTime;
-            if (opacity < 1) opacity += 0.05;
-            if (elapsed > 6000) {
-                const dropElapsed = elapsed - 6000;
-                if (!cardShown && dropElapsed > totalReleaseTime + 300) {
-                    document.getElementById('invitation-card').classList.add('fade-in');
-                    document.querySelector('nav').classList.add('fade-in');
-                    document.getElementById('muteBtn').classList.add('fade-in');
-                    
-                    // FADE OUT THE BACKGROUND POEM
-                    document.getElementById('bg-poem').classList.add('fade-out');
-                    
-                    cardShown = true;
-                }
-                letters.forEach(l => {
-                    if (!l.released) {
-                        const sequenceDelay = lineDelays[l.lineIdx];
-                        const distFromCenter = Math.abs(l.body.position.x - width / 2);
-                        const vShapeDelay = distFromCenter * 8; 
-                        if (dropElapsed > sequenceDelay + vShapeDelay) {
-                            l.released = true;
-                            Body.setStatic(l.body, false);
-                            Body.setAngularVelocity(l.body, Common.random(-0.02, 0.02));
-                        }
-                    }
-                    if (l.released && !l.isLanded) {
-                        if (l.body.speed < 0.2 && l.body.position.y > height - 100) {
-                            l.isLanded = true;
-                            l.body.collisionFilter.category = c_landed;
-                            l.body.collisionFilter.mask = c_default | c_falling | c_landed;
-                        }
-                    }
-                });
-            }
-        }
-        Engine.update(engine);
-        draw();
-        requestAnimationFrame(update);
-    }
-
-    function draw() {
-        ctx.clearRect(0, 0, width, height);
-        
-        if (textVisible) {
-            ctx.fillStyle = `rgba(51, 51, 51, ${opacity})`;
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            letters.forEach(l => {
-                const { x, y } = l.body.position;
-                const angle = l.body.angle;
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.rotate(angle);
-                ctx.font = `${l.fontSize}px 'Courier New'`;
-                ctx.fillText(l.char, 0, 0);
-                ctx.restore();
-            });
-        }
-    }
-    update();
 </script>
 </body>
 </html>
