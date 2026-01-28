@@ -116,11 +116,11 @@
             font-family: 'Courier New', Courier, monospace;
             font-size: 16px;
             background: rgba(240, 238, 230, 0.9);
-            border: 1px solid #333;
+            border: 1px solid #5d4037;
             cursor: pointer;
             transition: all 0.3s ease;
             letter-spacing: 2px;
-            color: #333;
+            color: #5d4037;
             text-transform: uppercase;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
@@ -233,18 +233,21 @@
 
         /* 2. Atmospheric Shadow Layer */
         .shadow-overlay {
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            z-index: 55;
-            pointer-events: none;
-            /* Transparent gradients to allow background color to show */
-            background-image: 
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.1) 60%),
-                radial-gradient(circle at 20% 80%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.08) 40%);
-            background-size: 50% 50%;
-            animation: shadowSway 5s ease-in-out infinite alternate;
-        }
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    z-index: 55;
+    pointer-events: none;
+    
+    /* CHANGE THESE LINES: Golden/White Sunlight Gradients instead of dark shadows */
+    background-image: 
+        radial-gradient(circle at 50% 50%, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0) 60%),
+        radial-gradient(circle at 20% 80%, rgba(255, 223, 186, 0.4) 0%, rgba(255, 223, 186, 0) 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 224, 0.4) 0%, rgba(255, 255, 224, 0) 50%);
+        
+    background-size: 50% 50%;
+    animation: shadowSway 5s ease-in-out infinite alternate;
+}
 
         @keyframes shadowSway {
             0% { transform: translateX(0) rotate(0deg); }
