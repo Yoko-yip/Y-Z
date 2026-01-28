@@ -8,28 +8,10 @@
         body { 
             margin: 0; 
             overflow-x: hidden; 
+            /* 1. Background Color: Consistent #f0eee6 */
             background-color: #f0eee6; 
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
-        }
-
-        /* --- RESTORED BACKGROUND POEM --- */
-        #bg-poem {
-            position: fixed;
-            top: 30%; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80%;
-            text-align: center;
-            color: #333;
-            /* Initial state: visible behind the tree */
-            opacity: 0.6; 
-            font-size: 16px; 
-            line-height: 2;
-            z-index: 0; /* Lowest layer */
-            pointer-events: none;
-            transition: opacity 1.5s ease-in-out;
-            font-family: 'Times New Roman', serif;
         }
 
         /* --- NAVIGATION --- */
@@ -90,7 +72,6 @@
             }
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
-            #bg-poem { font-size: 14px; width: 90%; }
         }
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
@@ -218,24 +199,22 @@
         .willow-svg-container {
             position: absolute;
             top: -20px; left: -20px;
-            width: 110%; height: 110%; /* Slightly larger to handle sway edges */
+            width: 110%; height: 110%; 
             overflow: hidden;
         }
 
         svg {
             width: 100%;
             height: 100%;
-            overflow: visible; /* Important for text to not get clipped */
+            overflow: visible;
         }
 
-        /* Branch Groups - These allow us to sway individual branches */
-        /* Transform origin is crucial: should be roughly where the branch "hangs" from */
+        /* Branch Groups: Individual Sway Animation */
         .branch-group {
-            transform-origin: 200px 0px; /* Adjust based on where your branches generally start */
+            transform-origin: 200px 0px; 
             animation: branchSway 6s ease-in-out infinite alternate;
         }
         
-        /* Variations for natural feel */
         .branch-1 { animation-duration: 5s; animation-delay: 0s; }
         .branch-2 { animation-duration: 7s; animation-delay: -1s; }
         .branch-3 { animation-duration: 6s; animation-delay: -3s; }
@@ -313,11 +292,6 @@
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
-
-    <div id="bg-poem">
-        <div style="margin-top: 15px;">所谓幸福， <br>
-            不过是一个人同他生活的一种协调。</div>
-    </div>
 
     <div id="landing-scene">
         
@@ -500,4 +474,46 @@
     const openBtn = document.getElementById('openBtn');
     const uiContainer = document.getElementById('ui-container');
 
-    muteBtn
+    muteBtn.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+    });
+    
+    // --- STARTUP SEQUENCE ---
+    window.onload = function() {
+        // 1. Try to play music (Autoplay check)
+        bgMusic.play().catch(e => console.log("Autoplay waiting for interaction"));
+
+        // 2. The Pigeon flight starts automatically via CSS animation-delay (2s)
+        
+        // 3. Show the Open Button after the pigeon flight completes (approx 2s + 3s = 5s)
+        setTimeout(() => {
+            uiContainer.classList.add('show');
+        }, 5000); 
+    };
+
+    openBtn.addEventListener('click', function() {
+        // Fade out button
+        this.style.opacity = '0';
+        setTimeout(() => this.style.display = 'none', 500);
+        
+        // FADE OUT LANDING SCENE (Tree, Shadows, Pigeon)
+        document.getElementById('landing-scene').style.opacity = '0';
+        setTimeout(() => {
+             document.getElementById('landing-scene').style.display = 'none';
+        }, 2000);
+
+        // Ensure music is playing
+        if (bgMusic.paused) {
+            bgMusic.play().catch(e => console.log("Playback error:", e));
+        }
+        
+        // Reveal the main invitation card + nav
+        document.getElementById('invitation-card').classList.add('fade-in');
+        document.querySelector('nav').classList.add('fade-in');
+        document.getElementById('muteBtn').classList.add('fade-in');
+    });
+
+</script>
+</body>
+</html>
