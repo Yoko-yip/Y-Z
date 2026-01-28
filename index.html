@@ -4,16 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Will & Zoey</title>
+    
     <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
     <style>
-        /* --- GLOBAL STYLES & BACKGROUND FIX --- */
+        /* --- GLOBAL STYLES --- */
         html, body { 
             margin: 0; 
             padding: 0;
             width: 100%;
             height: 100%;
             overflow-x: hidden; 
-            /* Ensuring background color is applied globally */
+            /* Base yellow - revealed if landing scene ever fades out completely */
             background-color: #FFFBE6; 
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
@@ -61,9 +63,11 @@
             z-index: 300; 
         }
 
+        /* --- MOBILE STYLES --- */
         @media (max-width: 768px) {
             nav { right: 20px; }
             .menu-icon { display: block; }
+            
             .nav-links {
                 display: none; 
                 position: fixed;
@@ -77,12 +81,14 @@
             }
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
+            
+            /* Mobile adjustment for Tree */
             .willow-svg-container {
-        height: 60% !important; /* Reduces vertical height, shrinking the tree */
-        width: 100% !important;
-        left: 0 !important;     /* Re-centers it slightly */
-        top: 0 !important;
-    }
+                height: 60% !important; 
+                width: 100% !important;
+                left: 0 !important;     
+                top: 0 !important;
+            }
         }
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
@@ -104,20 +110,17 @@
 
         /* --- OPEN BUTTON (UI CONTAINER) --- */
         #ui-container {
-            position: fixed; /* Fixed to ensure visibility */
-            z-index: 100;    /* High Z-index to sit on top of everything */
+            position: fixed; 
+            z-index: 100;    
             bottom: 15%; 
             left: 50%;
             transform: translateX(-50%);
-            opacity: 0;      /* Hidden initially */
-            pointer-events: none; /* Can't click until visible */
-            transition: opacity 1.5s ease-in;
+            /* Visible by default */
+            opacity: 1;      
+            pointer-events: auto; 
+            transition: opacity 1s ease-out;
         }
-        #ui-container.show { 
-            opacity: 1; 
-            pointer-events: auto; /* Enable clicking */
-        }
-
+        
         button {
             padding: 15px 30px;
             font-family: 'Courier New', Courier, monospace;
@@ -132,15 +135,15 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         button:hover { 
-    background-color: #1C3618; 
-    color: #ffffff;            
-    border-color: #1C3618;     
-}
+            background-color: #1C3618; 
+            color: #ffffff;            
+            border-color: #1C3618;     
+        }
 
-        /* --- INVITATION CARD (Hidden Initially) --- */
+        /* --- INVITATION CARD --- */
         #invitation-card {
             position: absolute;
-            z-index: 10;
+            z-index: 20; /* High Z-index to sit on top of the blurred tree */
             text-align: center;
             color: #4a4a4a;
             font-family: 'Times New Roman', Times, serif; 
@@ -161,6 +164,85 @@
         .date { font-size: 16px; letter-spacing: 2px; margin-bottom: 50px; border-bottom: 1px solid #ccc; display: inline-block; padding-bottom: 10px; }
         .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #666; }
         .schedule .time { margin-right: 15px; font-weight: bold; color: #333; }
+
+        /* --- LANDING SCENE (Tree + Background) --- */
+        #landing-scene {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5; 
+            pointer-events: none; 
+            background-color: #F1F6EA; /* Green Background */
+        }
+
+        /* Initially hide the inner elements so user sees pure color first */
+        .willow-svg-container, 
+        .shadow-overlay, 
+        .lottie-bird-container {
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        /* Class to Fade In the elements */
+        #landing-scene.show-elements .willow-svg-container,
+        #landing-scene.show-elements .shadow-overlay,
+        #landing-scene.show-elements .lottie-bird-container {
+            opacity: 1;
+        }
+
+        /* SELECTIVE BLUR: Only blur tree & shadows, NOT birds */
+        #landing-scene.blurred .willow-svg-container,
+        #landing-scene.blurred .shadow-overlay {
+            filter: blur(8px) brightness(0.9);
+            transition: filter 3s ease-in-out;
+        }
+
+        /* 1. Willow Tree CSS */
+        .willow-svg-container {
+            position: absolute;
+            top: -20px; left: -20px;
+            width: 110%; height: 110%; 
+            overflow: hidden;
+        }
+        svg { width: 100%; height: 100%; overflow: visible; }
+        
+        .branch-group { transform-origin: 200px 0px; animation: branchSway 6s ease-in-out infinite alternate; }
+        .branch-1 { animation-duration: 5s; animation-delay: 0s; }
+        .branch-2 { animation-duration: 7s; animation-delay: -1s; }
+        .branch-3 { animation-duration: 6s; animation-delay: -3s; }
+        .branch-4 { animation-duration: 8s; animation-delay: -2s; }
+
+        @keyframes branchSway { 0% { transform: rotate(-2deg); } 100% { transform: rotate(2deg); } }
+        .willow-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; fill: #2e8b57; letter-spacing: 2px; }
+
+        /* 2. Atmospheric Shadow Layer */
+        .shadow-overlay {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            z-index: 55;
+            pointer-events: none;
+            /* Sunlight Gradients (Yellowish Monochrome) */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 240, 0.6) 0%, rgba(255, 255, 240, 0) 60%),
+                radial-gradient(circle at 20% 80%, rgba(250, 250, 210, 0.4) 0%, rgba(250, 250, 210, 0) 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 250, 205, 0.4) 0%, rgba(255, 250, 205, 0) 50%);
+            background-size: 50% 50%;
+            background-repeat: no-repeat;
+            background-position: top right;
+            animation: shadowSway 5s ease-in-out infinite alternate;
+        }
+        @keyframes shadowSway { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(50px) rotate(3deg); } }
+
+        /* 3. Lottie Birds */
+        .lottie-bird-container {
+            position: absolute;
+            bottom: -30px; 
+            right: -30px;
+            width: 1000px; 
+            height: 1000px; 
+            z-index: 60;   
+            pointer-events: none;
+        }
 
         /* --- CONTENT PAGES --- */
         .content-page {
@@ -199,85 +281,6 @@
         .gallery-container::-webkit-scrollbar { display: none; }
         .gallery-item { flex: 0 0 auto; width: 70%; max-width: 300px; scroll-snap-align: center; }
         .gallery-item img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #e0e0e0; }
-
-        /* --- LANDING SCENE --- */
-        #landing-scene {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 50; 
-            transition: opacity 2s ease-in-out;
-            pointer-events: none; /* Allows clicks to pass through to button */
-            background-color: #F1F6EA;
-        }
-
-        /* 1. Willow Tree Container */
-        .willow-svg-container {
-            position: absolute;
-            top: -20px; left: -20px;
-            width: 110%; height: 110%; 
-            overflow: hidden;
-        }
-
-        svg { width: 100%; height: 100%; overflow: visible; }
-
-        /* Branch Sway Animation */
-        .branch-group {
-            transform-origin: 200px 0px; 
-            animation: branchSway 6s ease-in-out infinite alternate;
-        }
-        
-        .branch-1 { animation-duration: 5s; animation-delay: 0s; }
-        .branch-2 { animation-duration: 7s; animation-delay: -1s; }
-        .branch-3 { animation-duration: 6s; animation-delay: -3s; }
-        .branch-4 { animation-duration: 8s; animation-delay: -2s; }
-
-        @keyframes branchSway {
-            0% { transform: rotate(-2deg); }
-            100% { transform: rotate(2deg); }
-        }
-
-        .willow-text {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
-            fill: #2e8b57;
-            letter-spacing: 2px;
-        }
-
-        /* 2. Atmospheric Shadow Layer */
-       .shadow-overlay {
-    position: absolute;
-    top: -50%; left: -50%;
-    width: 200%; height: 200%;
-    z-index: 55;
-    pointer-events: none;
-    
-    /* Sunlight Gradients */
-    background-image: 
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 240, 0.6) 0%, rgba(255, 255, 240, 0) 60%),
-        radial-gradient(circle at 20% 80%, rgba(250, 250, 210, 0.4) 0%, rgba(250, 250, 210, 0) 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 250, 205, 0.4) 0%, rgba(255, 250, 205, 0) 50%);
-        
-    background-size: 50% 50%;     /* Keeps it as one "square" size */
-    background-repeat: no-repeat; /* ADD THIS: Stops the 4-square repetition */
-    background-position: top right; /* ADD THIS: Moves it to the top right corner */
-    
-    animation: shadowSway 5s ease-in-out infinite alternate;
-}
-        @keyframes shadowSway {
-            0% { transform: translateX(0) rotate(0deg); }
-            100% { transform: translateX(50px) rotate(3deg); }
-        }
-
-        /* --- LOTTIE BIRD ANIMATION --- */
-.lottie-bird-container {
-    position: absolute;
-    bottom: -300px;
-    right: -300px;
-    width: 1000px;  /* Adjust this if the birds are too big/small */
-    height: 1000px; 
-    z-index: 60;   
-    pointer-events: none;
-}
 
     </style>
 </head>
@@ -320,56 +323,47 @@
                         <textPath href="#curve-bg-1" startOffset="10%">The spring breeze has faith.</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-2" opacity="0.4" filter="url(#blur-mid)">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="15" fill="#556B2F">
                         <textPath href="#curve-bg-2" startOffset="5%">Flowers bloom at a certain time.</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-4" opacity="0.5" filter="url(#blur-deep)">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="13" fill="#2F4F4F">
                         <textPath href="#curve-bg-3" startOffset="15%">Love spring anywhere.</textPath>
                     </text>
                 </g>
-                
                 <g class="branch-group branch-1" opacity="0.4" filter="url(#blur-light)">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="12" fill="#556B2F">
                         <textPath href="#curve-bg-4" startOffset="5%">Like a beautiful emerald grass.</textPath>
                     </text>
                 </g>
 
-
                 <g class="branch-group branch-1">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="17" fill="#6B8E23">
                         <textPath href="#curve1" startOffset="5%">Here, I feel not only the joy of living,</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-2">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="19" fill="#2E8B57" font-weight="bold">
                         <textPath href="#curve2" startOffset="2%">Spring is near, and so are you.</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-3">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="16" fill="#556B2F">
                         <textPath href="#curve3" startOffset="10%">but also a deep sense of belonging.</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-4">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="15" fill="#3CB371">
                         <textPath href="#curve4" startOffset="15%">Happiness is nothing more than the harmony</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-2">
                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="18" opacity="0.9" fill="#2E8B57">
                         <textPath href="#curve5" startOffset="5%">between a person and the life they lead.</textPath>
                     </text>
                 </g>
-
                 <g class="branch-group branch-1">
                      <text class="willow-text" font-family="'Times New Roman', serif" font-size="17" fill="#8FBC8F">
                         <textPath href="#curve6" startOffset="8%">An optimist is the human personification of spring.</textPath>
@@ -380,17 +374,16 @@
         
         <div class="shadow-overlay"></div>
 
-       <div class="lottie-bird-container">
-    <dotlottie-player 
-        src="Birds.lottie" 
-        background="transparent" 
-        speed="1" 
-        style="width: 100%; height: 100%;" 
-        loop 
-        autoplay>
-    </dotlottie-player>
-</div>
-
+        <div class="lottie-bird-container">
+            <dotlottie-player 
+                src="Birds.lottie" 
+                background="transparent" 
+                speed="1" 
+                style="width: 100%; height: 100%;" 
+                loop 
+                autoplay>
+            </dotlottie-player>
+        </div>
     </div>
 
     <div id="muteBtn">🔊</div>
@@ -490,6 +483,20 @@
     </div>
 
 <script>
+    // --- VARIABLES ---
+    const bgMusic = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+    const openBtn = document.getElementById('openBtn');
+    const landingScene = document.getElementById('landing-scene');
+    const invitationCard = document.getElementById('invitation-card');
+    const nav = document.querySelector('nav');
+
+    // --- MUTE BUTTON LOGIC ---
+    muteBtn.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+    });
+
     // --- NAVIGATION LOGIC ---
     function showPage(pageId) {
         document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
@@ -502,7 +509,6 @@
             target.classList.add('active');
         }
     }
-
     function toggleMenu() {
         const navLinks = document.getElementById('navLinks');
         const menuIcon = document.querySelector('.menu-icon');
@@ -510,65 +516,34 @@
         menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
     }
 
-    // --- AUDIO & UI LOGIC ---
-    const bgMusic = document.getElementById('bgMusic');
-    const muteBtn = document.getElementById('muteBtn');
-    const openBtn = document.getElementById('openBtn');
-    const uiContainer = document.getElementById('ui-container');
+    // --- CINEMATIC SEQUENCE LOGIC ---
+    // 1. Initial State is handled by CSS (Green Background, Button Visible, Tree/Birds Hidden)
 
-    muteBtn.addEventListener('click', () => {
-        bgMusic.muted = !bgMusic.muted;
-        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
-    });
-    
-    // --- ROBUST STARTUP SEQUENCE ---
-    // Use DOMContentLoaded to ensure code runs as soon as HTML is ready
-    // (doesn't wait for large images or audio to fully download)
-    document.addEventListener("DOMContentLoaded", function() {
-        
-        // 1. Try to play music (Autoplay Check)
-        // Note: Browsers will likely block this. We catch the error silently.
-        // It will definitely play when the user clicks the "Open" button later.
-        var playPromise = bgMusic.play();
-        if (playPromise !== undefined) {
-            playPromise.catch(error => {
-                console.log("Autoplay prevented. Music will start on interaction.");
-            });
-        }
-
-        // 2. Show the Open Button
-        // We set a fixed timer of 3 seconds. The button WILL appear.
-        setTimeout(() => {
-            uiContainer.classList.add('show');
-        }, 3000); 
-    });
-
-    // --- OPEN BUTTON INTERACTION ---
     openBtn.addEventListener('click', function() {
-        // Fade out button
+        // A. FADE OUT BUTTON
         this.style.opacity = '0';
-        setTimeout(() => this.style.display = 'none', 500);
+        setTimeout(() => this.style.display = 'none', 1000);
         
-        // FADE OUT LANDING SCENE (Tree, Shadows, Pigeon)
-        const landingScene = document.getElementById('landing-scene');
-        landingScene.style.opacity = '0';
-        setTimeout(() => {
-             landingScene.style.display = 'none';
-        }, 2000);
-
-        // ENSURE MUSIC PLAYS (This is the guaranteed interaction)
+        // B. PLAY MUSIC
         if (bgMusic.paused) {
-            bgMusic.play().then(() => {
-                console.log("Music playing.");
-            }).catch(e => {
-                console.log("Audio playback error: ", e);
-            });
+            bgMusic.play().catch(e => console.log("Audio playback error:", e));
         }
-        
-        // REVEAL INVITATION
-        document.getElementById('invitation-card').classList.add('fade-in');
-        document.querySelector('nav').classList.add('fade-in');
-        document.getElementById('muteBtn').classList.add('fade-in');
+
+        // C. SCENE 1: REVEAL TREE & BIRDS (Fade In)
+        // This adds the class that sets opacity: 1 on the inner elements
+        landingScene.classList.add('show-elements');
+
+        // D. SCENE 2: 5 SECONDS LATER...
+        setTimeout(() => {
+            // 1. Blur the Tree & Background (Birds stay sharp via CSS)
+            landingScene.classList.add('blurred');
+
+            // 2. Reveal Invitation, Nav, Mute Btn
+            invitationCard.classList.add('fade-in');
+            nav.classList.add('fade-in');
+            muteBtn.classList.add('fade-in');
+            
+        }, 5000); 
     });
 
 </script>
