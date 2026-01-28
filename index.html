@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Will & Zoey</title>
     <style>
-        body { 
+        /* --- GLOBAL STYLES & BACKGROUND FIX --- */
+        html, body { 
             margin: 0; 
+            padding: 0;
+            width: 100%;
+            height: 100%;
             overflow-x: hidden; 
-            /* 1. Background Color: Consistent #f0eee6 */
+            /* Ensuring background color is applied globally */
             background-color: #f0eee6; 
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
@@ -91,39 +95,38 @@
         #muteBtn.fade-in { opacity: 0.7; }
         #muteBtn:hover { opacity: 1; }
 
-        /* --- HOME SECTION --- */
-        #home-page {
-            position: fixed; 
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1; 
-        }
-        
+        /* --- OPEN BUTTON (UI CONTAINER) --- */
         #ui-container {
-            position: absolute;
-            z-index: 50; 
+            position: fixed; /* Fixed to ensure visibility */
+            z-index: 100;    /* High Z-index to sit on top of everything */
             bottom: 15%; 
             left: 50%;
             transform: translateX(-50%);
-            opacity: 0; /* Hidden initially */
-            transition: opacity 1s ease-in;
+            opacity: 0;      /* Hidden initially */
+            pointer-events: none; /* Can't click until visible */
+            transition: opacity 1.5s ease-in;
         }
-        #ui-container.show { opacity: 1; }
+        #ui-container.show { 
+            opacity: 1; 
+            pointer-events: auto; /* Enable clicking */
+        }
 
         button {
-            padding: 12px 24px;
+            padding: 15px 30px;
             font-family: 'Courier New', Courier, monospace;
             font-size: 16px;
-            background: rgba(240, 238, 230, 0.8);
+            background: rgba(240, 238, 230, 0.9);
             border: 1px solid #333;
             cursor: pointer;
-            transition: background-color 0.5s ease, color 0.5s ease;
+            transition: all 0.3s ease;
             letter-spacing: 2px;
             color: #333;
             text-transform: uppercase;
-            backdrop-filter: blur(2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         button:hover { background-color: #333; color: #f0eee6; }
 
+        /* --- INVITATION CARD (Hidden Initially) --- */
         #invitation-card {
             position: absolute;
             z-index: 10;
@@ -137,7 +140,7 @@
             transform: translate(-50%, -50%);
             pointer-events: none; 
         }
-        .fade-in { opacity: 1 !important; }
+        .fade-in { opacity: 1 !important; pointer-events: auto !important; }
 
         h1 { font-size: 24px; letter-spacing: 5px; margin-bottom: 5px; text-transform: uppercase; font-weight: normal; }
         .sub-title { font-size: 14px; letter-spacing: 3px; color: #666; margin-bottom: 40px; text-transform: uppercase; }
@@ -186,16 +189,16 @@
         .gallery-item { flex: 0 0 auto; width: 70%; max-width: 300px; scroll-snap-align: center; }
         .gallery-item img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #e0e0e0; }
 
-        /* --- LANDING SCENE (SVG Tree & Shadows) --- */
+        /* --- LANDING SCENE --- */
         #landing-scene {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 40; 
+            z-index: 50; 
             transition: opacity 2s ease-in-out;
-            pointer-events: none; 
+            pointer-events: none; /* Allows clicks to pass through to button */
         }
 
-        /* 1. SVG Kinetic Typography Container */
+        /* 1. Willow Tree Container */
         .willow-svg-container {
             position: absolute;
             top: -20px; left: -20px;
@@ -203,13 +206,9 @@
             overflow: hidden;
         }
 
-        svg {
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
+        svg { width: 100%; height: 100%; overflow: visible; }
 
-        /* Branch Groups: Individual Sway Animation */
+        /* Branch Sway Animation */
         .branch-group {
             transform-origin: 200px 0px; 
             animation: branchSway 6s ease-in-out infinite alternate;
@@ -232,17 +231,17 @@
             letter-spacing: 2px;
         }
 
-        /* 2. Atmospheric Shadow Layer (Dappled Light) */
+        /* 2. Atmospheric Shadow Layer */
         .shadow-overlay {
             position: absolute;
             top: -50%; left: -50%;
             width: 200%; height: 200%;
-            z-index: 41;
+            z-index: 55;
             pointer-events: none;
+            /* Transparent gradients to allow background color to show */
             background-image: 
-                radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.15) 60%),
-                radial-gradient(circle at 20% 80%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.1) 40%),
-                radial-gradient(circle at 80% 20%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.1) 50%);
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.1) 60%),
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0) 0%, rgba(0,0,0,0.08) 40%);
             background-size: 50% 50%;
             animation: shadowSway 5s ease-in-out infinite alternate;
         }
@@ -252,16 +251,16 @@
             100% { transform: translateX(50px) rotate(3deg); }
         }
 
-        /* --- PIGEON ANIMATION (Lottie Ready) --- */
+        /* 3. Pigeon Animation */
         .pigeon-wrapper {
             position: absolute;
             width: 60px;
             height: 60px;
-            z-index: 50;
+            z-index: 60;
             offset-path: path('M -100 800 C 400 600 800 200 1600 -100'); 
             offset-rotate: auto; 
             animation: pigeonFly 5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-            animation-delay: 2s;
+            animation-delay: 0.5s; /* Starts almost immediately */
             opacity: 0;
         }
 
@@ -269,7 +268,7 @@
             width: 100%;
             height: 100%;
             animation: pigeonScale 5s linear forwards;
-            animation-delay: 2s;
+            animation-delay: 0.5s;
             display: flex; 
             align-items: center; 
             justify-content: center;
@@ -299,13 +298,9 @@
             <svg viewBox="0 0 800 600" preserveAspectRatio="xMinYMin slice">
                 <defs>
                     <path id="curve1" d="M 50,-50 C 50,150 250,250 200,550" fill="transparent" />
-                    
                     <path id="curve2" d="M 150,-50 C 150,200 400,300 300,600" fill="transparent" />
-                    
                     <path id="curve3" d="M 0,-20 C 0,100 120,200 50,500" fill="transparent" />
-
                     <path id="curve4" d="M 200,-30 C 250,150 500,200 450,650" fill="transparent" />
-                    
                     <path id="curve5" d="M 100,-40 C 100,100 220,200 180,400" fill="transparent" />
                 </defs>
 
@@ -344,9 +339,7 @@
         <div class="shadow-overlay"></div>
 
         <div class="pigeon-wrapper">
-            <div class="pigeon-sprite">
-                🕊️ 
-            </div>
+            <div class="pigeon-sprite">🕊️</div>
         </div>
 
     </div>
@@ -362,14 +355,14 @@
         </ul>
     </nav>
 
+    <div id="ui-container">
+        <button id="openBtn">Open Invitation</button>
+    </div>
+
     <div id="home-page">
-        <div id="ui-container">
-            <button id="openBtn">Open Invitation</button>
-        </div>
         <div id="invitation-card">
             <h1>婚礼邀请</h1>
             <div class="sub-title">Invitation</div>
-
             <div class="names">
                 <h2>叶 子 & 张 维 翀</h2>
                 <div class="en">Zoey & Will</div>
@@ -479,36 +472,51 @@
         muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
     });
     
-    // --- STARTUP SEQUENCE ---
-    window.onload = function() {
-        // 1. Try to play music (Autoplay check)
-        bgMusic.play().catch(e => console.log("Autoplay waiting for interaction"));
-
-        // 2. The Pigeon flight starts automatically via CSS animation-delay (2s)
+    // --- ROBUST STARTUP SEQUENCE ---
+    // Use DOMContentLoaded to ensure code runs as soon as HTML is ready
+    // (doesn't wait for large images or audio to fully download)
+    document.addEventListener("DOMContentLoaded", function() {
         
-        // 3. Show the Open Button after the pigeon flight completes (approx 2s + 3s = 5s)
+        // 1. Try to play music (Autoplay Check)
+        // Note: Browsers will likely block this. We catch the error silently.
+        // It will definitely play when the user clicks the "Open" button later.
+        var playPromise = bgMusic.play();
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                console.log("Autoplay prevented. Music will start on interaction.");
+            });
+        }
+
+        // 2. Show the Open Button
+        // We set a fixed timer of 3 seconds. The button WILL appear.
         setTimeout(() => {
             uiContainer.classList.add('show');
-        }, 5000); 
-    };
+        }, 3000); 
+    });
 
+    // --- OPEN BUTTON INTERACTION ---
     openBtn.addEventListener('click', function() {
         // Fade out button
         this.style.opacity = '0';
         setTimeout(() => this.style.display = 'none', 500);
         
         // FADE OUT LANDING SCENE (Tree, Shadows, Pigeon)
-        document.getElementById('landing-scene').style.opacity = '0';
+        const landingScene = document.getElementById('landing-scene');
+        landingScene.style.opacity = '0';
         setTimeout(() => {
-             document.getElementById('landing-scene').style.display = 'none';
+             landingScene.style.display = 'none';
         }, 2000);
 
-        // Ensure music is playing
+        // ENSURE MUSIC PLAYS (This is the guaranteed interaction)
         if (bgMusic.paused) {
-            bgMusic.play().catch(e => console.log("Playback error:", e));
+            bgMusic.play().then(() => {
+                console.log("Music playing.");
+            }).catch(e => {
+                console.log("Audio playback error: ", e);
+            });
         }
         
-        // Reveal the main invitation card + nav
+        // REVEAL INVITATION
         document.getElementById('invitation-card').classList.add('fade-in');
         document.querySelector('nav').classList.add('fade-in');
         document.getElementById('muteBtn').classList.add('fade-in');
