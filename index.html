@@ -194,12 +194,25 @@
         }
 
         /* SELECTIVE BLUR: Only blur tree & shadows, NOT birds */
-        #landing-scene.blurred .willow-svg-container,
-        #landing-scene.blurred .shadow-overlay {
-            filter: blur(6px) brightness(0.9);
-            transition: filter 6s ease-in-out;
-            will-change: filter;
-        }
+       /* --- OPTIMIZED MIST EFFECT (No Lag) --- */
+#landing-scene.blurred .willow-svg-container,
+#landing-scene.blurred .shadow-overlay {
+    /* 1. No Blur (Saves huge CPU/GPU power) */
+    filter: none; 
+    
+    /* 2. "Mist" Look: Fade it out to look distant/atmospheric */
+    opacity: 0.25; 
+    
+    /* 3. Smooth fade transition */
+    transition: opacity 3s ease-in-out;
+}
+
+/* 4. PERFORMANCE SAVER: Pause the tree animation when backgrounded */
+/* This frees up the processor so the Birds can fly smoothly */
+#landing-scene.blurred .branch-group, 
+#landing-scene.blurred .shadow-overlay {
+    animation-play-state: paused;
+}
 
         /* 1. Willow Tree CSS */
         .willow-svg-container {
@@ -539,9 +552,8 @@
         landingScene.classList.add('show-elements');
 
         // D. SCENE 2: 5 SECONDS LATER...
-        // D. SCENE 2: 5 SECONDS LATER...
         setTimeout(() => {
-            // 1. Start the Blur Transition
+            // 1. Trigger the Mist Effect (Fade out tree, pause animation)
             landingScene.classList.add('blurred');
 
             // 2. Reveal Invitation, Nav, Mute Btn
@@ -549,17 +561,6 @@
             nav.classList.add('fade-in');
             muteBtn.classList.add('fade-in');
             
-            // --- PERFORMANCE FIX ---
-            // Wait for the CSS transition (3s) to finish, then remove the transition property.
-            // This stops the browser from constantly re-calculating "is it changing?"
-            setTimeout(() => {
-                const blurredElements = document.querySelectorAll('#landing-scene.blurred .willow-svg-container, #landing-scene.blurred .shadow-overlay');
-                blurredElements.forEach(el => {
-                    el.style.transition = 'none'; // "Freeze" the state
-                    el.style.willChange = 'auto'; // Release GPU memory
-                });
-            }, 3100); // 3100ms = 3s transition + tiny buffer
-
         }, 5000);
     });
 
