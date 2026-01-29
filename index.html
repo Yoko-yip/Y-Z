@@ -196,9 +196,9 @@
         /* SELECTIVE BLUR: Only blur tree & shadows, NOT birds */
         #landing-scene.blurred .willow-svg-container,
         #landing-scene.blurred .shadow-overlay {
-            filter: blur(8px) brightness(0.9);
-            opacity: 0.8;
-            transition: filter 6s ease-in-out, opacity 6s ease-in-out;
+            filter: blur(6px) brightness(0.9);
+            transition: filter 6s ease-in-out;
+            will-change: filter;
         }
 
         /* 1. Willow Tree CSS */
@@ -539,8 +539,9 @@
         landingScene.classList.add('show-elements');
 
         // D. SCENE 2: 5 SECONDS LATER...
+        // D. SCENE 2: 5 SECONDS LATER...
         setTimeout(() => {
-            // 1. Blur the Tree & Background (Birds stay sharp via CSS)
+            // 1. Start the Blur Transition
             landingScene.classList.add('blurred');
 
             // 2. Reveal Invitation, Nav, Mute Btn
@@ -548,7 +549,18 @@
             nav.classList.add('fade-in');
             muteBtn.classList.add('fade-in');
             
-        }, 5000); 
+            // --- PERFORMANCE FIX ---
+            // Wait for the CSS transition (3s) to finish, then remove the transition property.
+            // This stops the browser from constantly re-calculating "is it changing?"
+            setTimeout(() => {
+                const blurredElements = document.querySelectorAll('#landing-scene.blurred .willow-svg-container, #landing-scene.blurred .shadow-overlay');
+                blurredElements.forEach(el => {
+                    el.style.transition = 'none'; // "Freeze" the state
+                    el.style.willChange = 'auto'; // Release GPU memory
+                });
+            }, 3100); // 3100ms = 3s transition + tiny buffer
+
+        }, 5000);
     });
 
 </script>
