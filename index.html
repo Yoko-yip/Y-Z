@@ -28,7 +28,7 @@
         z-index: 200; /* Same layer as Nav */
         
         font-family: 'Courier New', Courier, monospace;
-        font-size: 16px;
+        font-size: 13px;
         font-weight: bold;
         color: #1C3618;
         background: none;
@@ -51,19 +51,7 @@
         opacity: 1;
         pointer-events: auto;
     }
-    
-    /* HOVER EFFECT: Pop Out */
-    #skipBtn:hover {
-        /* Lifts the text up slightly */
-        transform: translateY(-3px); 
-        
-        /* Adds a shadow below to create depth */
-        text-shadow: 0 4px 8px rgba(93, 64, 55, 0.4);
-        
-        /* Keeps the underline sharp */
-        border-bottom-color: #1C3618; 
-        color: #1C3618;
-    }
+
         
         /* --- NAVIGATION --- */
         nav {
@@ -118,7 +106,7 @@
                 top: 0; left: 0; width: 100vw; height: 100vh;
                 
                 /* CHANGED: Semi-transparent background + Blur Effect */
-                background-color: rgba(240, 238, 230, 0.9); 
+                background-color: rgba(241, 246, 234, 0.95); 
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px); /* For Safari */
                 
@@ -318,7 +306,7 @@
             top: 0; left: 0;
             width: 100%;
             min-height: 100vh;
-            background-color: #; 
+            background-color: #F1F6EA; 
             z-index: 100; 
             box-sizing: border-box;
             padding-top: 150px; 
@@ -663,10 +651,10 @@
             }
         }, 6000);
 
-        // 5. Start the 8-Second Timer for Animation End
+        // 5. Start the 10-Second Timer for Animation End
         animationTimer = setTimeout(() => {
             finishAnimation();
-        }, 8000); 
+        }, 10000); 
     });
 
     // B. SKIP BUTTON CLICK
