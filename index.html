@@ -21,37 +21,50 @@
             touch-action: pan-y; 
         }
 /* --- SKIP BUTTON --- */
+   /* --- SKIP BUTTON --- */
     #skipBtn {
         position: fixed;
-        top: 30px;
-        right: 30px;
-        z-index: 200; /* Same layer as Nav */
+        bottom: 30px;
+        left: 30px;
+        z-index: 200; 
         
         font-family: 'Courier New', Courier, monospace;
         font-size: 13px;
         font-weight: bold;
-        color: #1C3618;
+        color: #5d4037;
+        
         background: none;
         border: none;
-        border-bottom: 2px solid #1C3618; 
+        
+        /* ADD THIS: Remove the shadow from the generic button style */
+        box-shadow: none; 
+        
+        border-bottom: 2px solid #5d4037; 
         padding-bottom: 2px;    
         cursor: pointer;
         
-        opacity: 0; /* Hidden initially */
+        opacity: 0; 
         pointer-events: none;
         transition: opacity 0.3s ease;
     }
-    
-    #skipBtn.visible {
-        opacity: 1;
-        pointer-events: auto;
-    }
-    
+
     #skipBtn.visible {
         opacity: 1;
         pointer-events: auto;
     }
 
+    /* HOVER EFFECT */
+    #skipBtn:hover {
+        transform: translateY(-3px); 
+        text-shadow: 0 4px 8px rgba(93, 64, 55, 0.4);
+        
+        border-bottom-color: #1C3618; 
+        color: #1C3618;
+
+        /* ADD THIS: Prevent the green background from appearing on hover */
+        background: none; 
+        box-shadow: none; 
+    }
         
         /* --- NAVIGATION --- */
         nav {
@@ -558,39 +571,40 @@
     });
 
     // --- NAVIGATION LOGIC (Fixes Overlapping Issues) ---
+    // --- NAVIGATION LOGIC ---
     function showPage(pageId) {
-        // 1. Update Navigation Links
+        // 1. NEW: INSTANTLY SCROLL TO TOP
+        window.scrollTo(0, 0); 
+
+        // 2. Update Navigation Links
         document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
         document.getElementById(`link-${pageId}`).classList.add('active');
         
-        // 2. Close Mobile Menu if open
+        // 3. Close Mobile Menu if open
         const navLinks = document.getElementById('navLinks');
         if (navLinks.classList.contains('show')) toggleMenu();
 
-        // 3. Hide ALL Content Pages (Attire, Address)
+        // 4. Hide ALL Content Pages (Attire, Address)
         document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active'));
 
-        // 4. Handle Home vs Subpages
+        // 5. Handle Home vs Subpages
         if (pageId === 'home') {
             // SHOW Home Elements (Card + Tree)
             invitationCard.style.display = 'block';
             landingScene.style.display = 'block';
             
-            // Small timeout to allow display:block to apply before fading in
             setTimeout(() => {
                 invitationCard.style.opacity = '1';
-                landingScene.style.opacity = '1'; // Ensure background is visible
-                landingScene.classList.add('blurred'); // Ensure it stays blurred
+                landingScene.style.opacity = '1'; 
+                landingScene.classList.add('blurred'); 
             }, 10);
 
         } else {
-            // HIDE Home Elements so they don't overlap
+            // HIDE Home Elements
             invitationCard.style.opacity = '0';
             landingScene.style.opacity = '0';
             
-            // Wait for fade out, then hide display (prevents clicking hidden elements)
             setTimeout(() => {
-                // Only hide if we haven't switched back to home quickly
                 if (document.getElementById(`link-${pageId}`).classList.contains('active')) {
                     invitationCard.style.display = 'none';
                     landingScene.style.display = 'none';
