@@ -20,7 +20,38 @@
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
         }
-
+/* --- SKIP BUTTON --- */
+    #skipBtn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 200; /* Same layer as Nav */
+        
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 14px;
+        font-weight: bold;
+        color: #5d4037;
+        background: rgba(255, 255, 255, 0.6); /* Semi-transparent */
+        border: 1px solid #5d4037;
+        padding: 8px 15px;
+        cursor: pointer;
+        border-radius: 4px;
+        
+        opacity: 0; /* Hidden initially */
+        pointer-events: none;
+        transition: opacity 0.5s ease;
+    }
+    
+    #skipBtn.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    #skipBtn:hover {
+        background-color: #5d4037;
+        color: #fff;
+    }
+        
         /* --- NAVIGATION --- */
         nav {
             position: fixed; 
@@ -418,7 +449,8 @@
     <div id="ui-container">
         <button id="openBtn">Open Invitation</button>
     </div>
-
+    <button id="skipBtn">SKIP >></button>
+    
     <div id="home-page">
         <div id="invitation-card">
             <h1>婚礼邀请</h1>
@@ -535,35 +567,56 @@
     }
 
     // --- CINEMATIC SEQUENCE LOGIC ---
-    // 1. Initial State is handled by CSS (Green Background, Button Visible, Tree/Birds Hidden)
+    let animationTimer; // Variable to store the timer ID
 
+    // Helper Function: Triggers the final state (Mist + Show Invitation)
+    // We put this here so BOTH the Timer and the Skip Button can use it.
+    function finishAnimation() {
+        // 1. Trigger the Mist Effect (Fade out tree, pause animation)
+        landingScene.classList.add('blurred');
+
+        // 2. Reveal Invitation, Nav, Mute Btn
+        invitationCard.classList.add('fade-in');
+        nav.classList.add('fade-in');
+        muteBtn.classList.add('fade-in');
+
+        // 3. Hide the Skip Button (It's no longer needed)
+        document.getElementById('skipBtn').classList.remove('visible');
+    }
+
+    // A. OPEN BUTTON CLICK
     openBtn.addEventListener('click', function() {
-        // A. FADE OUT BUTTON
+        // 1. Fade Out Open Button
         this.style.opacity = '0';
         setTimeout(() => this.style.display = 'none', 1000);
         
-        // B. PLAY MUSIC
+        // 2. Play Music
         if (bgMusic.paused) {
             bgMusic.play().catch(e => console.log("Audio playback error:", e));
         }
 
-        // C. SCENE 1: REVEAL TREE & BIRDS (Fade In)
-        // This adds the class that sets opacity: 1 on the inner elements
+        // 3. Reveal Tree & Birds
         landingScene.classList.add('show-elements');
 
-        // D. SCENE 2: 5 SECONDS LATER...
-        setTimeout(() => {
-            // 1. Trigger the Mist Effect (Fade out tree, pause animation)
-            landingScene.classList.add('blurred');
+        // 4. SHOW SKIP BUTTON
+        document.getElementById('skipBtn').classList.add('visible');
 
-            // 2. Reveal Invitation, Nav, Mute Btn
-            invitationCard.classList.add('fade-in');
-            nav.classList.add('fade-in');
-            muteBtn.classList.add('fade-in');
-            
-        }, 5000);
+        // 5. Start the 8-Second Timer
+        // We save this timer to 'animationTimer' so we can cancel it later if needed
+        animationTimer = setTimeout(() => {
+            finishAnimation();
+        }, 8000); 
     });
 
+    // B. SKIP BUTTON CLICK
+    document.getElementById('skipBtn').addEventListener('click', () => {
+        // 1. Stop the 8-second timer immediately (Prevent it from firing later)
+        clearTimeout(animationTimer);
+        
+        // 2. Jump straight to the end
+        finishAnimation();
+    });
+    
 </script>
 </body>
 </html>
