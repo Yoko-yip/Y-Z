@@ -23,23 +23,23 @@
 /* --- SKIP BUTTON --- */
     #skipBtn {
         position: fixed;
-        top: 20px;
-        right: 20px;
+        top: 30px;
+        right: 30px;
         z-index: 200; /* Same layer as Nav */
         
         font-family: 'Courier New', Courier, monospace;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
         color: #1C3618;
-        background: rgba(255, 255, 255, 0.6); /* Semi-transparent */
-        border: 1px solid #1C3618;
-        padding: 8px 15px;
+        background: none;
+        border: none;
+        border-bottom: 2px solid #1C3618; 
+        padding-bottom: 2px;    
         cursor: pointer;
-        border-radius: 4px;
         
         opacity: 0; /* Hidden initially */
         pointer-events: none;
-        transition: opacity 0.5s ease;
+        transition: opacity 0.3s ease;
     }
     
     #skipBtn.visible {
@@ -47,9 +47,22 @@
         pointer-events: auto;
     }
     
+    #skipBtn.visible {
+        opacity: 1;
+        pointer-events: auto;
+    }
+    
+    /* HOVER EFFECT: Pop Out */
     #skipBtn:hover {
-        background-color: #5d4037;
-        color: #fff;
+        /* Lifts the text up slightly */
+        transform: translateY(-3px); 
+        
+        /* Adds a shadow below to create depth */
+        text-shadow: 0 4px 8px rgba(93, 64, 55, 0.4);
+        
+        /* Keeps the underline sharp */
+        border-bottom-color: #1C3618; 
+        color: #1C3618;
     }
         
         /* --- NAVIGATION --- */
