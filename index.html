@@ -103,7 +103,12 @@
                 display: none; 
                 position: fixed;
                 top: 0; left: 0; width: 100vw; height: 100vh;
-                background-color: #; 
+                
+                /* CHANGED: Semi-transparent background + Blur Effect */
+                background-color: rgba(240, 238, 230, 0.9); 
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px); /* For Safari */
+                
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
@@ -566,22 +571,94 @@
         menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
     }
 
+<script>
+    // --- VARIABLES ---
+    const bgMusic = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+    const openBtn = document.getElementById('openBtn');
+    const skipBtn = document.getElementById('skipBtn');
+    const landingScene = document.getElementById('landing-scene');
+    const invitationCard = document.getElementById('invitation-card');
+    const nav = document.querySelector('nav');
+
+    let animationTimer;   // Timer for the 8s animation end
+    let skipDelayTimer;   // Timer for showing the skip button at 6s
+
+    // --- MUTE BUTTON LOGIC ---
+    muteBtn.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
+    });
+
+    // --- NAVIGATION LOGIC (Fixes Overlapping Issues) ---
+    function showPage(pageId) {
+        // 1. Update Navigation Links
+        document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+        document.getElementById(`link-${pageId}`).classList.add('active');
+        
+        // 2. Close Mobile Menu if open
+        const navLinks = document.getElementById('navLinks');
+        if (navLinks.classList.contains('show')) toggleMenu();
+
+        // 3. Hide ALL Content Pages (Attire, Address)
+        document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active'));
+
+        // 4. Handle Home vs Subpages
+        if (pageId === 'home') {
+            // SHOW Home Elements (Card + Tree)
+            invitationCard.style.display = 'block';
+            landingScene.style.display = 'block';
+            
+            // Small timeout to allow display:block to apply before fading in
+            setTimeout(() => {
+                invitationCard.style.opacity = '1';
+                landingScene.style.opacity = '1'; // Ensure background is visible
+                landingScene.classList.add('blurred'); // Ensure it stays blurred
+            }, 10);
+
+        } else {
+            // HIDE Home Elements so they don't overlap
+            invitationCard.style.opacity = '0';
+            landingScene.style.opacity = '0';
+            
+            // Wait for fade out, then hide display (prevents clicking hidden elements)
+            setTimeout(() => {
+                // Only hide if we haven't switched back to home quickly
+                if (document.getElementById(`link-${pageId}`).classList.contains('active')) {
+                    invitationCard.style.display = 'none';
+                    landingScene.style.display = 'none';
+                }
+            }, 500);
+
+            // Show the selected subpage
+            const target = document.getElementById(`${pageId}-page`);
+            target.classList.add('active');
+        }
+    }
+
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = document.querySelector('.menu-icon');
+        navLinks.classList.toggle('show');
+        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
+    }
+
     // --- CINEMATIC SEQUENCE LOGIC ---
-    let animationTimer; // Variable to store the timer ID
 
     // Helper Function: Triggers the final state (Mist + Show Invitation)
-    // We put this here so BOTH the Timer and the Skip Button can use it.
     function finishAnimation() {
         // 1. Trigger the Mist Effect (Fade out tree, pause animation)
         landingScene.classList.add('blurred');
 
         // 2. Reveal Invitation, Nav, Mute Btn
-        invitationCard.classList.add('fade-in');
+        invitationCard.style.display = 'block'; // Ensure it's visible
+        setTimeout(() => invitationCard.classList.add('fade-in'), 10);
+        
         nav.classList.add('fade-in');
         muteBtn.classList.add('fade-in');
 
         // 3. Hide the Skip Button (It's no longer needed)
-        document.getElementById('skipBtn').classList.remove('visible');
+        skipBtn.classList.remove('visible');
     }
 
     // A. OPEN BUTTON CLICK
@@ -596,26 +673,34 @@
         }
 
         // 3. Reveal Tree & Birds
-        landingScene.classList.add('show-elements');
+        landingScene.style.display = 'block'; // Ensure display is on
+        setTimeout(() => landingScene.classList.add('show-elements'), 10);
 
-        // 4. SHOW SKIP BUTTON
-        document.getElementById('skipBtn').classList.add('visible');
+        // 4. SHOW SKIP BUTTON (DELAYED 6 SECONDS)
+        skipDelayTimer = setTimeout(() => {
+            // Only show if the animation hasn't finished yet
+            if (!landingScene.classList.contains('blurred')) {
+                skipBtn.classList.add('visible');
+            }
+        }, 6000);
 
-        // 5. Start the 8-Second Timer
-        // We save this timer to 'animationTimer' so we can cancel it later if needed
+        // 5. Start the 8-Second Timer for Animation End
         animationTimer = setTimeout(() => {
             finishAnimation();
         }, 8000); 
     });
 
     // B. SKIP BUTTON CLICK
-    document.getElementById('skipBtn').addEventListener('click', () => {
-        // 1. Stop the 8-second timer immediately (Prevent it from firing later)
+    skipBtn.addEventListener('click', () => {
+        // 1. Stop the timers
         clearTimeout(animationTimer);
+        clearTimeout(skipDelayTimer);
         
         // 2. Jump straight to the end
         finishAnimation();
     });
+
+</script>
     
 </script>
 </body>
