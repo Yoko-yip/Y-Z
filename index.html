@@ -555,40 +555,6 @@
     const bgMusic = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
     const openBtn = document.getElementById('openBtn');
-    const landingScene = document.getElementById('landing-scene');
-    const invitationCard = document.getElementById('invitation-card');
-    const nav = document.querySelector('nav');
-
-    // --- MUTE BUTTON LOGIC ---
-    muteBtn.addEventListener('click', () => {
-        bgMusic.muted = !bgMusic.muted;
-        muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
-    });
-
-    // --- NAVIGATION LOGIC ---
-    function showPage(pageId) {
-        document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-        document.getElementById(`link-${pageId}`).classList.add('active');
-        const navLinks = document.getElementById('navLinks');
-        if (navLinks.classList.contains('show')) toggleMenu();
-        document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active'));
-        if (pageId !== 'home') {
-            const target = document.getElementById(`${pageId}-page`);
-            target.classList.add('active');
-        }
-    }
-    function toggleMenu() {
-        const navLinks = document.getElementById('navLinks');
-        const menuIcon = document.querySelector('.menu-icon');
-        navLinks.classList.toggle('show');
-        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
-    }
-
-<script>
-    // --- VARIABLES ---
-    const bgMusic = document.getElementById('bgMusic');
-    const muteBtn = document.getElementById('muteBtn');
-    const openBtn = document.getElementById('openBtn');
     const skipBtn = document.getElementById('skipBtn');
     const landingScene = document.getElementById('landing-scene');
     const invitationCard = document.getElementById('invitation-card');
@@ -715,6 +681,5 @@
 
 </script>
     
-</script>
 </body>
 </html>
