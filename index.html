@@ -61,31 +61,22 @@
             border-bottom: 2px solid #333; 
         }
         
-        /* Language Visibility Logic (Applies to Attire, Address, Nav) */
-        .lang-en { display: none; }
+        /* --- LANGUAGE VISIBILITY LOGIC (FIXED) --- */
+        /* Default: Chinese Mode */
+        .lang-en { display: none !important; }
         .lang-zh { display: inline; }
 
-        /* English Mode Overrides */
-        body.english-mode .lang-zh { display: none; }
+        /* English Mode */
+        body.english-mode .lang-zh { display: none !important; }
         body.english-mode .lang-en { display: inline; }
         
-        /* Ensure block-level elements behave correctly */
-        p .lang-en, p .lang-zh { display: inherit; }
-        body.english-mode p .lang-zh { display: none; }
-        body.english-mode p .lang-en { display: block; } 
-
-        /* --- MAP IMAGE SWAPPING (FIXED) --- */
-        .map-figure img { width: 100%; }
-
-        /* Default (Chinese Mode): Show ZH, Hide EN */
+        /* Fix for block elements like Maps */
         .map-figure img.lang-zh { display: block; }
-        .map-figure img.lang-en { display: none; }
-
-        /* English Mode: Hide ZH, Show EN */
-        body.english-mode .map-figure img.lang-zh { display: none; }
+        .map-figure img.lang-en { display: none !important; }
+        body.english-mode .map-figure img.lang-zh { display: none !important; }
         body.english-mode .map-figure img.lang-en { display: block; }
 
-
+       
         /* --- SKIP BUTTON --- */
         #skipBtn {
             position: fixed;
@@ -129,19 +120,22 @@
             box-shadow: none; 
         }
         
-        /* --- NAVIGATION BAR --- */
+       /* --- NAVIGATION BAR --- */
         nav {
             position: fixed; 
             top: 0;              
             left: 0;             
             width: 100%;         
             height: 80px;        
-            
             background-color: #F1F6EA; 
             
+            /* CHANGED: This pushes the Language Switcher to Left and Links to Right */
             display: flex;
             align-items: center;
-            justify-content: flex-end; 
+            justify-content: space-between; 
+            
+            /* Add padding to both sides */
+            padding-left: 40px;  
             padding-right: 80px; 
             box-sizing: border-box;
 
@@ -150,6 +144,7 @@
             pointer-events: none; 
             transition: opacity 2s ease-in-out;
         }
+        
         nav.fade-in { opacity: 1; pointer-events: auto; }
 
         .nav-links {
@@ -414,6 +409,11 @@
         .info-section { margin-bottom: 40px; border-left: 2px solid #333; padding-left: 20px; }
         .info-section h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 3px; margin: 0 0 10px 0; font-weight: bold; }
         .info-section p { font-size: 14px; line-height: 1.6; color: #555; margin: 0; }
+        /* --- TRANSPORTATION SPACING --- */
+        .transport-item {
+            margin-bottom: 15px; /* Adds space between lines */
+            line-height: 1.6;
+        }
         
         .color-palette { display: flex; justify-content: center; gap: 15px; margin: 20px 0 15px 0; flex-wrap: wrap; }
         .color-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
@@ -635,19 +635,32 @@
             </div>
             <div class="info-section">
                 <h2><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h2>
-                <p> 
-                    <span class="lang-zh">
-                        打车：导航至北京市东城区沙滩北街二十三号智珠寺。 <br> 
-                        地铁：地铁F线到达南锣鼓巷站后，从F出口出站。步行路线可参考地图。<br> 
-                        自驾：东景缘提供的提车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考地图。
-                    </span>
-                    <span class="lang-en">
-                        Taxi: Navigate to Zhizhusi, Shatan Beijie #23, Dongcheng District, Beijing.<br> 
-                        Subway: Take Subway Line F to Nanluoguxiang Station and use Exit F. Please refer to the map for walking instructions.<br> 
-                        Drive: Limited parking is available off-site for those who prefer to drive. Please refer to the map for parking and walking instructions.
-                    </span>
-                </p>
+                
+                <div class="lang-zh">
+                    <div class="transport-item">
+                        <strong>打车：</strong>导航至北京市东城区沙滩北街二十三号智珠寺。
+                    </div>
+                    <div class="transport-item">
+                        <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考地图。
+                    </div>
+                    <div class="transport-item">
+                        <strong>自驾：</strong>东景缘提供的提车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考地图。
+                    </div>
+                </div>
+
+                <div class="lang-en">
+                    <div class="transport-item">
+                        <strong>Taxi:</strong> Navigate to Zhizhusi, Shatan Beijie #23, Dongcheng District, Beijing.
+                    </div>
+                    <div class="transport-item">
+                        <strong>Subway:</strong> Take Subway Line 8 to Nanluoguxiang Station and use Exit F. Please refer to the map for walking instructions.
+                    </div>
+                    <div class="transport-item">
+                        <strong>Drive:</strong> Limited parking is available off-site for those who prefer to drive. Please refer to the map for parking and walking instructions.
+                    </div>
+                </div>
             </div>
+            
             <div class="info-section">
                 <h2><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h2>
                 <p> 
