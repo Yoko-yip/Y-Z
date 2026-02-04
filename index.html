@@ -60,21 +60,42 @@
             opacity: 1; 
             border-bottom: 2px solid #333; 
         }
+        /* --- LANGUAGE VISIBILITY LOGIC (UNIVERSAL FIX) --- */
         
-        /* --- LANGUAGE VISIBILITY LOGIC (FIXED) --- */
-        /* Default: Chinese Mode */
-        .lang-en { display: none !important; }
-        .lang-zh { display: inline; }
+        /* 1. Default (Chinese Mode) */
+        /* Hide all English elements (divs, spans, images) */
+        .lang-en, 
+        div.lang-en, 
+        span.lang-en, 
+        img.lang-en { 
+            display: none !important; 
+        }
+        
+        /* Show all Chinese elements */
+        .lang-zh, 
+        div.lang-zh, 
+        span.lang-zh { 
+            display: inherit !important; 
+        }
+        img.lang-zh { display: block !important; }
 
-        /* English Mode */
-        body.english-mode .lang-zh { display: none !important; }
-        body.english-mode .lang-en { display: inline; }
-        
-        /* Fix for block elements like Maps */
-        .map-figure img.lang-zh { display: block; }
-        .map-figure img.lang-en { display: none !important; }
-        body.english-mode .map-figure img.lang-zh { display: none !important; }
-        body.english-mode .map-figure img.lang-en { display: block; }
+
+        /* 2. English Mode */
+        /* Hide all Chinese elements */
+        body.english-mode .lang-zh, 
+        body.english-mode div.lang-zh, 
+        body.english-mode span.lang-zh, 
+        body.english-mode img.lang-zh { 
+            display: none !important; 
+        }
+
+        /* Show all English elements */
+        body.english-mode .lang-en, 
+        body.english-mode div.lang-en, 
+        body.english-mode span.lang-en { 
+            display: inherit !important; 
+        }
+        body.english-mode img.lang-en { display: block !important; }
 
        
         /* --- SKIP BUTTON --- */
@@ -180,23 +201,32 @@
         /* --- MOBILE STYLES --- */
         @media (max-width: 768px) {
             nav { 
-                padding-right: 20px; 
                 height: 60px; 
+                padding: 0 20px; 
+                
+                /* Force everything to the right on mobile */
+                justify-content: flex-end !important; 
             }
 
-            .menu-icon { display: block; }
-            
-            /* 1. Hide language switcher by default on mobile */
-            .lang-switch {
-                display: none;
+            /* Hide the Desktop Language Switcher (Top Left) by default on mobile */
+            #navbar > .lang-switch {
+                display: none !important;
             }
 
-            /* 2. Show ONLY when menu is open (Positioned top-right) */
+            /* Show Language Switcher ONLY when Menu is Open */
+            /* Position it to the left of the Close (X) button */
             nav.menu-open .lang-switch {
-                display: flex;
+                display: flex !important;
                 position: fixed;
-                top: 20px;     /* Align with 'X' button */
-                right: 60px;   /* Place to the LEFT of the 'X' button */
+                top: 22px;      /* Align vertically with X */
+                right: 60px;    /* 20px (padding) + 40px (icon width) = Left of X */
+                z-index: 302;
+            }
+
+            .menu-icon { 
+                display: block; 
+                position: relative;
+                z-index: 301; /* Ensure X is clickable */
             }
             
             .nav-links {
@@ -204,7 +234,7 @@
                 position: fixed;
                 top: 0; left: 0; width: 100vw; height: 100vh;
                 
-                background-color: rgba(241, 246, 234, 0.95); 
+                background-color: rgba(241, 246, 234, 0.98); 
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px); 
                 
@@ -212,7 +242,7 @@
                 justify-content: center;
                 align-items: center;
                 gap: 50px; 
-                z-index: 200; 
+                z-index: 300; 
             }
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
@@ -224,6 +254,7 @@
                 top: 0 !important;
             }
         }
+        
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
 
         /* --- MUTE BUTTON --- */
