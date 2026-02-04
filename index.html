@@ -20,68 +20,110 @@
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
         }
-/* --- SKIP BUTTON --- */
-   /* --- SKIP BUTTON --- */
-    #skipBtn {
-        position: fixed;
-        bottom: 30px;
-        left: 30px;
-        z-index: 200; 
-        
-        font-family: 'Courier New', Courier, monospace;
-        font-size: 13px;
-        font-weight: bold;
-        color: #5d4037;
-        
-        background: none;
-        border: none;
-        
-        /* ADD THIS: Remove the shadow from the generic button style */
-        box-shadow: none; 
-        
-        border-bottom: 2px solid #5d4037; 
-        padding-bottom: 2px;    
-        cursor: pointer;
-        
-        opacity: 0; 
-        pointer-events: none;
-        transition: opacity 0.3s ease;
-    }
 
-    #skipBtn.visible {
-        opacity: 1;
-        pointer-events: auto;
-    }
+        /* --- LANGUAGE SWITCHER STYLES --- */
+        .lang-icon {
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 30px; /* Space between Lang and Menu/Links */
+            padding: 5px 10px;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #333;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 300; /* Ensure clickable */
+            user-select: none;
+        }
+        .lang-icon:hover {
+            background-color: #333;
+            color: #fff;
+        }
 
-    /* HOVER EFFECT */
-    #skipBtn:hover {
-        transform: translateY(-3px); 
-        text-shadow: 0 4px 8px rgba(93, 64, 55, 0.4);
+        /* Language Visibility Logic (Applies to Attire, Address, Nav) */
+        .lang-en { display: none; }
+        .lang-zh { display: inline; }
+
+        /* English Mode Overrides */
+        body.english-mode .lang-zh { display: none; }
+        body.english-mode .lang-en { display: inline; }
         
-        border-bottom-color: #1C3618; 
-        color: #1C3618;
+        /* Ensure block-level elements behave correctly */
+        p .lang-en, p .lang-zh { display: inherit; }
+        body.english-mode p .lang-zh { display: none; }
+        body.english-mode p .lang-en { display: block; } 
 
-        /* ADD THIS: Prevent the green background from appearing on hover */
-        background: none; 
-        box-shadow: none; 
-    }
+        /* --- MAP IMAGE SWAPPING --- */
+        /* Force map images to be blocks, not inline text */
+        .map-figure img.lang-zh, 
+        .map-figure img.lang-en { 
+            display: block; 
+            width: 100%; /* Ensure they fit the container */
+        }
+
+        /* When in English mode, hide Chinese map and show English map as BLOCK */
+        body.english-mode .map-figure img.lang-zh { display: none; }
+        body.english-mode .map-figure img.lang-en { display: block; }
+
+
+        /* --- SKIP BUTTON --- */
+        #skipBtn {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 200; 
+            
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 12px;
+            font-weight: bold;
+            color: #5d4037;
+            
+            background: none;
+            border: none;
+            
+            box-shadow: none; 
+            
+            border-bottom: 2px solid #5d4037; 
+            padding-bottom: 2px;    
+            cursor: pointer;
+            
+            opacity: 0; 
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #skipBtn.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* HOVER EFFECT */
+        #skipBtn:hover {
+            transform: translateY(-3px); 
+            text-shadow: 0 4px 8px rgba(93, 64, 55, 0.4);
+            
+            border-bottom-color: #1C3618; 
+            color: #1C3618;
+
+            background: none; 
+            box-shadow: none; 
+        }
         
         /* --- NAVIGATION BAR --- */
         nav {
             position: fixed; 
-            top: 0;              /* Stick to the very top */
-            left: 0;             /* Start from the left edge */
-            width: 100%;         /* Span the full width */
-            height: 80px;        /* Fixed height for the bar */
+            top: 0;              
+            left: 0;             
+            width: 100%;         
+            height: 80px;        
             
-            /* Solid background so content "disappears" underneath it */
             background-color: #F1F6EA; 
             
-            /* Layout adjustments to keep links on the right */
             display: flex;
             align-items: center;
             justify-content: flex-end; 
-            padding-right: 80px; /* Original spacing from the right */
+            padding-right: 80px; 
             box-sizing: border-box;
 
             z-index: 200; 
@@ -125,7 +167,7 @@
         @media (max-width: 768px) {
             nav { 
                 padding-right: 20px; 
-                height: 60px; /* Slightly smaller bar on mobile */
+                height: 60px; 
             }
 
             .menu-icon { display: block; }
@@ -135,10 +177,9 @@
                 position: fixed;
                 top: 0; left: 0; width: 100vw; height: 100vh;
                 
-                /* CHANGED: Semi-transparent background + Blur Effect */
                 background-color: rgba(241, 246, 234, 0.95); 
                 backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px); /* For Safari */
+                -webkit-backdrop-filter: blur(10px); 
                 
                 flex-direction: column;
                 justify-content: center;
@@ -149,7 +190,6 @@
             .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
             .nav-links a { font-size: 24px; }
             
-            /* Mobile adjustment for Tree */
             .willow-svg-container {
                 height: 60% !important; 
                 width: 100% !important;
@@ -176,20 +216,17 @@
         #muteBtn:hover { opacity: 1; }
 
         /* --- OPEN BUTTON (UI CONTAINER) --- */
-        /* --- OPEN BUTTON (UI CONTAINER) --- */
         #ui-container {
             position: fixed; 
             z-index: 100;    
             
-            /* CHANGED: Center Vertically & Horizontally */
             top: 50%; 
             left: 50%;
             transform: translate(-50%, -50%);
             
-            /* Visible by default */
             opacity: 1;      
             pointer-events: auto; 
-            transition: opacity 1.5s ease-out; /* Slower fade out for drama */
+            transition: opacity 1.5s ease-out; 
         }
         
         button {
@@ -214,7 +251,7 @@
         /* --- INVITATION CARD --- */
         #invitation-card {
             position: absolute;
-            z-index: 20; /* High Z-index to sit on top of the blurred tree */
+            z-index: 20; 
             text-align: center;
             color: #4a4a4a;
             font-family: 'Times New Roman', Times, serif; 
@@ -245,7 +282,6 @@
             background-color: #F1F6EA; /* Green Background */
         }
 
-        /* Initially hide the inner elements so user sees pure color first */
         .willow-svg-container, 
         .shadow-overlay, 
         .lottie-bird-container {
@@ -253,33 +289,24 @@
             transition: opacity 2s ease-in-out;
         }
 
-        /* Class to Fade In the elements */
         #landing-scene.show-elements .willow-svg-container,
         #landing-scene.show-elements .shadow-overlay,
         #landing-scene.show-elements .lottie-bird-container {
             opacity: 1;
         }
 
-        /* SELECTIVE BLUR: Only blur tree & shadows, NOT birds */
-       /* --- OPTIMIZED MIST EFFECT (No Lag) --- */
-#landing-scene.blurred .willow-svg-container,
-#landing-scene.blurred .shadow-overlay {
-    /* 1. No Blur (Saves huge CPU/GPU power) */
-    filter: none; 
-    
-    /* 2. "Mist" Look: Fade it out to look distant/atmospheric */
-    opacity: 0.25; 
-    
-    /* 3. Smooth fade transition */
-    transition: opacity 3s ease-in-out;
-}
+        /* --- OPTIMIZED MIST EFFECT (No Lag) --- */
+        #landing-scene.blurred .willow-svg-container,
+        #landing-scene.blurred .shadow-overlay {
+            filter: none; 
+            opacity: 0.25; 
+            transition: opacity 3s ease-in-out;
+        }
 
-/* 4. PERFORMANCE SAVER: Pause the tree animation when backgrounded */
-/* This frees up the processor so the Birds can fly smoothly */
-#landing-scene.blurred .branch-group, 
-#landing-scene.blurred .shadow-overlay {
-    animation-play-state: paused;
-}
+        #landing-scene.blurred .branch-group, 
+        #landing-scene.blurred .shadow-overlay {
+            animation-play-state: paused;
+        }
 
         /* 1. Willow Tree CSS */
         .willow-svg-container {
@@ -306,7 +333,6 @@
             width: 200%; height: 200%;
             z-index: 55;
             pointer-events: none;
-            /* Sunlight Gradients (Yellowish Monochrome) */
             background-image: 
                 radial-gradient(circle at 50% 50%, rgba(255, 255, 240, 0.6) 0%, rgba(255, 255, 240, 0) 60%),
                 radial-gradient(circle at 20% 80%, rgba(250, 250, 210, 0.4) 0%, rgba(250, 250, 210, 0) 50%),
@@ -474,11 +500,19 @@
     <div id="muteBtn">🔊</div>
 
     <nav>
+        <div class="lang-icon" onclick="toggleLanguage()">EN</div>
+
         <div class="menu-icon" onclick="toggleMenu()">☰</div>
         <ul class="nav-links" id="navLinks">
-            <li><a onclick="showPage('home')" id="link-home" class="active">主页</a></li>
-            <li><a onclick="showPage('attire')" id="link-attire">穿什么</a></li>
-            <li><a onclick="showPage('address')" id="link-address">哪儿见</a></li>
+            <li><a onclick="showPage('home')" id="link-home" class="active">
+                <span class="lang-zh">主页</span><span class="lang-en">Home</span>
+            </a></li>
+            <li><a onclick="showPage('attire')" id="link-attire">
+                <span class="lang-zh">穿什么</span><span class="lang-en">Attire</span>
+            </a></li>
+            <li><a onclick="showPage('address')" id="link-address">
+                <span class="lang-zh">哪儿见</span><span class="lang-en">Location</span>
+            </a></li>
         </ul>
     </nav>
 
@@ -506,7 +540,7 @@
     </div>
 
     <div id="attire-page" class="content-page">
-        <h1>Dress Code</h1>
+        <h1><span class="lang-zh">着装要求</span><span class="lang-en">Dress Code</span></h1>
         <div class="color-palette">
             <div class="color-circle" style="background-color: #D8BCAB;"></div>
             <div class="color-circle" style="background-color: #E8DCCA;"></div>
@@ -516,14 +550,18 @@
             <div class="color-circle" style="background-color: #333333;"></div>
         </div>
         <p class="attire-description">
-            上方是我们推荐的婚礼配色，期待您盛装出席。<br>
-            唯一的着装要求是请避免穿着蓝色牛仔裤和运动服饰。<br>
-            Our color recommendations are shown above.<br>
-            We encourage you to dress up in whatever makes you feel both festive and like yourself. <br>
-            The only thing we ask is that you avoid blue jeans and athletic wear.
+            <span class="lang-zh">
+                上方是我们推荐的婚礼配色，期待您盛装出席。<br>
+                唯一的着装要求是请避免穿着蓝色牛仔裤和运动服饰。
+            </span>
+            <span class="lang-en">
+                Our color recommendations are shown above.<br>
+                We encourage you to dress up in whatever makes you feel both festive and like yourself. <br>
+                The only thing we ask is that you avoid blue jeans and athletic wear.
+            </span>
         </p>
         <div class="attire-section">
-            <h2>Men's dress code</h2>
+            <h2><span class="lang-zh">男士着装</span><span class="lang-en">Men's dress code</span></h2>
             <div class="gallery-container">
                 <div class="gallery-item"><img src="images/men_image_1.png" alt="Men Style 1"></div>
                 <div class="gallery-item"><img src="images/men_image_2.png" alt="Men Style 2"></div>
@@ -531,7 +569,7 @@
             </div>
         </div>
         <div class="attire-section">
-            <h2>Women's dress code</h2>
+            <h2><span class="lang-zh">女士着装</span><span class="lang-en">Women's dress code</span></h2>
             <div class="gallery-container">
                 <div class="gallery-item"><img src="images/women_image_1.png" alt="Women Style 1"></div>
                 <div class="gallery-item"><img src="images/women_image_2.png" alt="Women Style 2"></div>
@@ -543,28 +581,43 @@
 
     <div id="address-page" class="content-page">
         <div class="address-container">
-            <h1>Location</h1>
+            <h1><span class="lang-zh">地点</span><span class="lang-en">Location</span></h1>
+            
             <div class="map-figure">
-                <img src="images/map.png" alt="Event Location Map">
+                <img src="images/map_zh.png" class="lang-zh" alt="Event Location Map (ZH)">
+                
+                <img src="images/map_en.png" class="lang-en" alt="Event Location Map (EN)">
+            </div>
+
+            <div class="info-section">
+                <h2><span class="lang-zh">场地</span><span class="lang-en">The Venue</span></h2>
+                <p>
+                    <span class="lang-zh">仪式将于东景缘的主殿举行。从正门进入后根据指示牌方向即可到达。</span>
+                    <span class="lang-en">The ceremony will be held at the Main Hall of The Temple. Please arrive through the main gate and follow the signs to the garden area.</span>
+                </p>
             </div>
             <div class="info-section">
-                <h2>The Venue</h2>
-                <p> 仪式将于东景缘的主殿举行。从正门进入后根据指示牌方向即可到达。<br> 
-                    The ceremony will be held at the Main Hall of The Temple. Please arrive through the main gate and follow the signs to the garden area.</p>
+                <h2><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h2>
+                <p> 
+                    <span class="lang-zh">
+                        打车：导航至北京市东城区沙滩北街二十三号智珠寺。 <br> 
+                        地铁：地铁F线到达南锣鼓巷站后，从F出口出站。步行路线可参考地图。<br> 
+                        自驾：东景缘提供的提车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考地图。
+                    </span>
+                    <span class="lang-en">
+                        Taxi: Navigate to Zhizhusi, Shatan Beijie #23, Dongcheng District, Beijing.<br> 
+                        Subway: Take Subway Line F to Nanluoguxiang Station and use Exit F. Please refer to the map for walking instructions.<br> 
+                        Drive: Limited parking is available off-site for those who prefer to drive. Please refer to the map for parking and walking instructions.
+                    </span>
+                </p>
             </div>
             <div class="info-section">
-                <h2>Transportation</h2>
-                <p> 打车：导航至北京市东城区沙滩北街二十三号智珠寺。 <br> 
-                    地铁：地铁F线到达南锣鼓巷站后，从F出口出站。步行路线可参考地图。<br> 
-                    自驾：东景缘提供的提车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考地图。<br> 
-                    Taxi: Navigate to  Zhizhusi, Shatan Beijie #23, Dongcheng DIstrict, Beijing.<br> 
-                    Subway: Take Subway Line F to Nanluoguxiang Station and use Exit F. Please refer to the map for walking instructions.<br> 
-                    Drive: Limited parking is available off-site for those who prefer to drive. Please refer to the map for parking and walking instructions.</p>
+                <h2><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h2>
+                <p> 
+                    <span class="lang-zh">我们为外地宾客在附近的酒店预留了房间。如果您需要住宿，请提前告知，以便我们为您预订。</span>
+                    <span class="lang-en">We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking.</span>
+                </p>          
             </div>
-            <div class="info-section">
-                <h2>Accommodation</h2>
-                <p> 我们为外地宾客在附近的酒店预留了房间。如果您需要住宿，请提前告知，以便我们为您预订。<br> 
-                    We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking. </p>          </div>
         </div>
     </div>
 
@@ -581,13 +634,28 @@
     let animationTimer;   // Timer for the 8s animation end
     let skipDelayTimer;   // Timer for showing the skip button at 6s
 
+    // --- LANGUAGE LOGIC ---
+    function toggleLanguage() {
+        const body = document.body;
+        const langBtn = document.querySelector('.lang-icon');
+        
+        // Toggle the class on the body
+        body.classList.toggle('english-mode');
+
+        // Update Button Text
+        if (body.classList.contains('english-mode')) {
+            langBtn.textContent = "中"; // Option to switch back to Chinese
+        } else {
+            langBtn.textContent = "EN"; // Option to switch to English
+        }
+    }
+
     // --- MUTE BUTTON LOGIC ---
     muteBtn.addEventListener('click', () => {
         bgMusic.muted = !bgMusic.muted;
         muteBtn.textContent = bgMusic.muted ? '🔇' : '🔊';
     });
 
-    // --- NAVIGATION LOGIC (Fixes Overlapping Issues) ---
     // --- NAVIGATION LOGIC ---
     function showPage(pageId) {
         // 1. NEW: INSTANTLY SCROLL TO TOP
