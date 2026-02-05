@@ -215,13 +215,12 @@
 
             /* Show Language Switcher ONLY when Menu is Open */
             /* Position it to the left of the Close (X) button */
-            nav.menu-open .lang-switch {
+            #navbar.menu-open .lang-switch {
                 display: flex !important;
                 position: fixed;
-                top: 22px;      /* Align vertically with X */
-                right: 60px;    /* 20px (padding) + 40px (icon width) = Left of X */
-                z-index: 302;
-            }
+                top: 22px;
+                right: 60px;
+                z-index: 302;}
 
             .menu-icon { 
                 display: block; 
@@ -447,7 +446,7 @@
         }
         
         .color-palette { display: flex; justify-content: center; gap: 15px; margin: 20px 0 15px 0; flex-wrap: wrap; }
-        .color-circle { width: 40px; height: 40px; border-radius: 50%; border: 1px solid #ccc; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .color-icon { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));}
         .attire-description { text-align: center; font-size: 14px; color: #555; margin-bottom: 50px; max-width: 80%; line-height: 1.6; letter-spacing: 1px; }
         .attire-section { width: 100%; max-width: 900px; margin-bottom: 60px; text-align: center; }
         .attire-section h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; font-weight: normal; border-bottom: 1px solid #ccc; display: inline-block; padding-bottom: 5px; }
@@ -609,14 +608,13 @@
 
     <div id="attire-page" class="content-page">
         <h1><span class="lang-zh">着装要求</span><span class="lang-en">Dress Code</span></h1>
-        <div class="color-palette">
-            <div class="color-circle" style="background-color: #D8BCAB;"></div>
-            <div class="color-circle" style="background-color: #E8DCCA;"></div>
-            <div class="color-circle" style="background-color: #B8C5C8;"></div>
-            <div class="color-circle" style="background-color: #8FA3A8;"></div>
-            <div class="color-circle" style="background-color: #555555;"></div>
-            <div class="color-circle" style="background-color: #333333;"></div>
-        </div>
+       <div class="color-palette">
+    <img src="images/color1.svg" class="color-icon" alt="Color option 1">
+    <img src="images/color2.svg" class="color-icon" alt="Color option 2">
+    <img src="images/color3.svg" class="color-icon" alt="Color option 3">
+    <img src="images/color4.svg" class="color-icon" alt="Color option 4">
+    <img src="images/color5.svg" class="color-icon" alt="Color option 5">
+</div>
         <p class="attire-description">
             <span class="lang-zh">
                 上方是我们推荐的婚礼配色，期待您盛装出席。<br>
