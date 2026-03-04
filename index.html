@@ -236,7 +236,7 @@
                 position: fixed;
                 top: 0; left: 0; width: 100vw; height: 100vh;
                 
-                background-color: rgba(241, 246, 234, 0.98); 
+                background-color: #F2F7F5; 
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px); 
                 
@@ -423,7 +423,7 @@
             margin: 0 auto;
         }
         .story-container h1 {
-            text-align: center;
+            text-align: left;
             margin-bottom: 40px;
         }
         .story-container p {
@@ -516,6 +516,14 @@
 
         
         /* --- CONTENT PAGES --- */
+        .content-page h1 {
+            width: 90%;
+            max-width: 800px; /* 与正文容器保持相同的最大宽度 */
+            text-align: left;
+            font-weight: bold; /* 字体加粗 */
+            margin-bottom: 30px;
+        }
+        
         .content-page {
             display: none; 
             position: absolute;
