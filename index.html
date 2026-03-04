@@ -148,7 +148,7 @@
             left: 0;             
             width: 100%;         
             height: 80px;        
-            background-color: #F1F6EA; 
+            background-color: #F2F7F5; 
             
             /* CHANGED: This pushes the Language Switcher to Left and Links to Right */
             display: flex;
@@ -339,7 +339,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; 
             pointer-events: none; 
-            background-color: #F1F6EA; /* Green Background */
+            background-color: #F2F7F5; /* Green Background */
         }
 
         .willow-svg-container, 
@@ -414,7 +414,107 @@
             z-index: 60;   
             pointer-events: none;
         }
+        
+/* --- ABOUT US / OUR STORY STYLES --- */
+        .story-container {
+            width: 90%;
+            max-width: 800px;
+            text-align: left;
+            margin: 0 auto;
+        }
+        .story-container h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .story-container p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        .story-section {
+            margin-top: 60px;
+            margin-bottom: 40px;
+            border-left: 2px solid #333;
+            padding-left: 20px;
+        }
+        .story-section h2 {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0 0 5px 0;
+            font-weight: bold;
+        }
+        .story-section .date-subtitle {
+            font-size: 14px;
+            color: #888;
+            margin-bottom: 15px;
+            display: block;
+            letter-spacing: 2px;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .story-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        .story-images img {
+            flex: 1 1 calc(50% - 15px);
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #e0e0e0;
+        }
+        @media (max-width: 768px) {
+            .story-images { flex-direction: column; }
+            .story-images img { flex: 1 1 100%; }
+        }
+        /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
+        .scrolling-text-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-top: 60px;
+            padding: 15px 0;
+            box-sizing: border-box;
+            border-top: 1px solid #ddd;
+            display: flex;
+            flex-direction: column; /* Stacks the lines vertically */
+            gap: 12px; /* Space between the two lines */
+        }
 
+        .scrolling-text {
+            display: block;
+            font-size: 16px;
+            font-style: italic;
+            color: #aaa;
+            letter-spacing: 3px;
+        }
+
+        /* Top line animation */
+        .line-1 {
+            animation: scroll-left 22s linear infinite;
+        }
+
+        /* Bottom line animation - scrolls slightly faster for a cool layered effect */
+        .line-2 {
+            animation: scroll-left 18s linear infinite;
+            margin-left: 100px; /* Offsets the text so the words don't stack perfectly on top of each other */
+        }
+
+        .scrolling-text-container:hover .scrolling-text {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+
+        
         /* --- CONTENT PAGES --- */
         .content-page {
             display: none; 
@@ -422,7 +522,7 @@
             top: 0; left: 0;
             width: 100%;
             min-height: 100vh;
-            background-color: #F1F6EA; 
+            background-color: #F2F7F5; 
             z-index: 100; 
             box-sizing: border-box;
             padding-top: 100px; 
@@ -577,6 +677,9 @@
             <li><a onclick="showPage('home')" id="link-home" class="active">
                 <span class="lang-zh">主页</span><span class="lang-en">Home</span>
             </a></li>
+            <li><a onclick="showPage('about')" id="link-about">
+                <span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span>
+            </a></li>
             <li><a onclick="showPage('attire')" id="link-attire">
                 <span class="lang-zh">穿什么</span><span class="lang-en">Attire</span>
             </a></li>
@@ -608,7 +711,97 @@
             </div>
         </div>
     </div>
+<div id="about-page" class="content-page">
+        <div class="story-container">
+            <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
 
+            <div class="lang-zh">
+                <p>一切都要从2022年的NC State Fair说起,两个在北卡待了很久却都没去过state fair的人莫名其妙。虽然从那一天开始我们聊天的频率更多了,但是一个人在北卡一个人在匹兹堡的异地情况让我们的关系没有太多进展,终于在寒假的时候,我们在华盛顿一起过了圣诞并且确认了关系(当然也是因为叶子很喜欢圣诞节所以想要把这一天的仪式感拉满)。</p>
+                <p>于是从2023年开始,我们开始不停的解锁新地点,新体验。我们在南卡罗莱纳山顶的教堂看了日出,在纽约的寒风中排队看乐队演出,在坦帕一起浮潜看海牛,也一起划船从暴雨划到出彩虹。</p>
+                <p>2024年我们搬到了美西,从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有很多”安静”的时刻,我们指的是那些坐在篝火前的夜晚,雪山旁的夜路,雨中的湖畔旁等等。</p>
+                <p>2025年3月31日,在我们在坎昆度假旅行要结束的前一天,张维翀说他定了落日晚餐,我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中,但是钝感力十足的叶子毫无察觉。我们走到沙滩上,叶子看到了被布置好的场地以及摄像师的时候,仍然以为是落日晚餐套餐的一部分,直到拍完背影合照后看到张维种单膝跪地。</p>
+                <p>2025年10月16日,我们在最“我们”的日子里,在平时最喜欢坐着发呆的湖边officially tie the knot(我们选择的见证人是圣诞节会去扮演圣诞老人的一位老人,叶子真的很喜欢过圣诞节)。</p>
+                <p>这一次,我们非常期待与我们有着深深羁绊的你们,在北京一起庆祝我们的婚礼。感谢你们愿意作为我们故事的一部分。</p>
+            </div>
+            
+            <div class="lang-en">
+                <p><em>(Please add the English translation of your main story here, or leave this div empty if you only want it in Chinese!)</em></p>
+                <p>It all started at the 2022 NC State Fair...</p>
+            </div>
+
+            <div class="story-images">
+                <img src="images/placeholder_image_1.jpg" alt="Story Image 1">
+                <img src="images/placeholder_image_2.jpg" alt="Story Image 2">
+            </div>
+
+            <div class="story-section">
+                <h2><span class="lang-zh">订婚那天</span><span class="lang-en">Engagement Day</span></h2>
+                <span class="date-subtitle">3/31/2025</span>
+                
+                <p>Take a peek through some of our favorite moments from our engagement. These photos hold so much of what we were feeling joy, nerves, laughter, and love as we got ready for the next chapter. We hope you enjoy looking through them as much as we loved taking them.</p>
+                
+                <div class="story-images">
+                    <img src="images/placeholder_image_3.jpg" alt="Engagement Image 1">
+                    <img src="images/placeholder_image_4.jpg" alt="Engagement Image 2">
+                </div>
+            </div>
+
+            <div class="story-section">
+                <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Elopement Ceremony</span></h2>
+                <span class="date-subtitle">10/16/2025</span>
+                
+                <p>Fortunately, we got to pick our own 'office' for the day! We traded the courthouse for Medina Beach Park, right on the water with a perfect view of Mt. Rainier. It's a spot we've always loved, and making it official there made the moment feel even more special. Even though PNW had already settled into its rainy season, the clouds parted just long enough for us. We had a perfectly dry sunset moment; it was a moody, beautiful evening filled with love and exactly the start we've always imagined!</p>
+                
+                <div class="story-images">
+                    <img src="images/placeholder_image_5.jpg" alt="Ceremony Image 1">
+                    <img src="images/placeholder_image_6.jpg" alt="Ceremony Image 2">
+                </div>
+            </div>
+
+            <div class="scrolling-text-container">
+                
+                <div class="scrolling-text line-1">
+                    <span class="lang-zh">
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “晚上吃什么!”
+                    </span>
+                    <span class="lang-en">
+                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "What's for dinner!"
+                    </span>
+                </div>
+
+                <div class="scrolling-text line-2">
+                    <span class="lang-zh">
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        “我来做!”
+                    </span>
+                    <span class="lang-en">
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+                        "I'll cook!"
+                    </span>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
     <div id="attire-page" class="content-page">
         <h1><span class="lang-zh">着装建议</span><span class="lang-en">Dress Code</span></h1>
        <div class="color-palette">
