@@ -433,19 +433,46 @@
             margin-bottom: 15px;
             letter-spacing: 1px;
         }
-        .story-header-images {
+        /* --- MASONRY GALLERY STYLES --- */
+        .story-masonry {
+            margin-bottom: 40px;
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 15px;
-            margin-top: 25px;
         }
-        .story-header-images img {
-            flex: 1 1 calc(50% - 15px);
-            max-width: 100%;
-            height: auto;
+        .masonry-top-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .masonry-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .masonry-left h1 {
+            margin: 0 0 15px 0 !important; /* Overrides the default margin */
+            width: 100% !important;
+            line-height: 1.2;
+        }
+        .masonry-left img,
+        .masonry-right img,
+        .masonry-bottom {
+            width: 100%;
             border-radius: 4px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             background-color: #e0e0e0;
+        }
+        .masonry-left img {
+            height: auto;
+            margin-top: auto; /* Pushes the image to the bottom under the title */
+        }
+        .masonry-right img {
+            height: 100%;
+            object-fit: cover; /* Ensures the tall image fills the space beautifully */
+        }
+        .masonry-bottom {
+            height: auto;
         }
 
         /* --- TIMELINE SECTIONS (DESKTOP) --- */
@@ -559,36 +586,42 @@
 
         /* --- MOBILE OVERRIDES FOR TIMELINE --- */
         @media (max-width: 768px) {
-            .story-header-images { flex-direction: column; }
-            .story-header-images img { flex: 1 1 100%; }
+            /* Masonry Mobile Overrides */
+            .story-masonry { gap: 10px; margin-bottom: 25px; }
+            .masonry-top-row { gap: 10px; }
+            .masonry-left h1 { margin-bottom: 10px !important; }
             
             .timeline-section { padding: 50px 0; }
-            .timeline-inner, .timeline-inner.reverse { 
-                flex-direction: column !important; 
-                gap: 25px; 
+            
+            /* Keep it side-by-side on mobile, just reduce the gap and width */
+            .timeline-inner { 
+                width: 95%; 
+                gap: 15px; 
+            }
+            .timeline-inner.reverse { 
+                gap: 15px; 
             }
             
-            /* Flip titles to horizontal with space between */
+            /* Slightly scale down the vertical titles so they don't squish the images */
             .vertical-title-area {
-                width: 100%;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid rgba(255,255,255,0.2);
-                padding-bottom: 15px;
-            }
-            .timeline-inner.reverse .vertical-title-area {
-                flex-direction: row-reverse; /* Puts Date on Left, Title on Right */
-                border-bottom: 1px solid rgba(0,0,0,0.1);
+                width: 40px;
             }
             .vertical-title-area h2 {
-                writing-mode: horizontal-tb;
-                font-size: 22px;
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
+            .vertical-line {
+                height: 50px;
+                margin: 15px 0;
+            }
+            .vertical-date {
+                font-size: 12px;
                 letter-spacing: 2px;
             }
-            .vertical-line { display: none; }
-            .vertical-date {
-                writing-mode: horizontal-tb;
+            
+            /* Make carousel images a bit shorter on mobile if needed */
+            .carousel-item img {
+                max-height: 400px;
             }
         }
 
@@ -833,8 +866,23 @@
 <div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
         <div class="story-container">
             
-            <div class="story-header">
-                <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+           <div class="story-header">
+                
+                <div class="story-masonry">
+                    <div class="masonry-top-row">
+                        <div class="masonry-left">
+                            <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+                            <img src="images/us1.jpg" alt="Story Image 1">
+                        </div>
+                        
+                        <div class="masonry-right">
+                            <img src="images/us2.jpg" alt="Story Image 2">
+                        </div>
+                    </div>
+                    
+                    <img src="images/us3.jpg" alt="Story Image 3" class="masonry-bottom">
+                </div>
+
                 <div class="lang-zh">
                     <p>一切都要从2022年的NC State Fair说起,两个在北卡待了很久却都没去过state fair的人莫名其妙。虽然从那一天开始我们聊天的频率更多了,但是一个人在北卡一个人在匹兹堡的异地情况让我们的关系没有太多进展,终于在寒假的时候,我们在华盛顿一起过了圣诞并且确认了关系(当然也是因为叶子很喜欢圣诞节所以想要把这一天的仪式感拉满)。</p>
                     <p>于是从2023年开始,我们开始不停的解锁新地点,新体验。我们在南卡罗莱纳山顶的教堂看了日出,在纽约的寒风中排队看乐队演出,在坦帕一起浮潜看海牛,也一起划船从暴雨划到出彩虹。</p>
@@ -847,12 +895,8 @@
                 <div class="lang-en">
                     <p><em>(English main story placeholder)</em></p>
                 </div>
-
-                <div class="story-header-images">
-                    <img src="images/placeholder_image_1.jpg" alt="Story Image 1">
-                    <img src="images/placeholder_image_2.jpg" alt="Story Image 2">
-                </div>
             </div>
+            
 
             <div class="timeline-section dark-bg">
                 <div class="timeline-inner">
@@ -864,9 +908,9 @@
                     
                     <div class="carousel-content">
                         <div class="carousel-track" id="track-eng" onscroll="updateCarousel('track-eng', 'ind-eng')">
-                            <div class="carousel-item"><img src="images/placeholder_image_3.jpg" alt="Engagement 1"></div>
-                            <div class="carousel-item"><img src="images/placeholder_image_4.jpg" alt="Engagement 2"></div>
-                            <div class="carousel-item"><img src="images/placeholder_image_5.jpg" alt="Engagement 3"></div>
+                            <div class="carousel-item"><img src="images/engage1.jpg" alt="Engagement 1"></div>
+                            <div class="carousel-item"><img src="images/engage2.jpg" alt="Engagement 2"></div>
+                            <div class="carousel-item"><img src="images/engage3.jpg" alt="Engagement 3"></div>
                         </div>
                         
                         <div class="carousel-controls">
@@ -893,9 +937,9 @@
                     
                     <div class="carousel-content">
                         <div class="carousel-track" id="track-elo" onscroll="updateCarousel('track-elo', 'ind-elo')">
-                            <div class="carousel-item"><img src="images/placeholder_image_6.jpg" alt="Ceremony 1"></div>
-                            <div class="carousel-item"><img src="images/placeholder_image_7.jpg" alt="Ceremony 2"></div>
-                            <div class="carousel-item"><img src="images/placeholder_image_8.jpg" alt="Ceremony 3"></div>
+                            <div class="carousel-item"><img src="images/ceremony1.jpg" alt="Ceremony 1"></div>
+                            <div class="carousel-item"><img src="images/ceremony2.jpg" alt="Ceremony 2"></div>
+                            <div class="carousel-item"><img src="images/ceremony3.jpg" alt="Ceremony 3"></div>
                         </div>
                         
                         <div class="carousel-controls">
@@ -978,9 +1022,9 @@
             <h1><span class="lang-zh">地点</span><span class="lang-en">Location</span></h1>
             
             <div class="map-figure">
-                <img src="images/map_zh.png" class="lang-zh" alt="Event Location Map (ZH)">
+                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
                 
-                <img src="images/map_en.png" class="lang-en" alt="Event Location Map (EN)">
+                <img src="images/map_EN.jpg" class="lang-en" alt="Event Location Map (EN)">
             </div>
 
             <div class="info-section">
