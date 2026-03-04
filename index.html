@@ -417,50 +417,29 @@
         
 /* --- ABOUT US / OUR STORY STYLES --- */
         .story-container {
-            width: 90%;
-            max-width: 800px;
+            width: 100%; /* Spans full width for backgrounds */
             text-align: left;
             margin: 0 auto;
         }
-        .story-container h1 {
-            text-align: left;
-            margin-bottom: 40px;
+        .story-header {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
         }
-        .story-container p {
+        .story-header p {
             font-size: 15px;
             line-height: 1.8;
             color: #555;
             margin-bottom: 15px;
             letter-spacing: 1px;
         }
-        .story-section {
-            margin-top: 60px;
-            margin-bottom: 40px;
-            border-left: 2px solid #333;
-            padding-left: 20px;
-        }
-        .story-section h2 {
-            font-size: 20px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            margin: 0 0 5px 0;
-            font-weight: bold;
-        }
-        .story-section .date-subtitle {
-            font-size: 14px;
-            color: #888;
-            margin-bottom: 15px;
-            display: block;
-            letter-spacing: 2px;
-            font-family: 'Times New Roman', Times, serif;
-        }
-        .story-images {
+        .story-header-images {
             display: flex;
             flex-wrap: wrap;
             gap: 15px;
             margin-top: 25px;
         }
-        .story-images img {
+        .story-header-images img {
             flex: 1 1 calc(50% - 15px);
             max-width: 100%;
             height: auto;
@@ -468,22 +447,163 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             background-color: #e0e0e0;
         }
-        @media (max-width: 768px) {
-            .story-images { flex-direction: column; }
-            .story-images img { flex: 1 1 100%; }
+
+        /* --- TIMELINE SECTIONS (DESKTOP) --- */
+        .timeline-section {
+            width: 100%;
+            padding: 80px 0;
+            display: flex;
+            justify-content: center;
         }
+        .timeline-section.dark-bg {
+            background-color: #5C6B58; /* Dark Green */
+            color: #F1F6EA;
+        }
+        .timeline-section.light-bg {
+            background-color: #F1F6EA; /* Light Beige */
+            color: #333;
+        }
+        .timeline-inner {
+            width: 90%;
+            max-width: 900px;
+            display: flex;
+            gap: 50px;
+        }
+        .timeline-inner.reverse {
+            flex-direction: row-reverse;
+        }
+
+        /* Vertical Titles */
+        .vertical-title-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+            flex-shrink: 0;
+        }
+        .vertical-title-area h2 {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 26px;
+            letter-spacing: 5px;
+            margin: 0;
+            font-weight: normal;
+        }
+        .vertical-line {
+            width: 1px;
+            height: 80px;
+            background-color: currentColor;
+            margin: 25px 0;
+            opacity: 0.5;
+        }
+        .vertical-date {
+            writing-mode: vertical-rl;
+            font-size: 14px;
+            letter-spacing: 3px;
+            opacity: 0.8;
+        }
+
+        /* --- CAROUSEL STYLES --- */
+        .carousel-content {
+            flex: 1;
+            min-width: 0; 
+        }
+        .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox hide scrollbar */
+            -ms-overflow-style: none; /* IE/Edge hide scrollbar */
+            gap: 20px;
+        }
+        .carousel-track::-webkit-scrollbar {
+            display: none; /* Chrome/Safari hide scrollbar */
+        }
+        .carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            background-color: rgba(0,0,0,0.05);
+        }
+        .carousel-controls {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            font-size: 14px;
+            letter-spacing: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            opacity: 0.8;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .carousel-arrow {
+            cursor: pointer;
+            user-select: none;
+            padding: 5px 15px;
+            font-size: 18px;
+            transition: opacity 0.3s;
+        }
+        .carousel-arrow:hover { opacity: 0.5; }
+        .carousel-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* --- MOBILE OVERRIDES FOR TIMELINE --- */
+        @media (max-width: 768px) {
+            .story-header-images { flex-direction: column; }
+            .story-header-images img { flex: 1 1 100%; }
+            
+            .timeline-section { padding: 50px 0; }
+            .timeline-inner, .timeline-inner.reverse { 
+                flex-direction: column !important; 
+                gap: 25px; 
+            }
+            
+            /* Flip titles to horizontal with space between */
+            .vertical-title-area {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                padding-bottom: 15px;
+            }
+            .timeline-inner.reverse .vertical-title-area {
+                flex-direction: row-reverse; /* Puts Date on Left, Title on Right */
+                border-bottom: 1px solid rgba(0,0,0,0.1);
+            }
+            .vertical-title-area h2 {
+                writing-mode: horizontal-tb;
+                font-size: 22px;
+                letter-spacing: 2px;
+            }
+            .vertical-line { display: none; }
+            .vertical-date {
+                writing-mode: horizontal-tb;
+            }
+        }
+
         /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
         .scrolling-text-container {
             width: 100%;
             overflow: hidden;
             white-space: nowrap;
-            margin-top: 60px;
-            padding: 15px 0;
+            margin-top: 20px;
+            padding: 25px 0;
             box-sizing: border-box;
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #ddd; /* Thin break line above marquee */
             display: flex;
-            flex-direction: column; /* Stacks the lines vertically */
-            gap: 12px; /* Space between the two lines */
+            flex-direction: column; 
+            gap: 12px; 
         }
 
         .scrolling-text {
@@ -494,16 +614,8 @@
             letter-spacing: 3px;
         }
 
-        /* Top line animation */
-        .line-1 {
-            animation: scroll-left 22s linear infinite;
-        }
-
-        /* Bottom line animation - scrolls slightly faster for a cool layered effect */
-        .line-2 {
-            animation: scroll-left 18s linear infinite;
-            margin-left: 100px; /* Offsets the text so the words don't stack perfectly on top of each other */
-        }
+        .line-1 { animation: scroll-left 22s linear infinite; }
+        .line-2 { animation: scroll-left 18s linear infinite; margin-left: 100px; }
 
         .scrolling-text-container:hover .scrolling-text {
             animation-play-state: paused;
@@ -513,7 +625,6 @@
             0% { transform: translateX(100vw); }
             100% { transform: translateX(-100%); }
         }
-
         
         /* --- CONTENT PAGES --- */
         .content-page h1 {
@@ -719,94 +830,107 @@
             </div>
         </div>
     </div>
-<div id="about-page" class="content-page">
+<div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
         <div class="story-container">
-            <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
-
-            <div class="lang-zh">
-                <p>一切都要从2022年的NC State Fair说起,两个在北卡待了很久却都没去过state fair的人莫名其妙。虽然从那一天开始我们聊天的频率更多了,但是一个人在北卡一个人在匹兹堡的异地情况让我们的关系没有太多进展,终于在寒假的时候,我们在华盛顿一起过了圣诞并且确认了关系(当然也是因为叶子很喜欢圣诞节所以想要把这一天的仪式感拉满)。</p>
-                <p>于是从2023年开始,我们开始不停的解锁新地点,新体验。我们在南卡罗莱纳山顶的教堂看了日出,在纽约的寒风中排队看乐队演出,在坦帕一起浮潜看海牛,也一起划船从暴雨划到出彩虹。</p>
-                <p>2024年我们搬到了美西,从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有很多”安静”的时刻,我们指的是那些坐在篝火前的夜晚,雪山旁的夜路,雨中的湖畔旁等等。</p>
-                <p>2025年3月31日,在我们在坎昆度假旅行要结束的前一天,张维翀说他定了落日晚餐,我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中,但是钝感力十足的叶子毫无察觉。我们走到沙滩上,叶子看到了被布置好的场地以及摄像师的时候,仍然以为是落日晚餐套餐的一部分,直到拍完背影合照后看到张维种单膝跪地。</p>
-                <p>2025年10月16日,我们在最“我们”的日子里,在平时最喜欢坐着发呆的湖边officially tie the knot(我们选择的见证人是圣诞节会去扮演圣诞老人的一位老人,叶子真的很喜欢过圣诞节)。</p>
-                <p>这一次,我们非常期待与我们有着深深羁绊的你们,在北京一起庆祝我们的婚礼。感谢你们愿意作为我们故事的一部分。</p>
-            </div>
             
-            <div class="lang-en">
-                <p><em>(Please add the English translation of your main story here, or leave this div empty if you only want it in Chinese!)</em></p>
-                <p>It all started at the 2022 NC State Fair...</p>
-            </div>
-
-            <div class="story-images">
-                <img src="images/placeholder_image_1.jpg" alt="Story Image 1">
-                <img src="images/placeholder_image_2.jpg" alt="Story Image 2">
-            </div>
-
-            <div class="story-section">
-                <h2><span class="lang-zh">订婚那天</span><span class="lang-en">Engagement Day</span></h2>
-                <span class="date-subtitle">3/31/2025</span>
+            <div class="story-header">
+                <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+                <div class="lang-zh">
+                    <p>一切都要从2022年的NC State Fair说起,两个在北卡待了很久却都没去过state fair的人莫名其妙。虽然从那一天开始我们聊天的频率更多了,但是一个人在北卡一个人在匹兹堡的异地情况让我们的关系没有太多进展,终于在寒假的时候,我们在华盛顿一起过了圣诞并且确认了关系(当然也是因为叶子很喜欢圣诞节所以想要把这一天的仪式感拉满)。</p>
+                    <p>于是从2023年开始,我们开始不停的解锁新地点,新体验。我们在南卡罗莱纳山顶的教堂看了日出,在纽约的寒风中排队看乐队演出,在坦帕一起浮潜看海牛,也一起划船从暴雨划到出彩虹。</p>
+                    <p>2024年我们搬到了美西,从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有很多”安静”的时刻,我们指的是那些坐在篝火前的夜晚,雪山旁的夜路,雨中的湖畔旁等等。</p>
+                    <p>2025年3月31日,在我们在坎昆度假旅行要结束的前一天,张维翀说他定了落日晚餐,我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中,但是钝感力十足的叶子毫无察觉。我们走到沙滩上,叶子看到了被布置好的场地以及摄像师的时候,仍然以为是落日晚餐套餐的一部分,直到拍完背影合照后看到张维种单膝跪地。</p>
+                    <p>2025年10月16日,我们在最“我们”的日子里,在平时最喜欢坐着发呆的湖边officially tie the knot(我们选择的见证人是圣诞节会去扮演圣诞老人的一位老人,叶子真的很喜欢过圣诞节)。</p>
+                    <p>这一次,我们非常期待与我们有着深深羁绊的你们,在北京一起庆祝我们的婚礼。感谢你们愿意作为我们故事的一部分。</p>
+                </div>
                 
-                <p>Take a peek through some of our favorite moments from our engagement. These photos hold so much of what we were feeling joy, nerves, laughter, and love as we got ready for the next chapter. We hope you enjoy looking through them as much as we loved taking them.</p>
-                
-                <div class="story-images">
-                    <img src="images/placeholder_image_3.jpg" alt="Engagement Image 1">
-                    <img src="images/placeholder_image_4.jpg" alt="Engagement Image 2">
+                <div class="lang-en">
+                    <p><em>(English main story placeholder)</em></p>
+                </div>
+
+                <div class="story-header-images">
+                    <img src="images/placeholder_image_1.jpg" alt="Story Image 1">
+                    <img src="images/placeholder_image_2.jpg" alt="Story Image 2">
                 </div>
             </div>
 
-            <div class="story-section">
-                <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Elopement Ceremony</span></h2>
-                <span class="date-subtitle">10/16/2025</span>
-                
-                <p>Fortunately, we got to pick our own 'office' for the day! We traded the courthouse for Medina Beach Park, right on the water with a perfect view of Mt. Rainier. It's a spot we've always loved, and making it official there made the moment feel even more special. Even though PNW had already settled into its rainy season, the clouds parted just long enough for us. We had a perfectly dry sunset moment; it was a moody, beautiful evening filled with love and exactly the start we've always imagined!</p>
-                
-                <div class="story-images">
-                    <img src="images/placeholder_image_5.jpg" alt="Ceremony Image 1">
-                    <img src="images/placeholder_image_6.jpg" alt="Ceremony Image 2">
+            <div class="timeline-section dark-bg">
+                <div class="timeline-inner">
+                    <div class="vertical-title-area">
+                        <h2><span class="lang-zh">订婚那天</span><span class="lang-en">Engagement</span></h2>
+                        <div class="vertical-line"></div>
+                        <span class="vertical-date">3/31/2025</span>
+                    </div>
+                    
+                    <div class="carousel-content">
+                        <div class="carousel-track" id="track-eng" onscroll="updateCarousel('track-eng', 'ind-eng')">
+                            <div class="carousel-item"><img src="images/placeholder_image_3.jpg" alt="Engagement 1"></div>
+                            <div class="carousel-item"><img src="images/placeholder_image_4.jpg" alt="Engagement 2"></div>
+                            <div class="carousel-item"><img src="images/placeholder_image_5.jpg" alt="Engagement 3"></div>
+                        </div>
+                        
+                        <div class="carousel-controls">
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-eng', -1)">&lt;</span>
+                            <span id="ind-eng">1 / 3</span>
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-eng', 1)">&gt;</span>
+                        </div>
+                        
+                        <p class="carousel-desc">
+                            <span class="lang-zh">和我们一起重温一些我们订婚中最美好的时刻。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
+                            <span class="lang-en">Take a peek through some of our favorite moments from our engagement. These photos hold so much of what we were feeling joy, nerves, laughter, and love as we got ready for the next chapter. We hope you enjoy looking through them as much as we loved taking them.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-section light-bg">
+                <div class="timeline-inner reverse">
+                    <div class="vertical-title-area">
+                        <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Elopement</span></h2>
+                        <div class="vertical-line"></div>
+                        <span class="vertical-date">10/16/2025</span>
+                    </div>
+                    
+                    <div class="carousel-content">
+                        <div class="carousel-track" id="track-elo" onscroll="updateCarousel('track-elo', 'ind-elo')">
+                            <div class="carousel-item"><img src="images/placeholder_image_6.jpg" alt="Ceremony 1"></div>
+                            <div class="carousel-item"><img src="images/placeholder_image_7.jpg" alt="Ceremony 2"></div>
+                            <div class="carousel-item"><img src="images/placeholder_image_8.jpg" alt="Ceremony 3"></div>
+                        </div>
+                        
+                        <div class="carousel-controls">
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-elo', -1)">&lt;</span>
+                            <span id="ind-elo">1 / 3</span>
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-elo', 1)">&gt;</span>
+                        </div>
+                        
+                        <p class="carousel-desc">
+                            <span class="lang-zh">幸运的是，我们为这一天亲自挑选了专属的‘法庭’！我们没有选择去法院，而是来到了Medina Beach Park。这里紧邻水岸，拥有观赏Mt.Rainier的绝佳视野。这也是我们一直钟爱的地方，在这里正式定下终身，让那一刻变得更加意义非凡。<br>尽管当时的太平洋西北地区已经进入了雨季，但云层在那一刻奇迹般地为我们散开了。我们迎来了一个清爽无雨的完美日落；那是一个氛围感十足、美丽且充满爱的傍晚——这正是我们一直憧憬的开始！</span>
+                            <span class="lang-en">Fortunately, we got to pick our own 'office' for the day! We traded the courthouse for Medina Beach Park, right on the water with a perfect view of Mt. Rainier. It's a spot we've always loved, and making it official there made the moment feel even more special. Even though PNW had already settled into its rainy season, the clouds parted just long enough for us. We had a perfectly dry sunset moment; it was a moody, beautiful evening filled with love and exactly the start we've always imagined!</span>
+                        </p>
+                    </div>
                 </div>
             </div>
 
             <div class="scrolling-text-container">
-                
                 <div class="scrolling-text line-1">
                     <span class="lang-zh">
-                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “晚上吃什么!”
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!”
                     </span>
                     <span class="lang-en">
-                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "What's for dinner!"
+                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!"
                     </span>
                 </div>
-
                 <div class="scrolling-text line-2">
                     <span class="lang-zh">
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        “我来做!”
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!”
                     </span>
                     <span class="lang-en">
-                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
-                        "I'll cook!"
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!"
                     </span>
                 </div>
-                
             </div>
+
         </div>
     </div>
     
@@ -926,6 +1050,7 @@
 
     let animationTimer;   // Timer for the 8s animation end
     let skipDelayTimer;   // Timer for showing the skip button at 6s
+    let countdownInterval; // NEW: Timer for the 8-second countdown
 
     // --- LANGUAGE LOGIC ---
     function toggleLanguage() {
@@ -1015,6 +1140,9 @@
 
     // Helper Function: Triggers the final state (Mist + Show Invitation)
     function finishAnimation() {
+        // Stop the countdown timer if it's running
+        clearInterval(countdownInterval);
+
         // 1. Trigger the Mist Effect (Fade out tree, pause animation)
         landingScene.classList.add('blurred');
 
@@ -1025,8 +1153,11 @@
         nav.classList.add('fade-in');
         muteBtn.classList.add('fade-in');
 
-        // 3. Hide the Skip Button (It's no longer needed)
+        // 3. Hide the Skip Button
         skipBtn.classList.remove('visible');
+        
+        // Reset button text smoothly after it fades out
+        setTimeout(() => { skipBtn.textContent = 'SKIP >>'; }, 300);
     }
 
     // A. OPEN BUTTON CLICK
@@ -1044,13 +1175,26 @@
         landingScene.style.display = 'block'; // Ensure display is on
         setTimeout(() => landingScene.classList.add('show-elements'), 10);
 
-        // 4. SHOW SKIP BUTTON (DELAYED 6 SECONDS)
+        // 4. SHOW SKIP BUTTON (DELAYED 2 SECONDS) WITH 8s COUNTDOWN
         skipDelayTimer = setTimeout(() => {
             // Only show if the animation hasn't finished yet
             if (!landingScene.classList.contains('blurred')) {
                 skipBtn.classList.add('visible');
+                
+                let timeLeft = 8;
+                skipBtn.textContent = `SKIP (${timeLeft}s) >>`;
+                
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        skipBtn.textContent = `SKIP (${timeLeft}s) >>`;
+                    } else {
+                        clearInterval(countdownInterval);
+                        skipBtn.textContent = `SKIP >>`;
+                    }
+                }, 1000);
             }
-        }, 6000);
+        }, 2000);
 
         // 5. Start the 10-Second Timer for Animation End
         animationTimer = setTimeout(() => {
@@ -1067,7 +1211,31 @@
         // 2. Jump straight to the end
         finishAnimation();
     });
+    
+// --- CAROUSEL LOGIC ---
+    function scrollCarousel(trackId, direction) {
+        const track = document.getElementById(trackId);
+        // Scroll exactly one image width left (-1) or right (1)
+        const width = track.offsetWidth;
+        track.scrollBy({ left: width * direction, behavior: 'smooth' });
+    }
 
+    function updateCarousel(trackId, indicatorId) {
+        const track = document.getElementById(trackId);
+        const indicator = document.getElementById(indicatorId);
+        const totalItems = track.children.length;
+        
+        // Calculate which image is currently in view
+        const scrollLeft = track.scrollLeft;
+        const width = track.offsetWidth;
+        let currentIndex = Math.round(scrollLeft / width) + 1;
+        
+        // Failsafes 
+        if(currentIndex > totalItems) currentIndex = totalItems;
+        if(currentIndex < 1) currentIndex = 1;
+        
+        indicator.textContent = `${currentIndex} / ${totalItems}`;
+    }
 </script>
     
 </body>
