@@ -198,56 +198,31 @@
             z-index: 300; 
         }
 
-        /* --- MOBILE STYLES --- */
+        /* --- MOBILE STYLES (COMBINED & UPDATED) --- */
         @media (max-width: 768px) {
+            
+            /* -- YOUR EXISTING SAFE LAYOUT RULES -- */
             nav { 
                 height: 60px; 
                 padding: 0 20px; 
-                
-                /* Force everything to the right on mobile */
                 justify-content: flex-end !important; 
             }
-.content-page {
-        /* Reduced padding for mobile: 60px (nav) + 20px (space) = 80px */
-        padding-top: 80px !important; 
-    }
-            /* Hide the Desktop Language Switcher (Top Left) by default on mobile */
-            #navbar > .lang-switch {
-                display: none !important;
-            }
-
-            /* Show Language Switcher ONLY when Menu is Open */
-            /* Position it to the left of the Close (X) button */
+            .content-page { padding-top: 80px !important; }
+            #navbar > .lang-switch { display: none !important; }
+            
             #navbar.menu-open .lang-switch {
                 display: flex !important;
                 position: fixed;
                 top: 22px;
                 right: 60px;
-                z-index: 302;}
+                z-index: 302;
+            }
 
             .menu-icon { 
                 display: block; 
                 position: relative;
-                z-index: 301; /* Ensure X is clickable */
+                z-index: 301; 
             }
-            
-            .nav-links {
-                display: none; 
-                position: fixed;
-                top: 0; left: 0; width: 100vw; height: 100vh;
-                
-                background-color: #FAF8F5; 
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px); 
-                
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 50px; 
-                z-index: 300; 
-            }
-            .nav-links.show { display: flex; animation: fadeInMenu 0.3s ease-in-out; }
-            .nav-links a { font-size: 24px; }
             
             .willow-svg-container {
                 height: 60% !important; 
@@ -255,10 +230,62 @@
                 left: 0 !important;     
                 top: 0 !important;
             }
+
+            /* -- NEW: HIGH-END DARK MOBILE MENU -- */
+            .nav-links {
+                display: none; 
+                position: fixed;
+                top: 0; left: 0; width: 100vw; height: 100vh;
+                background-color: rgba(35, 48, 38, 0.98); /* Deep Forest Glass */
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px); 
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 50px; 
+                z-index: 300; 
+            }
+            .nav-links.show { display: flex; animation: fadeInMenu 0.4s ease-in-out; }
+            
+            .nav-links a { 
+                font-size: 24px; 
+                color: #FAF8F5; 
+                opacity: 0.7; 
+                transition: all 0.3s ease;
+            }
+            
+            .nav-links a.active { 
+                opacity: 1; 
+                color: #FAF8F5;
+                border-bottom: 2px solid #8A9A86; 
+                padding-bottom: 8px; 
+            }
+
+            /* Ensure Nav Icons turn light against the dark menu */
+            #navbar.menu-open .menu-icon,
+            #navbar.menu-open .lang-switch {
+                color: #FAF8F5 !important;
+            }
+            body:not(.english-mode) #navbar.menu-open .lang-option.zh { border-bottom-color: #FAF8F5; }
+            body.english-mode #navbar.menu-open .lang-option.en { border-bottom-color: #FAF8F5; }
+
+            /* -- NEW: ATTIRE PAGE MOBILE ADJUSTMENTS -- */
+            .scroll-image-wrapper:nth-child(n) {
+                width: 60% !important; 
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
+            .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
+            
+            .color-palette.sticky-bottom {
+                bottom: 50px; 
+                padding: 12px 20px; 
+            }
         }
         
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
-
+        
         /* --- MUTE BUTTON --- */
         #muteBtn {
             position: fixed;
@@ -433,7 +460,8 @@
             margin-bottom: 15px;
             letter-spacing: 1px;
         }
-       /* --- MASONRY GALLERY STYLES --- */
+        
+      /* --- MASONRY GALLERY STYLES --- */
         .story-masonry {
             margin-bottom: 40px;
             display: flex;
@@ -450,6 +478,8 @@
         .masonry-left {
             display: flex;
             flex-direction: column;
+            /* This vertically centers the horizontal image next to the tall one */
+            justify-content: center; 
         }
         
         /* Shared styles for all masonry images */
@@ -457,17 +487,17 @@
         .masonry-right img,
         .masonry-bottom {
             width: 100%;
-            border-radius: 2px; /* Changed to 2px for a slightly sharper, more editorial edge */
+            border-radius: 2px; 
             box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            background-color: #EAE7E0; /* Updated to match your new warm background! */
+            background-color: #EAE7E0; 
         }
         
-        /* Specific rules to make the left and right images align perfectly */
+        /* LEFT IMAGE: Restores the natural horizontal shape without cropping */
         .masonry-left img {
-            height: 100%;
-            object-fit: cover; 
+            height: auto; 
         }
         
+        /* RIGHT IMAGE: Keeps the tall image filling the vertical space */
         .masonry-right img {
             height: 100%;
             object-fit: cover; 
@@ -802,19 +832,21 @@
         .scroll-image-wrapper:nth-child(7) { width: 25%; align-self: flex-start; margin-top: -15%; z-index: 3; }
 
         /* --- MOBILE ADJUSTMENTS --- */
-        /* --- MOBILE ADJUSTMENTS (UPDATED) --- */
         @media (max-width: 768px) {
+            /* 1. Make the images smaller on mobile */
             .scroll-image-wrapper:nth-child(n) {
-                /* Reduced from 85% to 70% to add nice padding on mobile */
-                width: 70% !important; 
+                /* Reduced from 70% down to 60% for more side padding */
+                width: 60% !important; 
                 margin-left: 0 !important;
                 margin-right: 0 !important;
             }
             .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
             .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
             
+            /* 2. Push the color palette higher up on mobile to avoid the bottom edge */
             .color-palette.sticky-bottom {
-                bottom: 20px;
+                bottom: 50px; /* Increased to push it safely above the iPhone home bar */
+                padding: 12px 20px; 
             }
         }
         
@@ -823,7 +855,7 @@
 <body>
 
     <audio id="bgMusic" loop>
-        <source src="Say You Love Me.mp3" type="audio/mpeg">
+        <source src="music.mp3" type="audio/mpeg">
     </audio>
 
     <div id="landing-scene">
