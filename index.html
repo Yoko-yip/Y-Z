@@ -705,11 +705,69 @@
         .attire-description { text-align: center; font-size: 14px; color: #555; margin-bottom: 50px; max-width: 80%; line-height: 1.6; letter-spacing: 1px; }
         .attire-section { width: 100%; max-width: 900px; margin-bottom: 60px; text-align: center; }
         .attire-section h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 20px; font-weight: normal; border-bottom: 1px solid #ccc; display: inline-block; padding-bottom: 5px; }
-        .gallery-container { display: flex; overflow-x: auto; gap: 20px; padding: 10px 5%; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-        .gallery-container::-webkit-scrollbar { display: none; }
         .gallery-item { flex: 0 0 auto; width: 70%; max-width: 300px; scroll-snap-align: center; }
         .gallery-item img { width: 100%; height: auto; border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #e0e0e0; }
 
+        /* --- NEW SCROLL REVEAL STYLES FOR ATTIRE PAGE --- */
+        .attire-scroll-container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 150px; /* Large gap for scrolling effect */
+            padding-bottom: 100px;
+        }
+
+        .scroll-image-wrapper {
+            width: 80%;
+            max-width: 400px;
+            /* Alternate alignment left/right */
+        }
+        
+        .scroll-image-wrapper:nth-child(odd) {
+            align-self: flex-start;
+        }
+        
+        .scroll-image-wrapper:nth-child(even) {
+            align-self: flex-end;
+        }
+
+        .scroll-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background-color: #e0e0e0;
+        }
+
+        /* The Animation Classes */
+        .reveal-item {
+            opacity: 0;
+            /* Push it down a bit to start */
+            transform: translateY(60px); 
+            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Mobile Adjustments for Scroll Images */
+        @media (max-width: 768px) {
+            .attire-scroll-container {
+                gap: 80px;
+            }
+            .scroll-image-wrapper {
+                width: 90%;
+                /* Center them on mobile or keep the alternating layout, 
+                   centering is usually safer for small screens */
+                align-self: center !important; 
+            }
+        }
+        
     </style>
 </head>
 <body>
@@ -980,13 +1038,13 @@
     
     <div id="attire-page" class="content-page">
         <h1><span class="lang-zh">着装建议</span><span class="lang-en">Dress Code</span></h1>
-       <div class="color-palette">
-    <img src="images/color1.svg" class="color-icon" alt="Color option 1">
-    <img src="images/color2.svg" class="color-icon" alt="Color option 2">
-    <img src="images/color3.svg" class="color-icon" alt="Color option 3">
-    <img src="images/color4.svg" class="color-icon" alt="Color option 4">
-    <img src="images/color5.svg" class="color-icon" alt="Color option 5">
-</div>
+        <div class="color-palette">
+            <img src="images/color1.svg" class="color-icon" alt="Color option 1">
+            <img src="images/color2.svg" class="color-icon" alt="Color option 2">
+            <img src="images/color3.svg" class="color-icon" alt="Color option 3">
+            <img src="images/color4.svg" class="color-icon" alt="Color option 4">
+            <img src="images/color5.svg" class="color-icon" alt="Color option 5">
+        </div>
         <p class="attire-description">
             <span class="lang-zh">
                 上方是我们推荐的着装配色，期待您盛装出席。<br>
@@ -998,21 +1056,29 @@
                 The only thing we ask is that you avoid blue jeans and athletic wear.
             </span>
         </p>
-        <div class="attire-section">
-            <h2><span class="lang-zh">男士着装</span><span class="lang-en">Men's dress code</span></h2>
-            <div class="gallery-container">
-                <div class="gallery-item"><img src="images/men_image_1.png" alt="Men Style 1"></div>
-                <div class="gallery-item"><img src="images/men_image_2.png" alt="Men Style 2"></div>
-                <div class="gallery-item"><img src="images/men_image_3.png" alt="Men Style 3"></div>
+
+        <div class="attire-scroll-container">
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/men_image_1.png" alt="Men Style 1">
             </div>
-        </div>
-        <div class="attire-section">
-            <h2><span class="lang-zh">女士着装</span><span class="lang-en">Women's dress code</span></h2>
-            <div class="gallery-container">
-                <div class="gallery-item"><img src="images/women_image_1.png" alt="Women Style 1"></div>
-                <div class="gallery-item"><img src="images/women_image_2.png" alt="Women Style 2"></div>
-                <div class="gallery-item"><img src="images/women_image_3.png" alt="Women Style 3"></div>
-                <div class="gallery-item"><img src="images/women_image_4.png" alt="Women Style 4"></div>
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/men_image_2.png" alt="Men Style 2">
+            </div>
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/men_image_3.png" alt="Men Style 3">
+            </div>
+
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/women_image_1.png" alt="Women Style 1">
+            </div>
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/women_image_2.png" alt="Women Style 2">
+            </div>
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/women_image_3.png" alt="Women Style 3">
+            </div>
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/women_image_4.png" alt="Women Style 4">
             </div>
         </div>
     </div>
@@ -1279,6 +1345,46 @@
         if(currentIndex < 1) currentIndex = 1;
         
         indicator.textContent = `${currentIndex} / ${totalItems}`;
+    }
+    // --- SCROLL REVEAL LOGIC ---
+    function setupScrollReveal() {
+        const revealElements = document.querySelectorAll('.reveal-item');
+        
+        const observerOptions = {
+            root: null, // Use viewport
+            rootMargin: '0px',
+            threshold: 0.15 // Trigger when 15% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // Optional: Remove class when element leaves view
+                    // so it animates again when scrolling back up.
+                    // Comment this line out if you only want it to animate once.
+                    entry.target.classList.remove('active'); 
+                }
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => observer.observe(el));
+    }
+
+    // Initialize the observer when the DOM is ready
+    document.addEventListener('DOMContentLoaded', setupScrollReveal);
+    
+    // Also re-trigger the check when changing pages to ensure visibility
+    const originalShowPage = showPage;
+    showPage = function(pageId) {
+        originalShowPage(pageId);
+        // Small delay to allow CSS transitions to finish before checking intersections
+        setTimeout(() => {
+             // Force a tiny scroll to trigger the observer if items are already in view
+             window.scrollBy(0, 1);
+             window.scrollBy(0, -1);
+        }, 100);
     }
 </script>
     
