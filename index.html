@@ -148,7 +148,7 @@
             left: 0;             
             width: 100%;         
             height: 80px;        
-            background-color: #F2F7F5; 
+            background-color: #FAF8F5; 
             
             /* CHANGED: This pushes the Language Switcher to Left and Links to Right */
             display: flex;
@@ -236,7 +236,7 @@
                 position: fixed;
                 top: 0; left: 0; width: 100vw; height: 100vh;
                 
-                background-color: #F2F7F5; 
+                background-color: #FAF8F5; 
                 backdrop-filter: blur(10px);
                 -webkit-backdrop-filter: blur(10px); 
                 
@@ -339,7 +339,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; 
             pointer-events: none; 
-            background-color: #F2F7F5; /* Green Background */
+            background-color: #FAF8F5; /* Green Background */
         }
 
         .willow-svg-container, 
@@ -487,7 +487,7 @@
             color: #F1F6EA;
         }
         .timeline-section.light-bg {
-            background-color: #F2F7F5; /* Light Beige */
+            background-color: #FAF8F5; /* Light Beige */
             color: #333;
         }
         .timeline-inner {
@@ -674,7 +674,7 @@
             top: 0; left: 0;
             width: 100%;
             min-height: 100vh;
-            background-color: #F2F7F5; 
+            background-color: #FAF8F5; 
             z-index: 100; 
             box-sizing: border-box;
             padding-top: 100px; 
@@ -704,44 +704,75 @@
         .color-icon { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));}
         .attire-description { text-align: center; font-size: 14px; color: #555; margin-bottom: 50px; max-width: 80%; line-height: 1.6; letter-spacing: 1px; }
         
-        /* --- NEW SCROLL REVEAL STYLES FOR ATTIRE PAGE --- */
+/* --- ATTIRE PAGE: TEXT & HEADER --- */
+        .attire-header-section {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+            text-align: left;
+        }
+
+        .attire-header-section h1 {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .attire-description {
+            text-align: left;
+            font-size: 15px;
+            color: #555;
+            margin: 0;
+            line-height: 1.8;
+            letter-spacing: 1px;
+        }
+
+        /* --- STICKY COLOR PALETTE --- */
+        .color-palette.sticky-bottom {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            margin: 0;
+            padding: 10px 25px;
+            
+            /* Add a slight frosted glass background so it's readable when images scroll behind it */
+            background: rgba(250, 248, 245, 0.85); /* Adjust this hex to match your final background choice! */
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            
+            z-index: 50; 
+            pointer-events: none; 
+        }
+
+        /* --- OVERLAPPING COLLAGE LAYOUT --- */
         .attire-scroll-container {
             width: 100%;
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            gap: 150px; /* Large gap for scrolling effect */
-            padding-bottom: 100px;
+            padding-bottom: 150px; /* Space for the bottom sticky palette */
         }
 
         .scroll-image-wrapper {
-            width: 80%;
-            max-width: 400px;
-            /* Alternate alignment left/right */
-        }
-        
-        .scroll-image-wrapper:nth-child(odd) {
-            align-self: flex-start;
-        }
-        
-        .scroll-image-wrapper:nth-child(even) {
-            align-self: flex-end;
+            position: relative;
         }
 
         .scroll-image-wrapper img {
             width: 100%;
             height: auto;
-            border-radius: 4px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 2px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
             background-color: #e0e0e0;
         }
 
-        /* The Animation Classes */
+        /* --- THE ANIMATION CLASSES --- */
         .reveal-item {
             opacity: 0;
-            /* Push it down a bit to start */
             transform: translateY(60px); 
             transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
         }
@@ -751,16 +782,28 @@
             transform: translateY(0);
         }
 
-        /* Mobile Adjustments for Scroll Images */
+        /* --- THE OVERLAP MATH --- */
+        .scroll-image-wrapper:nth-child(1) { width: 60%; align-self: flex-start; z-index: 1; }
+        .scroll-image-wrapper:nth-child(2) { width: 50%; align-self: flex-end; margin-top: -15%; margin-right: 5%; z-index: 2; }
+        .scroll-image-wrapper:nth-child(3) { width: 45%; align-self: flex-start; margin-top: -10%; margin-left: 10%; z-index: 3; }
+        .scroll-image-wrapper:nth-child(4) { width: 75%; align-self: flex-end; margin-top: 15%; z-index: 1; }
+        .scroll-image-wrapper:nth-child(5) { width: 40%; align-self: flex-start; margin-top: -30%; z-index: 0; }
+        .scroll-image-wrapper:nth-child(6) { width: 55%; align-self: flex-end; margin-top: 5%; margin-right: 15%; z-index: 2; }
+        .scroll-image-wrapper:nth-child(7) { width: 65%; align-self: flex-start; margin-top: -15%; z-index: 3; }
+
+        /* --- MOBILE ADJUSTMENTS --- */
         @media (max-width: 768px) {
-            .attire-scroll-container {
-                gap: 80px;
+            .scroll-image-wrapper:nth-child(n) {
+                width: 85% !important;
+                margin-left: 0 !important;
+                margin-right: 0 !important;
             }
-            .scroll-image-wrapper {
-                width: 90%;
-                /* Center them on mobile or keep the alternating layout, 
-                   centering is usually safer for small screens */
-                align-self: center !important; 
+            .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
+            .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
+            
+            .color-palette.sticky-bottom {
+                bottom: 15px;
+                padding: 8px 15px;
             }
         }
         
@@ -1033,39 +1076,31 @@
     </div>
     
     <div id="attire-page" class="content-page">
-        <h1><span class="lang-zh">着装建议</span><span class="lang-en">Dress Code</span></h1>
-        <div class="color-palette">
-            <img src="images/color1.svg" class="color-icon" alt="Color option 1">
-            <img src="images/color2.svg" class="color-icon" alt="Color option 2">
-            <img src="images/color3.svg" class="color-icon" alt="Color option 3">
-            <img src="images/color4.svg" class="color-icon" alt="Color option 4">
-            <img src="images/color5.svg" class="color-icon" alt="Color option 5">
+        
+        <div class="attire-header-section">
+            <h1><span class="lang-zh">着装建议</span><span class="lang-en">Dress Code</span></h1>
+            <p class="attire-description">
+                <span class="lang-zh">
+                    下方是我们推荐的着装配色以及搭配，期待您盛装出席。<br><br>
+                    我们唯一的着装要求是请避免穿着蓝色牛仔裤和运动服饰。
+                </span>
+                <span class="lang-en">
+                    Our color recommendations are shown below.<br><br>
+                    We encourage you to dress up in whatever makes you feel both festive and like yourself. <br>
+                    The only thing we ask is that you avoid blue jeans and athletic wear.
+                </span>
+            </p>
         </div>
-        <p class="attire-description">
-            <span class="lang-zh">
-                上方是我们推荐的着装配色，期待您盛装出席。<br>
-                我们唯一的着装要求是请避免穿着蓝色牛仔裤和运动服饰。
-            </span>
-            <span class="lang-en">
-                Our color recommendations are shown above.<br>
-                We encourage you to dress up in whatever makes you feel both festive and like yourself. <br>
-                The only thing we ask is that you avoid blue jeans and athletic wear.
-            </span>
-        </p>
 
         <div class="attire-scroll-container">
             <div class="scroll-image-wrapper reveal-item">
                 <img src="images/men_image_1.png" alt="Men Style 1">
             </div>
             <div class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_2.png" alt="Men Style 2">
-            </div>
-            <div class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_3.png" alt="Men Style 3">
-            </div>
-
-            <div class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_1.png" alt="Women Style 1">
+            </div>
+            <div class="scroll-image-wrapper reveal-item">
+                <img src="images/men_image_2.png" alt="Men Style 2">
             </div>
             <div class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_2.png" alt="Women Style 2">
@@ -1074,9 +1109,21 @@
                 <img src="images/women_image_3.png" alt="Women Style 3">
             </div>
             <div class="scroll-image-wrapper reveal-item">
+                <img src="images/men_image_3.png" alt="Men Style 3">
+            </div>
+            <div class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_4.png" alt="Women Style 4">
             </div>
         </div>
+
+        <div class="color-palette sticky-bottom">
+            <img src="images/color1.svg" class="color-icon" alt="Color option 1">
+            <img src="images/color2.svg" class="color-icon" alt="Color option 2">
+            <img src="images/color3.svg" class="color-icon" alt="Color option 3">
+            <img src="images/color4.svg" class="color-icon" alt="Color option 4">
+            <img src="images/color5.svg" class="color-icon" alt="Color option 5">
+        </div>
+
     </div>
 
     <div id="address-page" class="content-page">
