@@ -292,37 +292,85 @@
         #muteBtn.fade-in { opacity: 0.7; }
         #muteBtn:hover { opacity: 1; }
 
-        /* --- OPEN BUTTON (UI CONTAINER) --- */
-        #ui-container {
-            position: fixed; 
-            z-index: 100;    
-            
-            top: 50%; 
-            left: 50%;
-            transform: translate(-50%, -50%);
-            
-            opacity: 1;      
-            pointer-events: auto; 
-            transition: opacity 1.5s ease-out; 
+        /* --- ENVELOPE EFFECT --- */
+        #envelope-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #FAF8F5; /* Matches your landing scene background */
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+            transform-origin: center center;
         }
-        
-        button {
-            padding: 15px 30px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 16px;
-            background: rgba(240, 238, 230, 0.9);
-            border: 1px solid #5d4037;
+
+        /* The class added via JS to trigger the zoom & dissolve */
+        #envelope-container.dissolve {
+            opacity: 0;
+            transform: scale(1.1); /* Slight scale-up as it fades */
+            pointer-events: none;
+        }
+
+        .envelope-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Lets clicks pass through to the stamp */
+            z-index: 1;
+        }
+
+        .flap-line {
+            stroke: #D4CFC6; /* Matches your accent lines */
+            stroke-width: 2px;
+        }
+
+        .stamp-wrapper {
+            position: relative;
+            z-index: 2; /* Placed above the SVG lines */
+            text-align: center;
             cursor: pointer;
-            transition: all 0.3s ease;
-            letter-spacing: 2px;
-            color: #5d4037;
-            text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
-        button:hover { 
-            background-color: #1C3618; 
-            color: #ffffff;            
-            border-color: #1C3618;     
+
+        .wax-seal {
+            width: 110px; /* Adjust size as needed */
+            height: auto;
+            border-radius: 50%; /* Smooths the edges if the stamp isn't perfectly round */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+            animation: pulseStamp 2s infinite alternate ease-in-out;
+            transition: transform 0.3s ease;
+        }
+
+        /* Stops pulsing and pops slightly when hovered */
+        .stamp-wrapper:hover .wax-seal {
+            transform: scale(1.05);
+            animation-play-state: paused;
+        }
+
+        @keyframes pulseStamp {
+            0% { transform: scale(1); box-shadow: 0 6px 15px rgba(0,0,0,0.15); }
+            100% { transform: scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+        }
+
+        .open-text {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            color: #5d4037;
+            letter-spacing: 3px;
+            opacity: 0.8;
+            animation: pulseText 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes pulseText {
+            0% { opacity: 0.5; }
+            100% { opacity: 1; }
         }
 
         /* --- INVITATION CARD --- */
@@ -1032,9 +1080,18 @@
         </ul>
     </nav>
 
-    <div id="ui-container">
-        <button id="openBtn">Open Invitation</button>
+    <div id="envelope-container">
+        <svg class="envelope-lines" width="100%" height="100%">
+            <line x1="0" y1="0" x2="50%" y2="50%" class="flap-line" />
+            <line x1="100%" y1="0" x2="50%" y2="50%" class="flap-line" />
+        </svg>
+
+        <div class="stamp-wrapper" id="openEnvelopeBtn">
+            <img src="images/stamp.jpg" alt="Wax Seal" class="wax-seal">
+            <div class="open-text">点击打开</div>
+        </div>
     </div>
+    
     <button id="skipBtn">SKIP >></button>
     
     <div id="home-page">
@@ -1305,7 +1362,7 @@ While we don't practice a religion ourselves, we were deeply moved by the profou
     // --- VARIABLES ---
     const bgMusic = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
-    const openBtn = document.getElementById('openBtn');
+    const openEnvelopeBtn = document.getElementById('openEnvelopeBtn');
     const skipBtn = document.getElementById('skipBtn');
     const landingScene = document.getElementById('landing-scene');
     const invitationCard = document.getElementById('invitation-card');
@@ -1423,11 +1480,14 @@ While we don't practice a religion ourselves, we were deeply moved by the profou
         setTimeout(() => { skipBtn.textContent = 'SKIP >>'; }, 300);
     }
 
-    // A. OPEN BUTTON CLICK
-    openBtn.addEventListener('click', function() {
-        // 1. Fade Out Open Button
-        this.style.opacity = '0';
-        setTimeout(() => this.style.display = 'none', 1000);
+    // A. OPEN ENVELOPE CLICK
+    openEnvelopeBtn.addEventListener('click', function() {
+        // 1. Dissolve & Scale the Envelope Container
+        const envelopeContainer = document.getElementById('envelope-container');
+        envelopeContainer.classList.add('dissolve');
+        
+        // Remove it from the DOM flow after the 1.5s transition finishes
+        setTimeout(() => envelopeContainer.style.display = 'none', 1500);
         
         // 2. Play Music
         if (bgMusic.paused) {
@@ -1435,12 +1495,11 @@ While we don't practice a religion ourselves, we were deeply moved by the profou
         }
 
         // 3. Reveal Tree & Birds
-        landingScene.style.display = 'block'; // Ensure display is on
+        landingScene.style.display = 'block'; 
         setTimeout(() => landingScene.classList.add('show-elements'), 10);
 
         // 4. SHOW SKIP BUTTON (DELAYED 2 SECONDS) WITH 8s COUNTDOWN
         skipDelayTimer = setTimeout(() => {
-            // Only show if the animation hasn't finished yet
             if (!landingScene.classList.contains('blurred')) {
                 skipBtn.classList.add('visible');
                 
@@ -1464,7 +1523,7 @@ While we don't practice a religion ourselves, we were deeply moved by the profou
             finishAnimation();
         }, 10000); 
     });
-
+    
     // B. SKIP BUTTON CLICK
     skipBtn.addEventListener('click', () => {
         // 1. Stop the timers
