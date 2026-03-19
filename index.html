@@ -531,11 +531,12 @@
             flex-shrink: 0;
         }
         /* --- TIMELINE VERTICAL TITLES --- */
+       
         .vertical-title-area h2 {
             margin: 0;
             font-weight: normal;
             display: flex;
-            justify-content: center;
+            justify-content: flex-start;
         }
 
         /* Chinese Style: Upright stacked characters */
@@ -549,12 +550,12 @@
         /* English Style: Rotated, reads bottom-to-top, editorial serif */
         .vertical-title-area h2 .lang-en {
             writing-mode: vertical-rl;
-            transform: rotate(180deg); /* Flips the text to read bottom-to-top! */
+            transform: rotate(90 deg);  
             font-family: 'Times New Roman', Times, serif; 
             font-size: 16px; 
             letter-spacing: 3px;
             text-transform: uppercase;
-            text-align: center;
+            text-align: left;
             line-height: 1.4;
         }
         
