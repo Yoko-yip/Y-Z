@@ -540,14 +540,34 @@
             width: 60px;
             flex-shrink: 0;
         }
+        /* --- TIMELINE VERTICAL TITLES --- */
         .vertical-title-area h2 {
+            margin: 0;
+            font-weight: normal;
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Chinese Style: Upright stacked characters */
+        .vertical-title-area h2 .lang-zh {
             writing-mode: vertical-rl;
             text-orientation: upright;
             font-size: 26px;
             letter-spacing: 5px;
-            margin: 0;
-            font-weight: normal;
         }
+
+        /* English Style: Rotated, reads bottom-to-top, editorial serif */
+        .vertical-title-area h2 .lang-en {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg); /* Flips the text to read bottom-to-top! */
+            font-family: 'Times New Roman', Times, serif; 
+            font-size: 16px; 
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
         .vertical-line {
             width: 1px;
             height: 80px;
@@ -638,10 +658,15 @@
             .vertical-title-area {
                 width: 40px;
             }
-            .vertical-title-area h2 {
+            .vertical-title-area h2 .lang-zh {
                 font-size: 20px;
                 letter-spacing: 3px;
             }
+            .vertical-title-area h2 .lang-en {
+                font-size: 12px; /* Scales down the English font for mobile screens */
+                letter-spacing: 2px;
+            }
+            
             .vertical-line {
                 height: 50px;
                 margin: 15px 0;
@@ -849,7 +874,8 @@
                 padding: 12px 20px; 
             }
         }
-        
+
+
     </style>
 </head>
 <body>
@@ -1041,8 +1067,7 @@
             <div class="timeline-section dark-bg">
                 <div class="timeline-inner">
                     <div class="vertical-title-area">
-                        <h2><span class="lang-zh">订婚那天</span><span class="lang-en">A Look into the Engagement</span></h2>
-                        <div class="vertical-line"></div>
+                        <h2><span class="lang-zh">订婚那天</span><span class="lang-en">A Look into<br>the Engagement</span></h2>                        <div class="vertical-line"></div>
                         <span class="vertical-date">3/31/2025</span>
                     </div>
                     
@@ -1070,7 +1095,7 @@
             <div class="timeline-section light-bg">
                 <div class="timeline-inner reverse">
                     <div class="vertical-title-area">
-                        <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Our Elopement Ceremony</span></h2>
+                        <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Our Elopement<br>Ceremony</span></h2>
                         <div class="vertical-line"></div>
                         <span class="vertical-date">10/16/2025</span>
                     </div>
