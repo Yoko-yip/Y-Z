@@ -186,7 +186,7 @@
             transition: color 0.3s;
         }
         .nav-links a:hover { color: #666; }
-        .nav-links a.active { border-bottom: 2px solid 8A9A86; padding-bottom: 5px; }
+        .nav-links a.active { border-bottom: 2px solid #8A9A86; padding-bottom: 5px; }
 
         .menu-icon {
             display: none;
@@ -737,9 +737,13 @@
         .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
         .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
         .address-container { width: 90%; max-width: 800px; text-align: left; }
-        .map-figure { width: 100%; margin-bottom: 50px; border: 1px solid #ccc; }
+        .map-figure { width: 100%; margin-bottom: 50px; border: none; }
         .map-figure img { width: 100%; height: auto; display: block; background-color: #ddd; }
-        .info-section { margin-bottom: 40px; border-left: 2px solid 3A3836; padding-left: 20px; }
+        .info-section { margin-bottom: 40px; 
+                       border-top: 1px solid #D4CFC6; /* Top break line */
+                       border-bottom: 1px solid #D4CFC6; /* Bottom break line */
+                       padding: 25px 0; /* Adds spacing above and below the text inside the lines */
+                      }        
         .info-section h2 { font-size: 20px; text-transform: uppercase; letter-spacing: 3px; margin: 0 0 10px 0; font-weight: bold; }
         .info-section p { font-size: 16px; line-height: 1.6; color: #555; margin: 0; }
         /* --- TRANSPORTATION SPACING --- */
