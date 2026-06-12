@@ -9,6 +9,13 @@
 
     <style>
         /* --- GLOBAL STYLES --- */
+        @font-face {
+            font-family: 'CactusClassicalSerif';
+            src: url('CactusClassicalSerif.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+        
         html, body { 
             margin: 0; 
             padding: 0;
@@ -328,10 +335,13 @@
             text-align: center;
             margin-bottom: 40px;
             margin-top: -60px;
-            animation: fadeInDown 1.5s ease;
             transition: opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
+        /* SEQUENCE 1: "YOU'VE GOT A MAIL FROM" */
         .entrance-subtitle {
             font-size: 0.85rem;
             letter-spacing: 0.25em;
@@ -339,28 +349,31 @@
             text-transform: uppercase;
             font-weight: 400;
             color: #555;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
+            opacity: 0;
+            animation: fadeInDown 1s ease forwards;
+            animation-delay: 0.5s; 
         }
 
-        .entrance-calligraphy {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: clamp(4rem, 12vw, 6rem);
-            line-height: 1.1;
-            font-weight: normal;
-            font-style: italic; /* Gives it an elegant serif look */
-            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            color: #3b0914; /* Deep maroon accent */
-            margin: 0;
+        /* SEQUENCE 2: Name SVG */
+        .names-svg {
+            width: 250px; /* Adjust this width to make the image larger or smaller */
+            height: auto;
+            opacity: 0;
+            animation: fadeInDown 1s ease forwards;
+            animation-delay: 1.5s;
         }
 
-        /* Static Envelope Image */
+        /* SEQUENCE 3: Envelope */
         .envelope-wrapper {
             position: relative;
             width: 90vw;
             max-width: 420px;
             cursor: pointer;
             user-select: none;
-            animation: fadeIn 2s ease 0.5s both;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 2.5s; 
         }
 
         .static-envelope-img {
@@ -375,19 +388,21 @@
             transform: scale(1.02);
         }
 
-        /* Instruction Text */
+        /* SEQUENCE 4: Chinese Instruction Text */
         .entrance-instruction {
-            font-size: 0.8rem;
+            font-size: 1.1rem; /* Made slightly larger for Chinese characters */
             letter-spacing: 0.2em;
             margin-top: 60px;
             text-transform: uppercase;
-            animation: pulse 2s infinite;
             cursor: pointer;
             color: #555;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
+            opacity: 0;
+            /* Fades in at 3.5s, then immediately starts pulsing */
+            animation: fadeIn 1s ease forwards, pulse 2s infinite 4.5s; 
             transition: opacity 0.5s ease;
         }
-
+        
         /* Animations */
         @keyframes pulse {
             0%, 100% { opacity: 0.6; }
@@ -1129,15 +1144,15 @@
     <div id="new-envelope-container">
         
         <div class="entrance-header" id="entrance-header">
-            <p class="entrance-subtitle">You've Got Mail From</p>
-            <h1 class="entrance-calligraphy">Z & Y</h1>
+            <p class="entrance-subtitle">YOU'VE GOT A MAIL FROM</p>
+            <img src="images/Namesfont.svg" alt="Z & Y" class="names-svg">
         </div>
 
         <div class="envelope-wrapper" id="openEnvelopeBtn">
             <img src="images/envelope.png" alt="Wax Seal Envelope" class="static-envelope-img">
         </div>
 
-        <p class="entrance-instruction" id="instruction-text">Click Envelope to Open</p>
+        <p class="entrance-instruction" id="instruction-text"> 点击打开邀请函 </p>
     </div>
     
     <button id="skipBtn">SKIP >></button>
