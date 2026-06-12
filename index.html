@@ -904,24 +904,15 @@
 
         /* --- STICKY COLOR PALETTE --- */
         .color-palette.sticky-bottom {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
+            position: sticky;
+            top: 100px; /* Accounts for the navigation bar so it doesn't hide underneath it */
             display: flex;
-            
-            /* This automates the gap perfectly */
             justify-content: space-between; 
-            
-            /* Responsive width so it grows/shrinks with the screen */
             width: 90%; 
-            max-width: 350px; /* Prevents them from getting too huge on desktop */
-            
-            margin: 0;
-            padding: 0;
+            max-width: 350px; 
+            margin: 0 auto 40px auto; /* Centers it and adds breathing room before the photos */
+            padding: 10px 0;
             z-index: 50; 
-            pointer-events: none; 
-            /* Notice: background, border-radius, and blur have been removed! */
         }
 
         .color-palette.sticky-bottom .color-icon {
@@ -986,12 +977,6 @@
             }
             .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
             .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
-            
-            /* 2. Push the color palette higher up on mobile to avoid the bottom edge */
-            .color-palette.sticky-bottom {
-                bottom: 50px; /* Increased to push it safely above the iPhone home bar */
-                padding: 12px 20px; 
-            }
         }
 
 
@@ -1294,8 +1279,9 @@
             <h1><span class="lang-zh">着装建议</span><span class="lang-en">Dress Code</span></h1>
             <p class="attire-description">
                 <span class="lang-zh">
-                    下方是我们推荐的着装配色以及搭配，期待您盛装出席。<br><br>
-                    我们唯一的着装要求是请避免穿着蓝色牛仔裤和运动服饰。
+                    以下是我们推荐的着装配色以及搭配灵感。<br><br>
+                    建议您以鸡尾酒会风格作为选择，如果您在下方推荐中找不到灵感，可以自由发挥，只是请避免穿着蓝色牛仔裤和运动服饰。
+                    期待您盛装出席。
                 </span>
                 <span class="lang-en">
                     Our color recommendations are shown below.<br><br>
@@ -1303,6 +1289,14 @@
                     The only thing we ask is that you avoid blue jeans and athletic wear.
                 </span>
             </p>
+        </div>
+
+        <div class="color-palette sticky-bottom">
+            <img src="images/color1.svg" class="color-icon" alt="Color option 1">
+            <img src="images/color2.svg" class="color-icon" alt="Color option 2">
+            <img src="images/color3.svg" class="color-icon" alt="Color option 3">
+            <img src="images/color4.svg" class="color-icon" alt="Color option 4">
+            <img src="images/color5.svg" class="color-icon" alt="Color option 5">
         </div>
 
         <div class="attire-scroll-container">
