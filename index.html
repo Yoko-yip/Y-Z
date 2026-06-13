@@ -284,26 +284,31 @@
         
         /* --- MUTE BUTTON --- */
         #muteBtn {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            z-index: 200;
-            color: 3A3836;
-            opacity: 0; 
-            transition: opacity 2s ease-in-out;
-            background: none; 
-            border: none; 
-            padding: 10px;
-            cursor: pointer;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        position: fixed;
+        bottom: 24px;         /* Moved to 24px from bottom */
+        right: 24px;          /* Moved to right side */
+        z-index: 200;
+        color: #3A3836;       /* Added missing '#' for the hex color */
+        opacity: 0; 
+        transition: opacity 2s ease-in-out;
+            /* Frosted Glass & Shape Effects */
+            background: rgba(255, 255, 255, 0.25); /* Semi-transparent fill */
+        backdrop-filter: blur(12px);           /* Frosted glass blur */
+        -webkit-backdrop-filter: blur(12px);   /* Safari support */
+        border-radius: 50%;                    /* Perfect circle */
+        border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle edge definition */
+    
+        padding: 0; 
+        cursor: pointer;
+        width: 48px;          /* Updated width */
+        height: 48px;         /* Updated height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
         #muteBtn svg {
-            width: 24px;
-            height: 24px;
+        width: 24px;
+        height: 24px;
         }
         #muteBtn.fade-in { opacity: 0.7; }
         #muteBtn:hover { opacity: 1; }
@@ -1106,19 +1111,17 @@
 
     <!-- APPLE STYLE MUTE BUTTON -->
     <button id="muteBtn">
-        <!-- Unmuted Icon (Speaker with waves) -->
-        <svg id="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-        </svg>
-        <!-- Muted Icon (Speaker with X) -->
-        <svg id="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-            <line x1="23" y1="9" x2="17" y2="15"></line>
-            <line x1="17" y1="9" x2="23" y2="15"></line>
-        </svg>
-    </button>
+    <svg id="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+    </svg>
+    <svg id="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+</button>
 
     <nav id="navbar">
         <div class="lang-switch" onclick="toggleLanguage()">
