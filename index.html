@@ -405,7 +405,8 @@
             font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
             opacity: 0;
             /* Fades in at 3.5s, then immediately starts pulsing */
-            animation: fadeIn 1s ease forwards 1.7s, pulse 2s infinite 2.7s;
+            animation: pulse 2s infinite;
+            animation-delay: 1.7s; /* Change this number to exactly match when you want it to pop in! */
             transition: opacity 0.5s ease;
         }
         
