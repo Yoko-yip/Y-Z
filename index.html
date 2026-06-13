@@ -380,17 +380,23 @@
             width: 100%;
             height: auto;
             display: block;
+            /* Webkit prefix and filter included */
+            -webkit-filter: drop-shadow(0 15px 35px rgba(0,0,0,0.2));
             filter: drop-shadow(0 15px 35px rgba(0,0,0,0.2));
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, filter 0.3s ease;
+            
+            /* Hardware acceleration fixes to stop the shadow from glitching */
+            transform: translateZ(0); 
+            will-change: transform, filter;
         }
 
         .envelope-wrapper:hover .static-envelope-img {
-            transform: scale(1.02);
+            transform: scale(1.02) translateZ(0);
         }
 
         /* SEQUENCE 4: Chinese Instruction Text */
         .entrance-instruction {
-            font-size: 0.9rem; /* Made slightly larger for Chinese characters */
+            font-size: 0.8rem; 
             letter-spacing: 0.2em;
             margin-top: 30px;
             text-transform: uppercase;
@@ -903,16 +909,29 @@
         }
 
         /* --- STICKY COLOR PALETTE --- */
+        /* --- STICKY COLOR PALETTE --- */
         .color-palette.sticky-bottom {
             position: sticky;
-            top: 100px; /* Accounts for the navigation bar so it doesn't hide underneath it */
+            top: 90px; /* Sits right beneath your navigation bar */
             display: flex;
             justify-content: space-between; 
             width: 90%; 
             max-width: 350px; 
-            margin: 0 auto 40px auto; /* Centers it and adds breathing room before the photos */
-            padding: 10px 0;
-            z-index: 50; 
+            
+            /* MARGIN MATH: 
+               0px (top margin: closer to the text)
+               auto (centers it horizontally)
+               40px (bottom margin: gap before the first image)
+               auto (centers it horizontally) */
+            margin: 0px auto 40px auto; 
+            
+            padding: 10px 15px;
+            z-index: 50; /* Forces it to stay ON TOP of the photos */
+            
+            /* Pro-tip: Adding a background matching your page prevents 
+               the photos from showing through the gaps between the circles! */
+            background-color: rgba(250, 248, 245, 0.95); 
+            border-radius: 30px; /* Gives it a nice floating pill shape */
         }
 
         .color-palette.sticky-bottom .color-icon {
@@ -1290,17 +1309,16 @@
                 </span>
             </p>
         </div>
-
-
-        <div class="attire-scroll-container">
-             <div class="color-palette sticky-bottom">
+        
+        <div class="color-palette sticky-bottom">
             <img src="images/color1.svg" class="color-icon" alt="Color option 1">
             <img src="images/color2.svg" class="color-icon" alt="Color option 2">
             <img src="images/color3.svg" class="color-icon" alt="Color option 3">
             <img src="images/color4.svg" class="color-icon" alt="Color option 4">
             <img src="images/color5.svg" class="color-icon" alt="Color option 5">
         </div>
-            
+        
+        <div class="attire-scroll-container">
             <div class="scroll-image-wrapper reveal-item">
                 <img src="images/men_image_1.png" alt="Men Style 1">
             </div>
