@@ -849,10 +849,24 @@
         
         /* --- DETAILS SECTION WRAPPER --- */
         .details-wrapper {
-            border-top: 1px solid #D4CFC6;
-            border-bottom: 1px solid #D4CFC6;
-            padding: 35px 0;
-            margin-bottom: 40px;
+            padding: 10px 0 30px 0;
+            margin-bottom: 20px;
+        }
+
+        /* --- NEW: MAP BANNER STYLES --- */
+        .map-banner {
+            width: 100%;
+            background-color: #3e302b; /* Matches the dark brown edges of map1.jpg */
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+        
+        .map-banner img {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            display: block;
         }
 
         /* --- SECTION MAIN TITLES (Details & Why We Chose Here) --- */
@@ -867,8 +881,13 @@
             color: #3A3836;
         }
 
-        /* --- INFO SECTIONS --- */
-        .info-section { margin-bottom: 30px; }
+        /* --- INFO SECTIONS WITH LEFT BORDER --- */
+        .info-section.with-border {
+            border-left: 3px solid #3A3836;
+            padding-left: 18px;
+            margin-bottom: 35px;
+        }
+        
         .details-wrapper .info-section:last-child { margin-bottom: 0; } 
         
         /* --- SUB-HEADERS (The Venue, Getting There, Accommodation) --- */
@@ -1349,61 +1368,22 @@
 
     </div>
 
-    <div id="address-page" class="content-page">
-        <div class="address-container">
-            <h1><span class="lang-zh">地点</span><span class="lang-en">Location</span></h1>
+    <div id="address-page" class="content-page" style="padding-left:0; padding-right:0;">
+        
+        <div class="address-container" style="margin: 0 auto;">
+            <h1><span class="lang-zh">仪式地址</span><span class="lang-en">Location</span></h1>
+        </div>
+
+        <div class="map-banner">
+            <img src="images/map1.jpg" alt="Venue Layout">
+        </div>
+
+        <div class="address-container" style="margin: 0 auto;">
             
-            <div class="map-figure">
-                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
-                <img src="images/map_EN.jpg" class="lang-en" alt="Event Location Map (EN)">
-            </div>
-
-            <div class="info-section">
-                <h2><span class="lang-zh">东景缘</span><span class="lang-en">Dongjingyuan</span></h2>
-                
-                <div class="lang-zh">
-                    <p>[中文占位符：请在这里填写关于东景缘的介绍、具体细节或其他内容]</p>
-                </div>
-
-                <div class="lang-en">
-                    <p>[English placeholder: Please add your specific introduction, details, or other content about Dongjingyuan here.]</p>
-                </div>
-            </div>
-
-            <div class="info-section">
-                <h2><span class="lang-zh">为什么选在这里</span><span class="lang-en">Why We Chose Here</span></h2>
-                
-                <div class="lang-zh">
-                    <p> 在成为我们许下誓言的殿堂之前，智珠寺已经在这片胡同深处静静伫立了六百余年。它的历史可追溯至明朝永乐年间，后于清康熙时期重修。这里曾是皇家印经厂的所在，墨香与梵音曾在此交织。
-                        我们走过世界很多地方，但最终决定在这座红墙古刹前结为夫妻，不仅因为它极简高级的美学，更因为它本身，就是一篇关于“时间与爱”的隐喻。</p>
-                    <p>张维翀选择北京，因为这是他从小长大的地方。虽然他平时没少吐槽北京的交通和春天的柳絮，但离开北京后，他最想念的，偏偏是回家路上那隐隐约约的鸽哨声。而叶子对这座城市的喜爱，更多是喜欢身处北京时,松弛，自在的自己。</p>
-                    <br>
-                    <p>很多时候，北京对我们来说就是一种很具体的“感觉”。是红墙和蓝天撞在一起的颜色，是冬天铜锅涮肉飘出来的白气蒙住了玻璃，是我们俩很爱在北京约会散步，走到什刹海，然后静静地跟晚霞一起融进夜色里。</p>
-                    <br>
-                    <p>筹备婚礼的时候我们一直在想，到底什么样的空间，能把我们对这座城市的感情，以及它对我们的意义装进去呢？直到我们找到了“东景缘”。几乎是同一时间，我们毫不犹豫地说：“就是这儿了。”</p>
-                    <br>
-                    <p>它就在故宫旁边，是一座被精心修复过、有着600年历史的藏传佛教寺庙（智珠寺）。其实我们俩本身并没有特定的宗教信仰，但站在这里，那些古老的木梁和安静的院落，就是有一种能让人瞬间平静下来的力量。厚重的历史和现代艺术在这里交织得很自然，好像在喧闹的市中心辟出了一块净土。在这样一个历经岁月洗礼的地方，去开启我们共同的未来，这种不言而喻的浪漫让我们特别着迷。 </p>
-                    <br>
-                    <p>而且，熟悉我们的朋友都知道，我们俩在探索吃这件事上有着无穷的热情。场地里的 TRB Hutong 餐厅，主厨是 Lucas——就是那位成功把法餐和北京豆汁儿奇妙融合在一起的大厨。这也算是满足了我们的一点小私心。</p>
-                    <br>
-                    <p>我们迫不及待想在这个低调又宁静的空间里，和最爱的亲友们一起分享这份踏实感。 </p>
-                </div>
-
-                <div class="lang-en">
-                    <p>Will chose Beijing because it’s where he grew up. Even though he often complains about the traffic and the spring willow catkins, what he misses most when he’s away is the faint sound of pigeon whistles on his way home. For Zoey, her love for this city is more about liking who she is when she’s here—relaxed and at ease.</p>
-                    <p>Most of the time, Beijing is a very specific "feeling" for us. It’s the striking contrast of red walls against a blue sky; it’s the white steam rising from a copper hot pot in winter, fogging up the windows; it’s how we love going on walking dates in the city, strolling all the way to Shichahai, and quietly melting into the night along with the sunset.</p>
-                    <p>While planning the wedding, we kept wondering: what kind of space could truly hold our feelings for this city and what it means to us? That was until we found Dongjingyuan. Almost at the exact same time, we said without hesitation, "This is it."</p>
-                    <p>Located right next to the Forbidden City, it is a meticulously restored, 600-year-old Tibetan Buddhist temple (Zhizhu Temple). Neither of us follows a specific religion, but standing there, the ancient wooden beams and the quiet courtyard possess a power that makes you feel instantly at peace. The weight of history and modern art blend seamlessly, carving out a pure sanctuary right in the middle of a bustling downtown. The unspoken romance of stepping into our future together in a place that has weathered so much time completely captivated us.</p>
-                    <p>Plus, friends who know us well know we have an endless enthusiasm for exploring food. The venue is home to TRB Hutong, led by Chef Lucas—the very chef who miraculously fused French fine dining with traditional Beijing Douzhi (fermented mung bean milk). You could say this satisfies a little selfish craving of ours.</p>
-                    <p>We can't wait to share this deep sense of groundedness with our favorite people in this understated, serene space.</p>
-                </div>
-            </div>
-
             <div class="details-wrapper">
+                <h2><span class="lang-zh">详情信息</span><span class="lang-en">Details</span></h2>
                 
-                <h2><span class="lang-zh">详细信息</span><span class="lang-en">Details</span></h2>
-                
-                <div class="info-section">
+                <div class="info-section with-border">
                     <h3><span class="lang-zh">场地</span><span class="lang-en">The Venue</span></h3>
                     <p>
                         <span class="lang-zh">仪式将于<strong>东景缘主殿——智珠寺</strong>举行。从正门进入后根据指示牌方向即可到达。</span>
@@ -1411,32 +1391,38 @@
                     </p>
                 </div>
                 
-                 <div class="info-section">
+                 <div class="info-section with-border">
                     <h3><span class="lang-zh">餐饮</span><span class="lang-en">Dinner</span></h3>
                     <p>
-                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。卢卡斯主厨的烹饪风格“独具匠心且原汁原味”，深谙法国传统烹饪精髓，并巧妙融入现代灵感。
+                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。卢卡斯主厨的烹饪风格“独具匠心且原汁原味”，深谙法国传统烹饪精髓，并巧妙融入现代灵感。<br><br>
                         <b>为了给您带来别具一格的体验，本次晚宴将有别于传统的中式圆桌筵席，而是精心为您准备了经典的法式套餐（4 courses）。主厨将采撷初秋最鲜美的应季食材，将层次丰富的口感与艺术品般的摆盘完美交织，让每一道菜肴都娓娓道来一个独特的故事。席间，我们更准备了精选红白葡萄酒为您无限量供应。期待这场精致的味觉与微醺盛宴，能为您留下难忘的美好回忆。   
                         </b> </span>
-                        <span class="lang-en">Our wedding dinner will be catered by the renowned French restaurant TRB Hutong, thoughtfully curated by Chef Lucas Garigliano. "Creative and authentic" perfectly describe Chef Lucas’s culinary style. Deeply inspired by classic French traditions, he masterfully elevates his dishes with a modern twist.
-
-To offer you a truly unique experience, our reception will step away from the traditional Chinese family-style banquet. Instead, we have carefully prepared a classic, individually plated 4-course French menu. Featuring the finest seasonal ingredients of early autumn, Chef Lucas beautifully blends rich flavors with artistic presentations, ensuring every dish tells its own unique story.
-
-Throughout the evening, you will also enjoy an unlimited flow of carefully selected red and white wines. We hope this extraordinary culinary experience will leave you with beautiful and lasting memories of our special night.</span>
+                        <span class="lang-en">Our wedding dinner will be catered by the renowned French restaurant TRB Hutong, thoughtfully curated by Chef Lucas Garigliano. "Creative and authentic" perfectly describe Chef Lucas’s culinary style. Deeply inspired by classic French traditions, he masterfully elevates his dishes with a modern twist.<br><br>
+                        To offer you a truly unique experience, our reception will step away from the traditional Chinese family-style banquet. Instead, we have carefully prepared a classic, individually plated 4-course French menu. Featuring the finest seasonal ingredients of early autumn, Chef Lucas beautifully blends rich flavors with artistic presentations, ensuring every dish tells its own unique story.<br><br>
+                        Throughout the evening, you will also enjoy an unlimited flow of carefully selected red and white wines. We hope this extraordinary culinary experience will leave you with beautiful and lasting memories of our special night.</span>
                     </p>
                 </div>
+                
+                <div class="info-section with-border">
+                    <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
+                    <p> 
+                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了房间。如果您需要住宿，请提前告知，以便我们为您预订。</span>
+                        <span class="lang-en">We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking.</span>
+                    </p>          
+                </div>
 
-                <div class="info-section">
-                    <h3><span class="lang-zh">交通指南</span><span class="lang-en">Getting There</span></h3>
+                <div class="info-section with-border" style="margin-bottom: 20px;">
+                    <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
                     
                     <div class="lang-zh">
                         <div class="transport-item">
                             <strong>打车：</strong>导航至 <a href="geo:0,0?q=北京市东城区沙滩北街二十三号智珠寺" style="text-decoration: underline; color: #5d4037; font-weight: bold;">北京市东城区沙滩北街二十三号智珠寺</a>
                         </div>
                         <div class="transport-item">
-                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考地图。
+                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
                         </div>
                         <div class="transport-item">
-                            <strong>自驾：</strong>东景缘提供的提车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考地图。
+                            <strong>自驾：</strong>东景缘提供的停车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考下方地图。
                         </div>
                     </div>
 
@@ -1445,26 +1431,57 @@ Throughout the evening, you will also enjoy an unlimited flow of carefully selec
                             <strong>Taxi:</strong> Navigate to <a href="geo:0,0?q=Zhizhusi+Beijing" style="text-decoration: underline; color: #5d4037; font-weight: bold;">SHATAN BEIJIE, #23 ZHIZHUSI, DONGCHENG DISTRICT, BEIJING</a>
                         </div>
                         <div class="transport-item">
-                            <strong>Subway:</strong> Take Subway Line 8 to Nanluoguxiang Station and use Exit F. Please refer to the map for walking instructions.
+                            <strong>Subway:</strong> Take Subway Line 8 to Nanluoguxiang Station and use Exit F. Please refer to the map below for walking instructions.
                         </div>
                         <div class="transport-item">
-                            <strong>Drive:</strong> Limited parking is available off-site for those who prefer to drive. Please refer to the map for parking and walking instructions.
+                            <strong>Drive:</strong> Limited parking is available off-site for those who prefer to drive. Please refer to the map below for parking and walking instructions.
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="map-figure" style="margin-bottom: 60px;">
+                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
+                <img src="images/map_EN.jpg" class="lang-en" alt="Event Location Map (EN)">
+            </div>
+
+            <div class="info-section why-we-chose">
+                <h2><span class="lang-zh">为什么选这里？</span><span class="lang-en">Why We Chose Here?</span></h2>
                 
-                <div class="info-section">
-                    <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
-                    <p> 
-                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了房间。如果您需要住宿，请提前告知，以便我们为您预订。</span>
-                        <span class="lang-en">We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking.</span>
-                    </p>          
+                <div class="lang-zh">
+                    <p>在成为我们许下誓言的殿堂之前，智珠寺已经在这片胡同深处静静伫立了六百余年。它的历史可追溯至明朝永乐年间，后于清康熙时期重修。这里曾是皇家印经厂的所在，墨香与梵音曾在此交织。我们走过世界很多地方，但最终决定在这座红墙古刹前结为夫妻，不仅因为它极简高级的美学，更因为它本身，就是一篇关于“时间与爱”的隐喻。</p>
+                    <br>
+                    <p>张维翀选择北京，因为这是他从小长大的地方。虽然他平时没少吐槽北京的交通和春天的柳絮，但离开北京后，他最想念的，偏偏是回家路上那隐隐约约的鸽哨声。而叶子对这座城市的喜爱，更多是喜欢身处北京时,松弛，自在的自己。</p>
+                    <br>
+                    <p>很多时候，北京对我们来说就是一种很具体的“感觉”。是红墙和蓝天撞在一起的颜色，是冬天铜锅涮肉飘出来的白气蒙住了玻璃，是我们俩很爱在北京约会散步，走到什刹海，然后静静地跟晚霞一起融进夜色里。</p>
+                    <br>
+                    <p>筹备婚礼的时候我们一直在想，到底什么样的空间，能把我们对这座城市的感情，以及它对我们的意义装进去呢？直到我们找到了“东景缘”。几乎是同一时间，我们毫不犹豫地说：“就是这儿了。”</p>
+                    <br>
+                    <p>它就在故宫旁边，是一座被精心修复过、有着600年历史的藏传佛教寺庙（智珠寺）。其实我们俩本身并没有特定的宗教信仰，但站在这里，那些古老的木梁和安静的院落，就是有一种能让人瞬间平静下来的力量。厚重的历史和现代艺术在这里交织得很自然，好像在喧闹的市中心辟出了一块净土。在这样一个历经岁月洗礼的地方，去开启我们共同的未来，这种不言而喻的浪漫让我们特别着迷。</p>
+                    <br>
+                    <p>而且，熟悉我们的朋友都知道，我们俩在探索吃这件事上有着无穷的热情。场地里的 TRB Hutong 餐厅，主厨是 Lucas——就是那位成功把法餐和北京豆汁儿奇妙融合在一起的大厨。这也算是满足了我们的一点小私心。</p>
+                    <br>
+                    <p>我们迫不及待想在这个低调又宁静的空间里，和最爱的亲友们一起分享这份踏实感。</p>
+                </div>
+
+                <div class="lang-en">
+                    <p>Will chose Beijing because it’s where he grew up. Even though he often complains about the traffic and the spring willow catkins, what he misses most when he’s away is the faint sound of pigeon whistles on his way home. For Zoey, her love for this city is more about liking who she is when she’s here—relaxed and at ease.</p>
+                    <br>
+                    <p>Most of the time, Beijing is a very specific "feeling" for us. It’s the striking contrast of red walls against a blue sky; it’s the white steam rising from a copper hot pot in winter, fogging up the windows; it’s how we love going on walking dates in the city, strolling all the way to Shichahai, and quietly melting into the night along with the sunset.</p>
+                    <br>
+                    <p>While planning the wedding, we kept wondering: what kind of space could truly hold our feelings for this city and what it means to us? That was until we found Dongjingyuan. Almost at the exact same time, we said without hesitation, "This is it."</p>
+                    <br>
+                    <p>Located right next to the Forbidden City, it is a meticulously restored, 600-year-old Tibetan Buddhist temple (Zhizhu Temple). Neither of us follows a specific religion, but standing there, the ancient wooden beams and the quiet courtyard possess a power that makes you feel instantly at peace. The weight of history and modern art blend seamlessly, carving out a pure sanctuary right in the middle of a bustling downtown. The unspoken romance of stepping into our future together in a place that has weathered so much time completely captivated us.</p>
+                    <br>
+                    <p>Plus, friends who know us well know we have an endless enthusiasm for exploring food. The venue is home to TRB Hutong, led by Chef Lucas—the very chef who miraculously fused French fine dining with traditional Beijing Douzhi (fermented mung bean milk). You could say this satisfies a little selfish craving of ours.</p>
+                    <br>
+                    <p>We can't wait to share this deep sense of groundedness with our favorite people in this understated, serene space.</p>
                 </div>
             </div>
 
         </div>
     </div>
-
+    
 <script>
     // --- VARIABLES ---
     const bgMusic = document.getElementById('bgMusic');
