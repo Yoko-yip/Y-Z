@@ -786,11 +786,25 @@ nav {
             margin-top: 20px;
             padding: 25px 0;
             box-sizing: border-box;
-            border-top: 1px solid #ddd; /* Thin break line above marquee */
+            
+            /* The top and bottom borders */
+            border-top: 1px solid #ddd; 
+            border-bottom: 1px solid #ddd; /* ADDED THIS LINE */
+            
             display: flex;
             flex-direction: column; 
             gap: 12px; 
         }
+
+        /* --- REDUCE THE GAP BETWEEN PAGES --- */
+        #about-page {
+            padding-bottom: 0 !important; /* Removes the extra space at the bottom of the story */
+        }
+        
+        #attire-page {
+            padding-top: 60px !important; /* Shrinks the empty space above the Attire title */
+        }
+        
 
         .scrolling-text {
             display: block;
@@ -1264,54 +1278,58 @@ nav {
             </p>
         </div>
         
-        <div class="color-palette sticky-bottom">
-            <img src="images/color1.svg" class="color-icon" alt="Color option 1" onclick="scrollToOutfit('outfit-1')">
-            <img src="images/color2.svg" class="color-icon" alt="Color option 2" onclick="scrollToOutfit('outfit-2')">
-            <img src="images/color3.svg" class="color-icon" alt="Color option 3" onclick="scrollToOutfit('outfit-3')">
-            <img src="images/color4.svg" class="color-icon" alt="Color option 4" onclick="scrollToOutfit('outfit-4')">
-            <img src="images/color5.svg" class="color-icon" alt="Color option 5" onclick="scrollToOutfit('outfit-5')">
-        </div>
-        
-        <div class="attire-scroll-container">
-            <div id="outfit-1" class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_1.png" alt="Men Style 1">
+        <div class="attire-gallery-wrapper" style="width: 100%;">
+            
+            <div class="color-palette sticky-bottom">
+                <img src="images/color1.svg" class="color-icon" alt="Color option 1" onclick="scrollToOutfit('outfit-1')">
+                <img src="images/color2.svg" class="color-icon" alt="Color option 2" onclick="scrollToOutfit('outfit-2')">
+                <img src="images/color3.svg" class="color-icon" alt="Color option 3" onclick="scrollToOutfit('outfit-3')">
+                <img src="images/color4.svg" class="color-icon" alt="Color option 4" onclick="scrollToOutfit('outfit-4')">
+                <img src="images/color5.svg" class="color-icon" alt="Color option 5" onclick="scrollToOutfit('outfit-5')">
             </div>
             
-            <div class="scroll-image-wrapper reveal-item">
-                <img src="images/women_image_1.png" alt="Women Style 1">
-            </div>
-            
-            <div id="outfit-2" class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_2.png" alt="Men Style 2">
-            </div>
-            
-            <div class="scroll-image-wrapper reveal-item">
-                <img src="images/women_image_2.png" alt="Women Style 2">
-            </div>
-            
-            <div id="outfit-3" class="scroll-image-wrapper reveal-item">
-                <img src="images/women_image_3.png" alt="Women Style 3">
-            </div>
-            
-            <div class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_3.png" alt="Men Style 3">
-            </div>
+            <div class="attire-scroll-container">
+                <div id="outfit-1" class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_1.png" alt="Men Style 1">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_1.png" alt="Women Style 1">
+                </div>
+                
+                <div id="outfit-2" class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_2.png" alt="Men Style 2">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_2.png" alt="Women Style 2">
+                </div>
+                
+                <div id="outfit-3" class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_3.png" alt="Women Style 3">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_3.png" alt="Men Style 3">
+                </div>
 
-            <div id="outfit-4" class="scroll-image-wrapper reveal-item">
-                <img src="images/women_image_4.png" alt="Women Style 4">
+                <div id="outfit-4" class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_4.png" alt="Women Style 4">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_4.png" alt="Men Style 4">
+                </div>
+
+                <div id="outfit-5" class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_5.png" alt="Men Style 5">
+                </div>
+
+                 <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_5.png" alt="Women Style 5">
+                </div>
             </div>
             
-            <div class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_4.png" alt="Men Style 4">
-            </div>
-
-            <div id="outfit-5" class="scroll-image-wrapper reveal-item">
-                <img src="images/men_image_5.png" alt="Men Style 5">
-            </div>
-
-             <div class="scroll-image-wrapper reveal-item">
-                <img src="images/women_image_5.png" alt="Women Style 5">
-            </div>
         </div>
 
     </div>
@@ -1338,6 +1356,25 @@ nav {
                         <span class="lang-en">The ceremony will be held at the <strong>Zhizhusi (Main Hall of The Temple)</strong>. Please arrive through the main gate and follow the signs to the garden area.</span>
                     </p>
                 </div>
+
+                <div class="info-section with-border" style="margin-bottom: 20px;">
+                    <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
+                    
+                    <div class="lang-zh">
+                        <div class="transport-item">
+                            <strong>打车：</strong>导航至 <a href="geo:0,0?q=北京市东城区沙滩北街二十三号智珠寺" style="text-decoration: underline; color: #5d4037; font-weight: bold;">北京市东城区沙滩北街二十三号智珠寺</a>
+                        </div>
+                        <div class="transport-item">
+                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
+                        </div>
+                        <div class="transport-item">
+                            <strong>自驾：</strong>东景缘提供的停车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考下方地图。
+                        </div>
+                    </div>
+                     <div class="map-figure" style="margin-bottom: 60px;">
+                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
+                     </div>
+                </div>
                 
                  <div class="info-section with-border">
                     <h3><span class="lang-zh">餐饮</span><span class="lang-en">Dinner</span></h3>
@@ -1354,45 +1391,15 @@ nav {
                 <div class="info-section with-border">
                     <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
                     <p> 
-                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了房间。如果您需要住宿，请提前告知，以便我们为您预订。</span>
+                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了两晚（9/11-9/13）房间。如果您有其他安排，请提前告知。</span>
                         <span class="lang-en">We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking.</span>
                     </p>          
                 </div>
 
-                <div class="info-section with-border" style="margin-bottom: 20px;">
-                    <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
-                    
-                    <div class="lang-zh">
-                        <div class="transport-item">
-                            <strong>打车：</strong>导航至 <a href="geo:0,0?q=北京市东城区沙滩北街二十三号智珠寺" style="text-decoration: underline; color: #5d4037; font-weight: bold;">北京市东城区沙滩北街二十三号智珠寺</a>
-                        </div>
-                        <div class="transport-item">
-                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
-                        </div>
-                        <div class="transport-item">
-                            <strong>自驾：</strong>东景缘提供的停车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考下方地图。
-                        </div>
-                    </div>
-
-                    <div class="lang-en">
-                        <div class="transport-item">
-                            <strong>Taxi:</strong> Navigate to <a href="geo:0,0?q=Zhizhusi+Beijing" style="text-decoration: underline; color: #5d4037; font-weight: bold;">SHATAN BEIJIE, #23 ZHIZHUSI, DONGCHENG DISTRICT, BEIJING</a>
-                        </div>
-                        <div class="transport-item">
-                            <strong>Subway:</strong> Take Subway Line 8 to Nanluoguxiang Station and use Exit F. Please refer to the map below for walking instructions.
-                        </div>
-                        <div class="transport-item">
-                            <strong>Drive:</strong> Limited parking is available off-site for those who prefer to drive. Please refer to the map below for parking and walking instructions.
-                        </div>
-                    </div>
-                </div>
+                
             </div>
 
-            <div class="map-figure" style="margin-bottom: 60px;">
-                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
-                <img src="images/map_EN.jpg" class="lang-en" alt="Event Location Map (EN)">
-            </div>
-
+           
             <div class="info-section why-we-chose">
                 <h2><span class="lang-zh">为什么选这里？</span><span class="lang-en">Why We Chose Here?</span></h2>
                 
@@ -1434,11 +1441,11 @@ nav {
         <h1>哪儿玩儿</h1>
         <div class="details-wrapper">
             <h2>推荐路线</h2>
-            <div class="info-section with-border" style="text-align: left;">
-                <p>
-                    <span class="lang-zh">尽管仪式只有一个晚上，但是我们希望大家能用这次来北京的时间好好休息，或许也可以从下面这些我们俩非常喜欢的位置里，选到合您胃口的地点，给您的北京之行留下难忘的记忆。</span>
-                </p>
-            </div>
+                <p class="attire-description">
+                <span class="lang-zh">
+                    尽管仪式只有一个晚上，但是我们希望大家能用这次来北京的时间好好休息，或许也可以从下面这些我们俩非常喜欢的位置里，选到合您胃口的地点，给您的北京之行留下难忘的记忆。
+                </span>
+            </p>
         </div>
     </div>
 </div>
@@ -1604,28 +1611,27 @@ nav {
     // --- SCROLL REVEAL LOGIC ---
     function setupScrollReveal() {
         const revealElements = document.querySelectorAll('.reveal-item');
-        
-        const observerOptions = {
-            root: null, // Use viewport
-            rootMargin: '0px',
-            threshold: 0.15 // Trigger when 15% of the element is visible
-        };
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
 
-        const observer = new IntersectionObserver((entries) => {
+        // We added 'observerInstance' here so we can tell it to stop watching
+        const observer = new IntersectionObserver((entries, observerInstance) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
+                    // 1. Add the active class to animate it in
                     entry.target.classList.add('active');
-                } else {
-                    // Optional: Remove class when element leaves view
-                    // so it animates again when scrolling back up.
-                    // Comment this line out if you only want it to animate once.
-                    entry.target.classList.remove('active'); 
-                }
+                    
+                    // 2. Tell the observer to STOP watching this specific image.
+                    // This completely prevents the chaotic flashing on fast scrolls!
+                    observerInstance.unobserve(entry.target); 
+                } 
+                // Notice we deleted the "else" block that was removing the class!
             });
         }, observerOptions);
 
         revealElements.forEach(el => observer.observe(el));
     }
+
+    
 
     // Initialize the observer when the DOM is ready
     document.addEventListener('DOMContentLoaded', setupScrollReveal);
