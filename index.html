@@ -808,65 +808,45 @@ nav {
             100% { transform: translateX(-100%); }
         }
         
-        /* --- CONTENT PAGES --- */
-        /* 1. Prevent scrolling before the envelope is opened */
+        /* Prevent scrolling before the envelope is opened */
         body {
             overflow: hidden; 
         }
 
-        /* 2. Make the home page take up the full first screen */
+        /* Make the home page take up the full first screen */
         #home-page {
             position: relative;
             width: 100%;
-            height: 100vh; /* 100% of the viewport height */
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 10; 
         }
 
-        /* 3. Reset the Invitation Card to sit centered inside the home page */
-        #invitation-card {
-            position: relative; 
-            z-index: 20; 
-            text-align: center;
-            color: #ffffff;
-            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-            font-family: 'Times New Roman', Times, serif; 
-            width: 100%; 
-            max-width: 500px;
-            /* Resets the old positioning */
-            top: auto;
-            left: auto;
-            transform: none;
-            opacity: 0; 
-            pointer-events: none;
-            transition: opacity 2s ease-in-out;
-        }
-        
+        /* --- CONTENT PAGES --- */
         .content-page h1 {
             width: 90%;
-            max-width: 800px; /* 与正文容器保持相同的最大宽度 */
+            max-width: 800px;
             text-align: left;
-            font-weight: bold; /* 字体加粗 */
+            font-weight: bold; 
             margin-bottom: 30px;
             color: #ffffff; 
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4); 
         }
         
-        /* 4. Let all other content pages stack vertically */
         .content-page {
-            display: flex; 
-            position: relative; 
+            display: flex; /* This was previously set to 'none' in your file! */
+            position: relative;
             width: 100%;
-            background-color: transparent; /* Changed to transparent so the willow background shows through! */
+            background-color: transparent; 
             z-index: 100; 
             box-sizing: border-box;
             padding-top: 100px; 
             padding-bottom: 50px;
             flex-direction: column;
             align-items: center;
-            opacity: 1; 
+            opacity: 1;
             transition: none;
         }
         
@@ -1489,11 +1469,11 @@ nav {
         }
     });
 
-    // --- SINGLE PAGE SCROLLING LOGIC ---
+   // --- SINGLE PAGE SCROLLING LOGIC ---
     function scrollToSection(sectionId) {
         const target = document.getElementById(sectionId);
         if (target) {
-            const headerOffset = 80; // Accounts for the height of your sticky nav
+            const headerOffset = 80; 
             const elementPosition = target.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -1506,14 +1486,13 @@ nav {
 
     // Automatically highlight the active navigation tab while scrolling
     window.addEventListener('scroll', () => {
-        const sections = ['home-page', 'about-page', 'attire-page', 'address-page', 'play-page'];
+        const sections = ['home-page', 'about-page', 'attire-page', 'address-page']; // Removed play-page since it's not in your HTML yet
         let current = '';
 
         sections.forEach(id => {
             const section = document.getElementById(id);
             if (section) {
                 const sectionTop = section.offsetTop;
-                // Trigger the highlight right before the section hits the top of the screen
                 if (window.pageYOffset >= sectionTop - 150) {
                     current = id;
                 }
@@ -1527,14 +1506,24 @@ nav {
             }
         });
     });
-    
-// --- CINEMATIC SEQUENCE LOGIC ---
+
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = document.querySelector('.menu-icon');
+        const navbar = document.getElementById('navbar'); 
+        
+        navLinks.classList.toggle('show');
+        navbar.classList.toggle('menu-open');
+        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
+    }
+
+    // --- CINEMATIC SEQUENCE LOGIC ---
 
     function finishAnimation() {
-        // 1. Trigger the background blur immediately
+        // Trigger the background blur immediately
         landingScene.classList.add('blurred');
 
-        // 2. Reveal Invitation, Nav, and Mute Btn immediately (No setTimeout)
+        // Reveal Invitation, Nav, and Mute Btn immediately
         invitationCard.style.display = 'block'; 
         invitationCard.classList.add('fade-in');
         nav.classList.add('fade-in');
@@ -1542,7 +1531,7 @@ nav {
     }
 
     // OPEN ENVELOPE CLICK
-    llet envelopeOpened = false;
+    let envelopeOpened = false;
     openEnvelopeBtn.addEventListener('click', function() {
         if (envelopeOpened) return; 
         envelopeOpened = true;
