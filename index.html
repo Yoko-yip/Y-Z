@@ -444,14 +444,22 @@ nav {
         .sub-title { font-size: 14px; letter-spacing: 3px; color: #eeeeee; margin-bottom: 40px; text-transform: uppercase; }        
         .names { margin-bottom: 20px; }
         .names h2 { font-size: 28px; margin: 5px 0; font-weight: normal; letter-spacing: 3px; }
+        /* Updated Date: Removed the bottom border and shrunk the gap */
         .date { 
-            font-size: 28px; /* Enlarged from 16px */
+            font-size: 28px; 
             letter-spacing: 2px; 
+            margin-bottom: 10px; /* Reduced gap so the location sits snugly below */
+        }   
+
+        /* New Location: Same font family, slightly smaller size, holds the bottom border */
+        .location {
+            font-size: 22px; 
+            letter-spacing: 3px; 
             margin-bottom: 50px; 
-            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Changed border to white */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
             display: inline-block; 
-            padding-bottom: 10px; 
-        }        
+            padding-bottom: 15px;
+        }   
         .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #eeeeee; }
         .schedule .time { margin-right: 15px; font-weight: bold; color: #ffffff; }
         
@@ -1161,6 +1169,7 @@ nav {
                 <div class="en">Zoey & Will</div>
             </div>
             <div class="date">2026.09.12</div>
+            <div class="location">Temple 东景缘</div>
             <div class="schedule">
                 <div>Schedule</div>
                 <div><span class="time">18:00</span> Sign in / 签到</div>
