@@ -462,58 +462,66 @@ nav {
         .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #666; }
         .schedule .time { margin-right: 15px; font-weight: bold; color: 3A3836; }
 
-        /* --- LANDING SCENE (Tree + Background) --- */
+/* --- LANDING SCENE (Tree + Background) --- */
         #landing-scene {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; 
             pointer-events: none; 
-            background-color: #FAF8F5; /* Green Background */
+            background-color: #FAF8F5; 
         }
 
-        .willow-svg-container, 
+        #willow-bg-container, 
         .shadow-overlay, 
         .lottie-bird-container {
             opacity: 0;
             transition: opacity 2s ease-in-out;
         }
 
-        #landing-scene.show-elements .willow-svg-container,
+        #landing-scene.show-elements #willow-bg-container,
         #landing-scene.show-elements .shadow-overlay,
         #landing-scene.show-elements .lottie-bird-container {
             opacity: 1;
         }
 
-        /* --- OPTIMIZED MIST EFFECT (No Lag) --- */
-        #landing-scene.blurred .willow-svg-container,
+        /* --- OPTIMIZED MIST EFFECT (Fades the scene slightly for readability) --- */
+        #landing-scene.blurred #willow-bg-container,
         #landing-scene.blurred .shadow-overlay {
-            filter: none; 
             opacity: 0.25; 
             transition: opacity 3s ease-in-out;
         }
 
-        #landing-scene.blurred .branch-group, 
         #landing-scene.blurred .shadow-overlay {
             animation-play-state: paused;
         }
 
-        /* 1. Willow Tree CSS */
-        .willow-svg-container {
+        /* 1. Static Willow Background & Blur Overlay */
+        #willow-bg-container {
             position: absolute;
-            top: -20px; left: -20px;
-            width: 110%; height: 110%; 
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%; 
             overflow: hidden;
         }
-        svg { width: 100%; height: 100%; overflow: visible; }
-        
-        .branch-group { transform-origin: 200px 0px; animation: branchSway 6s ease-in-out infinite alternate; }
-        .branch-1 { animation-duration: 5s; animation-delay: 0s; }
-        .branch-2 { animation-duration: 7s; animation-delay: -1s; }
-        .branch-3 { animation-duration: 6s; animation-delay: -3s; }
-        .branch-4 { animation-duration: 8s; animation-delay: -2s; }
 
-        @keyframes branchSway { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
-        .willow-text { font-family: 'Courier New', Courier, monospace; font-size: 16px; fill: #2e8b57; letter-spacing: 2px; }
+        .willow-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center; 
+        }
+
+        .blur-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            backdrop-filter: blur(4px); 
+            -webkit-backdrop-filter: blur(4px); 
+            z-index: 2; 
+        }
 
         /* 2. Atmospheric Shadow Layer */
         .shadow-overlay {
@@ -531,7 +539,11 @@ nav {
             background-position: top right;
             animation: shadowSway 5s ease-in-out infinite alternate;
         }
-        @keyframes shadowSway { 0% { transform: translateX(0) rotate(0deg); } 100% { transform: translateX(50px) rotate(3deg); } }
+        
+        @keyframes shadowSway { 
+            0% { transform: translateX(0) rotate(0deg); } 
+            100% { transform: translateX(50px) rotate(3deg); } 
+        }
 
         /* 3. Lottie Birds */
         .lottie-bird-container {
@@ -1041,87 +1053,10 @@ nav {
 
     <div id="landing-scene">
         
-        <div class="willow-svg-container">
-            <svg viewBox="0 0 800 600" preserveAspectRatio="xMinYMin slice">
-                <defs>
-                    <filter id="blur-deep" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" />
-                    </filter>
-                    <filter id="blur-mid" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" />
-                    </filter>
-                    <filter id="blur-light" x="-50%" y="-50%" width="200%" height="200%">
-                        <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
-                    </filter>
-
-                    <path id="curve-bg-1" d="M 40,-50 C 40,100 150,200 120,450" fill="transparent" />
-                    <path id="curve-bg-2" d="M 120,-40 C 120,120 250,200 220,500" fill="transparent" />
-                    <path id="curve-bg-3" d="M 220,-60 C 250,150 450,250 400,550" fill="transparent" />
-                    <path id="curve-bg-4" d="M -20,0 C 20,150 100,250 60,400" fill="transparent" />
-
-                    <path id="curve1" d="M 50,-50 C 50,150 250,250 200,550" fill="transparent" />
-                    <path id="curve2" d="M 150,-50 C 150,200 400,300 300,600" fill="transparent" />
-                    <path id="curve3" d="M 0,-20 C 0,100 120,200 50,500" fill="transparent" />
-                    <path id="curve4" d="M 200,-30 C 250,150 500,200 450,650" fill="transparent" />
-                    <path id="curve5" d="M 100,-40 C 100,100 220,200 180,400" fill="transparent" />
-                    <path id="curve6" d="M 280,-50 C 300,100 550,200 480,580" fill="transparent" />
-                </defs>
-
-                <g class="branch-group branch-3" opacity="0.5" filter="url(#blur-deep)">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="14" fill="#2F4F4F">
-                        <textPath href="#curve-bg-1" startOffset="10%">If I had a flower for every time I thought of you, I could walk through my garden forever.</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-2" opacity="0.4" filter="url(#blur-mid)">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="15" fill="#556B2F">
-                        <textPath href="#curve-bg-2" startOffset="5%">The supreme happiness of life is the conviction that we are loved.</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-4" opacity="0.5" filter="url(#blur-deep)">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="13" fill="#2F4F4F">
-                        <textPath href="#curve-bg-3" startOffset="15%">I carry your heart with me.</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-1" opacity="0.4" filter="url(#blur-light)">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="12" fill="#556B2F">
-                        <textPath href="#curve-bg-4" startOffset="5%">你是我新鲜又永恒的春天，是唯一贯穿我所有诗篇的韵脚</textPath>
-                    </text>
-                </g>
-
-                <g class="branch-group branch-1">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="17" fill="#6B8E23">
-                        <textPath href="#curve1" startOffset="5%">Here, I feel not only the joy of living, but also a deep sense of belonging.</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-2">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="19" fill="#2E8B57" font-weight="bold">
-                        <textPath href="#curve2" startOffset="10%">Happiness is nothing more than the harmony </textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-3">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="16" fill="#556B2F">
-                        <textPath href="#curve3" startOffset="10%">小得盈满，爱逢其时</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-4">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="15" fill="#3CB371">
-                        <textPath href="#curve4" startOffset="15%">between a person and the life they lead.</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-2">
-                    <text class="willow-text" font-family="'Times New Roman', serif" font-size="18" opacity="0.9" fill="#2E8B57">
-                        <textPath href="#curve5" startOffset="5%">四方食事，不过一碗人间烟火</textPath>
-                    </text>
-                </g>
-                <g class="branch-group branch-1">
-                     <text class="willow-text" font-family="'Times New Roman', serif" font-size="17" fill="#8FBC8F">
-                        <textPath href="#curve6" startOffset="8%">I love you, not only for what you are, but for what I am when I am with you.</textPath>
-                    </text>
-                </g>
-            </svg>
+        <div id="willow-bg-container">
+            <img src="willowbg.jpg" alt="Willow Tree Background" class="willow-bg-image">
+            <div class="blur-overlay"></div> 
         </div>
-        
-        <div class="shadow-overlay"></div>
 
         <div class="lottie-bird-container">
             <dotlottie-player 
@@ -1133,6 +1068,7 @@ nav {
                 autoplay>
             </dotlottie-player>
         </div>
+        
     </div>
 
     <!-- APPLE STYLE MUTE BUTTON -->
