@@ -148,122 +148,109 @@
         }
         
        /* --- NAVIGATION BAR --- */
-        nav {
-            position: fixed; 
-            top: 0;              
-            left: 0;             
-            width: 100%;         
-            height: 80px;        
-            background-color: rgba(250, 248, 245, 0.98); 
-            
-            /* CHANGED: This pushes the Language Switcher to Left and Links to Right */
-            display: flex;
-            align-items: center;
-            justify-content: space-between; 
-            
-            /* Add padding to both sides */
-            padding-left: 40px;  
-            padding-right: 80px; 
-            box-sizing: border-box;
+nav {
+    position: fixed; 
+    top: 0;              
+    left: 0;             
+    width: 100%;         
+    height: 80px;        
+    background-color: rgba(250, 248, 245, 0.98); 
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centered layout now that lang toggle is gone */
+    box-sizing: border-box;
+    z-index: 200; 
+    opacity: 0; 
+    pointer-events: none; 
+    transition: opacity 2s ease-in-out;
+}
 
-            z-index: 200; 
-            opacity: 0; 
-            pointer-events: none; 
-            transition: opacity 2s ease-in-out;
-        }
+nav.fade-in { opacity: 1; pointer-events: auto; }
+
+.nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 40px;
+    align-items: baseline; /* Keeps text aligned nicely when font sizes change */
+}
+
+/* Unselected State: Smaller and Lighter */
+.nav-links a {
+    text-decoration: none;
+    color: #888888; 
+    font-size: 16px; 
+    font-weight: 300; 
+    letter-spacing: 2px;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap; 
+}
+
+.nav-links a:hover { color: #555; }
+
+/* Selected State: Larger and Bold */
+.nav-links a.active { 
+    font-size: 22px; 
+    font-weight: bold; 
+    color: #3A3836; 
+    border-bottom: none; /* Removing the underline to match your clean text-size reference */
+}
+
+.menu-icon {
+    display: none !important;
+}
         
-        nav.fade-in { opacity: 1; pointer-events: auto; }
-
-        .nav-links {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: 40px;
-        }
-        .nav-links a {
-            text-decoration: none;
-            color: 3A3836;
-            font-size: 16px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            cursor: pointer;
-            transition: color 0.3s;
-        }
-        .nav-links a:hover { color: #666; }
-        .nav-links a.active { border-bottom: 2px solid #8A9A86; padding-bottom: 5px; }
-
-        .menu-icon {
-            display: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: 3A3836;
-            user-select: none;
-            position: relative;
-            z-index: 300; 
-        }
-
-        /* --- MOBILE STYLES (COMBINED & UPDATED) --- */
         @media (max-width: 768px) {
-            nav { 
-                height: 60px; 
-                padding: 0 20px; 
-                justify-content: flex-end !important; 
-            }
-            .content-page { padding-top: 80px !important; }
-            #navbar > .lang-switch { display: none !important; }
-            
-            #navbar.menu-open .lang-switch {
-                display: flex !important;
-                position: fixed;
-                top: 22px;
-                right: 60px;
-                z-index: 302;
-            }
+    nav { 
+        height: 60px; 
+        padding: 0 15px !important; 
+        justify-content: flex-start !important; 
+        overflow-x: auto; /* Enables horizontal scrolling */
+        scrollbar-width: none; /* Hides scrollbar in Firefox */
+    }
+    
+    /* Hides scrollbar in Chrome/Safari */
+    nav::-webkit-scrollbar { 
+        display: none; 
+    }
 
-            .menu-icon { 
-                display: block; 
-                position: relative;
-                z-index: 301; 
-            }
-            
-            .willow-svg-container {
-                height: 60% !important; 
-                width: 100% !important;
-                left: 0 !important;     
-                top: 0 !important;
-            }
+    .content-page { padding-top: 80px !important; }
+    
+    .menu-icon { display: none !important; } /* Hamburger completely hidden */
 
-            .nav-links {
-                display: none; 
-                position: fixed;
-                top: 0; left: 0; width: 100vw; height: 100vh;
-                background-color: rgba(227, 223, 214, 0.98); 
-                backdrop-filter: blur(15px);
-                -webkit-backdrop-filter: blur(15px); 
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                gap: 50px; 
-                z-index: 300; 
-            }
-            .nav-links.show { display: flex; animation: fadeInMenu 0.4s ease-in-out; }
-            
-            .nav-links a { 
-                font-size: 24px; 
-                color: #3A3836;
-                opacity: 0.7; 
-                transition: all 0.3s ease;
-            }
-            
-            .nav-links a.active { 
-                opacity: 1; 
-                color: #3A3836;
-                border-bottom: 2px solid #8A9A86; 
-                padding-bottom: 8px; 
-            }
-
+    .nav-links {
+        display: flex !important; 
+        position: static;
+        width: max-content; /* Lets the list stretch past the screen width */
+        height: auto;
+        background-color: transparent; 
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none; 
+        flex-direction: row;
+        align-items: baseline;
+        gap: 25px; 
+        animation: none; /* Removes the old fade-in animation */
+    }
+    
+    /* Mobile Unselected */
+    .nav-links a { 
+        font-size: 15px; 
+        color: #999;
+        opacity: 1; 
+    }
+    
+    /* Mobile Selected */
+    .nav-links a.active { 
+        font-size: 19px; 
+        font-weight: bold;
+        color: #3A3836;
+        padding-bottom: 0; 
+        border-bottom: none;
+    }
+                
 
             /* -- NEW: ATTIRE PAGE MOBILE ADJUSTMENTS -- */
             .scroll-image-wrapper:nth-child(n) {
@@ -1145,29 +1132,14 @@
 </button>
 
     <nav id="navbar">
-        <div class="lang-switch" onclick="toggleLanguage()">
-            <span class="lang-option zh">中</span>
-            <span class="separator">|</span>
-            <span class="lang-option en">EN</span>
-        </div>
-
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-        
-        <ul class="nav-links" id="navLinks">
-            <li><a onclick="showPage('home')" id="link-home" class="active">
-                <span class="lang-zh">主页</span><span class="lang-en">Home</span>
-            </a></li>
-            <li><a onclick="showPage('about')" id="link-about">
-                <span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span>
-            </a></li>
-            <li><a onclick="showPage('attire')" id="link-attire">
-                <span class="lang-zh">穿什么</span><span class="lang-en">Attire</span>
-            </a></li>
-            <li><a onclick="showPage('address')" id="link-address">
-                <span class="lang-zh">哪儿见</span><span class="lang-en">Location</span>
-            </a></li>
-        </ul>
-    </nav>
+    <ul class="nav-links" id="navLinks">
+        <li><a onclick="showPage('home')" id="link-home" class="active">主页</a></li>
+        <li><a onclick="showPage('about')" id="link-about">我们的故事</a></li>
+        <li><a onclick="showPage('attire')" id="link-attire">穿什么</a></li>
+        <li><a onclick="showPage('address')" id="link-address">哪儿见</a></li>
+        <li><a onclick="showPage('play')" id="link-play">哪儿玩儿</a></li>
+    </ul>
+</nav>
 
     <!-- NEW ENTRANCE SCREEN (STATIC ENVELOPE IMAGE) -->
     <div id="new-envelope-container">
@@ -1482,6 +1454,20 @@
 
         </div>
     </div>
+    <div id="play-page" class="content-page" style="padding-left:0; padding-right:0;">
+    <div class="address-container" style="margin: 0 auto; text-align: center;">
+        <h1>哪儿玩儿</h1>
+        <div class="details-wrapper">
+            <h2>探索北京</h2>
+            <div class="info-section with-border" style="text-align: left;">
+                <h3><span class="lang-zh">推荐地</span></h3>
+                <p>
+                    <span class="lang-zh">尽管仪式只有一个晚上，但是我们希望大家能用这次来北京的时间好好休息，或许也可以从下面这些我们俩非常喜欢的位置里，选到合您胃口的地点，给您的北京之行留下难忘的记忆。</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
     
 <script>
     // --- VARIABLES ---
@@ -1531,10 +1517,6 @@
         document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
         document.getElementById(`link-${pageId}`).classList.add('active');
         
-        // 3. Close Mobile Menu if open
-        const navLinks = document.getElementById('navLinks');
-        if (navLinks.classList.contains('show')) toggleMenu();
-
         // 4. Hide ALL Content Pages (Attire, Address)
         document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active'));
 
@@ -1739,6 +1721,7 @@
         }, 100);
     }
 </script>
+    
     
 </body>
 </html>
