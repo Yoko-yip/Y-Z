@@ -461,7 +461,7 @@ nav {
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; 
             pointer-events: none; 
-            background-color: #FAF8F5; 
+            background-color: #000000; 
         }
 
         #willow-bg-container, 
@@ -804,6 +804,18 @@ nav {
         #attire-page {
             padding-top: 60px !important; /* Shrinks the empty space above the Attire title */
         }
+
+        /* --- ADDRESS PAGE SPACING & DIVIDER --- */
+        #address-page {
+            /* 1. Shrinks the gap right above the title */
+            padding-top: 40px !important; 
+            
+            /* 2. Adds the delicate dividing line (matches your scrolling text line) */
+            border-top: 1px solid #ddd; 
+            
+            /* 3. Ensures the line stretches nicely across the container */
+            width: 100%; 
+        }
         
 
         .scrolling-text {
@@ -951,6 +963,7 @@ nav {
         .transport-item {
             margin-bottom: 15px; /* Adds space between lines */
             line-height: 1.6;
+            color: #555; /* ADD THIS LINE to match the other paragraphs */
         }
         
         .color-palette { display: flex; justify-content: center; gap: 15px; margin: 20px 0 15px 0; flex-wrap: wrap; }
@@ -1019,7 +1032,7 @@ nav {
             margin: 0 auto;
             display: flex;
             flex-direction: column;
-            padding-bottom: 150px; /* Space for the bottom sticky palette */
+            padding-bottom: 80px; /* Space for the bottom sticky palette */
         }
 
         .scroll-image-wrapper {
