@@ -108,32 +108,37 @@
         
        /* --- NAVIGATION BAR --- */
 nav {
-    position: fixed; 
-    top: 0;              
-    left: 0;             
-    width: 100%;         
-    height: 80px;        
-    background-color: rgba(250, 248, 245, 0.98); 
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Centered layout now that lang toggle is gone */
-    box-sizing: border-box;
-    z-index: 200; 
-    opacity: 0; 
-    pointer-events: none; 
-    transition: opacity 2s ease-in-out;
-}
+            position: fixed; 
+            top: 0;              
+            left: 0;             
+            width: 100%;         
+            height: 80px;        
+            background-color: transparent !important; /* Made completely transparent */
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            box-sizing: border-box;
+            z-index: 200; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 2s ease-in-out;
+        }
 
 nav.fade-in { opacity: 1; pointer-events: auto; }
 
-.nav-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 40px;
-    align-items: baseline; /* Keeps text aligned nicely when font sizes change */
-}
+.nav-links a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.85); /* Slightly faded white */
+            text-shadow: 0 2px 4px rgba(0,0,0,0.6); /* Shadow guarantees visibility on light backgrounds */
+            font-size: 16px; 
+            font-weight: 300; 
+            letter-spacing: 2px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap; 
+        }
+        .nav-links a:hover { color: #ffffff; }
 
 /* Unselected State: Smaller and Lighter */
 .nav-links a {
@@ -150,14 +155,15 @@ nav.fade-in { opacity: 1; pointer-events: auto; }
 
 .nav-links a:hover { color: #555; }
 
-/* Selected State: Larger and Bold */
-.nav-links a.active { 
-    font-size: 22px; 
-    font-weight: bold; 
-    color: #3A3836; 
-    border-bottom: none; /* Removing the underline to match your clean text-size reference */
-}
-
+/* Selected State: Pure White and Bold */
+        .nav-links a.active { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #ffffff; /* Pure white */
+            text-shadow: 0 2px 6px rgba(0,0,0,0.8); /* Slightly stronger shadow */
+            border-bottom: none; 
+        }
+        
 .menu-icon {
     display: none !important;
 }
@@ -298,7 +304,9 @@ nav {
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #FAF8F5; /* Matches your landing scene background */
+            background-image: url('images/envelopebg.png');            
+            background-size: cover;
+            background-position: center;            
             z-index: 100;
             display: flex;
             flex-direction: column;
@@ -331,7 +339,8 @@ nav {
             margin-bottom: 15px;
             text-transform: uppercase;
             font-weight: 400;
-            color: #555;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* Soft shadow for visibility */
             font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
             opacity: 0;
             animation: fadeInDown 1s ease forwards;
@@ -384,7 +393,8 @@ nav {
             margin-top: 30px;
             text-transform: uppercase;
             cursor: pointer;
-            color: #555;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* Soft shadow for visibility */
             font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
             opacity: 0;
             /* Fades in at 3.5s, then immediately starts pulsing */
@@ -414,7 +424,8 @@ nav {
             position: absolute;
             z-index: 20; 
             text-align: center;
-            color: #3b312b;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Soft shadow to separate text from background */
             font-family: 'Times New Roman', Times, serif; 
             opacity: 0; 
             transition: opacity 2s ease-in-out;
@@ -426,14 +437,20 @@ nav {
         .fade-in { opacity: 1 !important; pointer-events: auto !important; }
 
         h1 { font-size: 24px; letter-spacing: 5px; margin-bottom: 5px; text-transform: uppercase; font-weight: normal; }
-        .sub-title { font-size: 14px; letter-spacing: 3px; color: #2f3640; /* CHANGE THIS LINE */ margin-bottom: 40px; text-transform: uppercase; }
+        .sub-title { font-size: 14px; letter-spacing: 3px; color: #eeeeee; margin-bottom: 40px; text-transform: uppercase; }        
         .names { margin-bottom: 20px; }
         .names h2 { font-size: 28px; margin: 5px 0; font-weight: normal; letter-spacing: 3px; }
-        .names .en { font-size: 16px; opacity: 0.8; letter-spacing: 2px; text-transform: uppercase; }
-        .date { font-size: 16px; letter-spacing: 2px; margin-bottom: 50px; border-bottom: 1px solid #D4CFC6; display: inline-block; padding-bottom: 10px; }
-        .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #2f3640; /* CHANGE THIS LINE */ }
-        .schedule .time { margin-right: 15px; font-weight: bold; color: #2f3640; /* ADDED '#' AND CHANGED COLOR */ }
-
+        .date { 
+            font-size: 28px; /* Enlarged from 16px */
+            letter-spacing: 2px; 
+            margin-bottom: 50px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); /* Changed border to white */
+            display: inline-block; 
+            padding-bottom: 10px; 
+        }        
+        .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #eeeeee; }
+        .schedule .time { margin-right: 15px; font-weight: bold; color: #ffffff; }
+        
         /* --- LANDING SCENE (Tree + Background) --- */
         #landing-scene {
             position: fixed;
@@ -792,30 +809,67 @@ nav {
         }
         
         /* --- CONTENT PAGES --- */
+        /* 1. Prevent scrolling before the envelope is opened */
+        body {
+            overflow: hidden; 
+        }
+
+        /* 2. Make the home page take up the full first screen */
+        #home-page {
+            position: relative;
+            width: 100%;
+            height: 100vh; /* 100% of the viewport height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; 
+        }
+
+        /* 3. Reset the Invitation Card to sit centered inside the home page */
+        #invitation-card {
+            position: relative; 
+            z-index: 20; 
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-family: 'Times New Roman', Times, serif; 
+            width: 100%; 
+            max-width: 500px;
+            /* Resets the old positioning */
+            top: auto;
+            left: auto;
+            transform: none;
+            opacity: 0; 
+            pointer-events: none;
+            transition: opacity 2s ease-in-out;
+        }
+        
         .content-page h1 {
             width: 90%;
             max-width: 800px; /* 与正文容器保持相同的最大宽度 */
             text-align: left;
             font-weight: bold; /* 字体加粗 */
             margin-bottom: 30px;
+            color: #ffffff; 
+            text-shadow: 0 2px 6px rgba(0,0,0,0.4);
         }
         
+        /* 4. Let all other content pages stack vertically */
         .content-page {
-            display: none; 
-            position: absolute;
-            top: 0; left: 0;
+            display: flex; 
+            position: relative; 
             width: 100%;
-            min-height: 100vh;
-            background-color: #FAF8F5; 
+            background-color: transparent; /* Changed to transparent so the willow background shows through! */
             z-index: 100; 
             box-sizing: border-box;
             padding-top: 100px; 
             padding-bottom: 50px;
             flex-direction: column;
             align-items: center;
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            opacity: 1; 
+            transition: none;
         }
+        
         .content-page.active { display: flex; opacity: 1; }
         .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
         .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
@@ -1048,14 +1102,14 @@ nav {
 </button>
 
     <nav id="navbar">
-    <ul class="nav-links" id="navLinks">
-        <li><a onclick="showPage('home')" id="link-home" class="active">主页</a></li>
-        <li><a onclick="showPage('about')" id="link-about">我们</a></li>
-        <li><a onclick="showPage('attire')" id="link-attire">穿什么</a></li>
-        <li><a onclick="showPage('address')" id="link-address">哪儿见</a></li>
-        <li><a onclick="showPage('play')" id="link-play">哪儿玩</a></li>
-    </ul>
-</nav>
+        <ul class="nav-links" id="navLinks">
+            <li><a onclick="scrollToSection('home-page')" id="link-home" class="active">主页</a></li>
+            <li><a onclick="scrollToSection('about-page')" id="link-about">我们</a></li>
+            <li><a onclick="scrollToSection('attire-page')" id="link-attire">穿什么</a></li>
+            <li><a onclick="scrollToSection('address-page')" id="link-address">哪儿见</a></li>
+            <li><a onclick="scrollToSection('play-page')" id="link-play">哪儿玩</a></li>
+        </ul>
+    </nav>
 
     <!-- NEW ENTRANCE SCREEN (STATIC ENVELOPE IMAGE) -->
     <div id="new-envelope-container">
@@ -1435,63 +1489,45 @@ nav {
         }
     });
 
-    // --- NAVIGATION LOGIC ---
-    function showPage(pageId) {
-        // 1. INSTANTLY SCROLL TO TOP
-        window.scrollTo(0, 0); 
+    // --- SINGLE PAGE SCROLLING LOGIC ---
+    function scrollToSection(sectionId) {
+        const target = document.getElementById(sectionId);
+        if (target) {
+            const headerOffset = 80; // Accounts for the height of your sticky nav
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-        // 2. Update Navigation Links
-        document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
-        document.getElementById(`link-${pageId}`).classList.add('active');
-        
-        // 4. Hide ALL Content Pages (Attire, Address)
-        document.querySelectorAll('.content-page').forEach(page => page.classList.remove('active'));
-
-        // 5. Handle Home vs Subpages
-        if (pageId === 'home') {
-            // SHOW Home Elements (Card + Tree)
-            invitationCard.style.display = 'block';
-            landingScene.style.display = 'block';
-            
-            setTimeout(() => {
-                invitationCard.style.opacity = '1';
-                landingScene.style.opacity = '1'; 
-                landingScene.classList.add('blurred'); 
-            }, 10);
-
-        } else {
-            // HIDE Home Elements
-            invitationCard.style.opacity = '0';
-            landingScene.style.opacity = '0';
-            
-            setTimeout(() => {
-                if (document.getElementById(`link-${pageId}`).classList.contains('active')) {
-                    invitationCard.style.display = 'none';
-                    landingScene.style.display = 'none';
-                }
-            }, 500);
-
-            // Show the selected subpage
-            const target = document.getElementById(`${pageId}-page`);
-            target.classList.add('active');
+            window.scrollTo({
+                 top: offsetPosition,
+                 behavior: "smooth"
+            });
         }
     }
 
-    function toggleMenu() {
-        const navLinks = document.getElementById('navLinks');
-        const menuIcon = document.querySelector('.menu-icon');
-        const navbar = document.getElementById('navbar'); 
-        
-        // 1. Toggle the menu list visibility
-        navLinks.classList.toggle('show');
-        
-        // 2. Toggle 'menu-open' class on the parent NAV 
-        // (This reveals the lang switcher on mobile)
-        navbar.classList.toggle('menu-open');
+    // Automatically highlight the active navigation tab while scrolling
+    window.addEventListener('scroll', () => {
+        const sections = ['home-page', 'about-page', 'attire-page', 'address-page', 'play-page'];
+        let current = '';
 
-        // 3. Switch icon
-        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
-    }
+        sections.forEach(id => {
+            const section = document.getElementById(id);
+            if (section) {
+                const sectionTop = section.offsetTop;
+                // Trigger the highlight right before the section hits the top of the screen
+                if (window.pageYOffset >= sectionTop - 150) {
+                    current = id;
+                }
+            }
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.classList.remove('active');
+            if (current && a.getAttribute('onclick').includes(current)) {
+                a.classList.add('active');
+            }
+        });
+    });
+    
 // --- CINEMATIC SEQUENCE LOGIC ---
 
     function finishAnimation() {
@@ -1506,12 +1542,12 @@ nav {
     }
 
     // OPEN ENVELOPE CLICK
-    let envelopeOpened = false;
+    llet envelopeOpened = false;
     openEnvelopeBtn.addEventListener('click', function() {
         if (envelopeOpened) return; 
         envelopeOpened = true;
 
-        // 1. Instantly hide the ENTIRE envelope container (This hides the text and envelope at once)
+        // 1. Instantly hide the ENTIRE envelope container
         document.getElementById('new-envelope-container').style.display = 'none';
         
         // 2. Play Music
@@ -1525,6 +1561,9 @@ nav {
 
         // 4. Show the invitation card and navigation instantly
         finishAnimation(); 
+        
+        // 5. Unlock scrolling so the user can explore the single-page site
+        document.body.style.overflow = 'auto';
     });
 
     
