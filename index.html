@@ -337,7 +337,7 @@ nav {
         /* SEQUENCE 3: Envelope */
         .envelope-wrapper {
             position: relative;
-            width: 75vw;
+            width: 50vw;
             max-width: 420px;
             cursor: pointer;
             user-select: none;
@@ -477,11 +477,15 @@ nav {
             left: 0;
             width: 100%;
             height: 100%;
-            backdrop-filter: blur(1px); 
-            -webkit-backdrop-filter: blur(1px); 
+            
+            /* 1. We removed the backdrop-filter (blur) lines entirely */
+            
+            /* 2. Added a 40% transparent beige tint to soften the image */
+            background-color: rgba(250, 248, 245, 0.2); 
+            
             z-index: 2; 
         }
-
+        
         /* 2. Atmospheric Shadow Layer */
         .shadow-overlay {
             position: absolute;
