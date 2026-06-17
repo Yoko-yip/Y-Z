@@ -245,6 +245,19 @@ nav {
         }
         
         @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
+
+        .color-palette.sticky-bottom .color-icon {
+            width: 16%; 
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
+            cursor: pointer; /* Makes it look like a clickable link */
+            transition: transform 0.2s ease; /* Smooth pop effect */
+        }
+
+        .color-palette.sticky-bottom .color-icon:hover,
+        .color-palette.sticky-bottom .color-icon:active {
+            transform: scale(1.15); /* Slightly enlarges the circle when tapped/hovered */
+        }
         
         /* --- MUTE BUTTON --- */
         #muteBtn {
@@ -1209,33 +1222,39 @@ nav {
         </div>
         
         <div class="color-palette sticky-bottom">
-            <img src="images/color1.svg" class="color-icon" alt="Color option 1">
-            <img src="images/color2.svg" class="color-icon" alt="Color option 2">
-            <img src="images/color3.svg" class="color-icon" alt="Color option 3">
-            <img src="images/color4.svg" class="color-icon" alt="Color option 4">
-            <img src="images/color5.svg" class="color-icon" alt="Color option 5">
+            <img src="images/color1.svg" class="color-icon" alt="Color option 1" onclick="scrollToOutfit('outfit-1')">
+            <img src="images/color2.svg" class="color-icon" alt="Color option 2" onclick="scrollToOutfit('outfit-2')">
+            <img src="images/color3.svg" class="color-icon" alt="Color option 3" onclick="scrollToOutfit('outfit-3')">
+            <img src="images/color4.svg" class="color-icon" alt="Color option 4" onclick="scrollToOutfit('outfit-4')">
+            <img src="images/color5.svg" class="color-icon" alt="Color option 5" onclick="scrollToOutfit('outfit-5')">
         </div>
         
         <div class="attire-scroll-container">
-            <div class="scroll-image-wrapper reveal-item">
+            <div id="outfit-1" class="scroll-image-wrapper reveal-item">
                 <img src="images/men_image_1.png" alt="Men Style 1">
             </div>
+            
             <div class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_1.png" alt="Women Style 1">
             </div>
-            <div class="scroll-image-wrapper reveal-item">
+            
+            <div id="outfit-2" class="scroll-image-wrapper reveal-item">
                 <img src="images/men_image_2.png" alt="Men Style 2">
             </div>
+            
             <div class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_2.png" alt="Women Style 2">
             </div>
-            <div class="scroll-image-wrapper reveal-item">
+            
+            <div id="outfit-3" class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_3.png" alt="Women Style 3">
             </div>
-            <div class="scroll-image-wrapper reveal-item">
+            
+            <div id="outfit-4" class="scroll-image-wrapper reveal-item">
                 <img src="images/men_image_3.png" alt="Men Style 3">
             </div>
-            <div class="scroll-image-wrapper reveal-item">
+            
+            <div id="outfit-5" class="scroll-image-wrapper reveal-item">
                 <img src="images/women_image_4.png" alt="Women Style 4">
             </div>
         </div>
@@ -1359,9 +1378,8 @@ nav {
     <div class="address-container" style="margin: 0 auto; text-align: center;">
         <h1>哪儿玩儿</h1>
         <div class="details-wrapper">
-            <h2>探索北京</h2>
+            <h2>推荐路线</h2>
             <div class="info-section with-border" style="text-align: left;">
-                <h3><span class="lang-zh">推荐地</span></h3>
                 <p>
                     <span class="lang-zh">尽管仪式只有一个晚上，但是我们希望大家能用这次来北京的时间好好休息，或许也可以从下面这些我们俩非常喜欢的位置里，选到合您胃口的地点，给您的北京之行留下难忘的记忆。</span>
                 </p>
@@ -1523,6 +1541,17 @@ nav {
         
         indicator.textContent = `${currentIndex} / ${totalItems}`;
     }
+
+    // --- COLOR PALETTE SCROLL LOGIC ---
+    function scrollToOutfit(outfitId) {
+        const target = document.getElementById(outfitId);
+        if (target) {
+            // block: 'center' ensures the image sits perfectly in the middle of the screen,
+            // avoiding being covered by the sticky header or the color palette itself!
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
     // --- SCROLL REVEAL LOGIC ---
     function setupScrollReveal() {
         const revealElements = document.querySelectorAll('.reveal-item');
