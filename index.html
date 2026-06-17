@@ -104,48 +104,7 @@
         body.english-mode img.lang-en { display: block !important; }
 
        
-        /* --- SKIP BUTTON --- */
-        #skipBtn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            z-index: 200; 
-            
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 12px;
-            font-weight: bold;
-            color: #5d4037;
-            
-            background: none;
-            border: none;
-            
-            box-shadow: none; 
-            
-            border-bottom: 2px solid #5d4037; 
-            padding-bottom: 2px;    
-            cursor: pointer;
-            
-            opacity: 0; 
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        #skipBtn.visible {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        /* HOVER EFFECT */
-        #skipBtn:hover {
-            transform: translateY(-3px); 
-            text-shadow: 0 4px 8px rgba(93, 64, 55, 0.4);
-            
-            border-bottom-color: #1C3618; 
-            color: #1C3618;
-
-            background: none; 
-            box-shadow: none; 
-        }
+        
         
        /* --- NAVIGATION BAR --- */
 nav {
@@ -1054,7 +1013,7 @@ nav {
     <div id="landing-scene">
         
         <div id="willow-bg-container">
-            <img src="willowbg.jpg" alt="Willow Tree Background" class="willow-bg-image">
+            <img src="willowbg.png" alt="Willow Tree Background" class="willow-bg-image">
             <div class="blur-overlay"></div> 
         </div>
 
@@ -1109,9 +1068,7 @@ nav {
 
         <p class="entrance-instruction" id="instruction-text"> 点击信封打开邀请函 </p>
     </div>
-    
-    <button id="skipBtn">SKIP >></button>
-    
+        
     <div id="home-page">
         <div id="invitation-card">
             <h1>婚礼邀请</h1>
@@ -1428,14 +1385,10 @@ nav {
     const bgMusic = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
     const openEnvelopeBtn = document.getElementById('openEnvelopeBtn');
-    const skipBtn = document.getElementById('skipBtn');
     const landingScene = document.getElementById('landing-scene');
     const invitationCard = document.getElementById('invitation-card');
     const nav = document.querySelector('nav');
 
-    let animationTimer;   // Timer for the 8s animation end
-    let skipDelayTimer;   // Timer for showing the skip button at 6s
-    let countdownInterval; // Timer for the 8-second countdown
 
     // --- LANGUAGE LOGIC ---
     function toggleLanguage() {
@@ -1520,29 +1473,6 @@ nav {
         menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
     }
 
-    // --- CINEMATIC SEQUENCE LOGIC ---
-
-    // Helper Function: Triggers the final state (Mist + Show Invitation)
-    function finishAnimation() {
-        // Stop the countdown timer if it's running
-        clearInterval(countdownInterval);
-
-        // 1. Trigger the Mist Effect (Fade out tree, pause animation)
-        landingScene.classList.add('blurred');
-
-        // 2. Reveal Invitation, Nav, Mute Btn
-        invitationCard.style.display = 'block'; // Ensure it's visible
-        setTimeout(() => invitationCard.classList.add('fade-in'), 10);
-        
-        nav.classList.add('fade-in');
-        muteBtn.classList.add('fade-in');
-
-        // 3. Hide the Skip Button
-        skipBtn.classList.remove('visible');
-        
-        // Reset button text smoothly after it fades out
-        setTimeout(() => { skipBtn.textContent = 'SKIP >>'; }, 300);
-    }
 
     // A. OPEN ENVELOPE CLICK (INSTANT DISSOLVE)
     let envelopeOpened = false;
