@@ -106,14 +106,21 @@
        
         
         
-       /* --- NAVIGATION BAR --- */
-nav {
+/* --- NAVIGATION BAR --- */
+        nav {
             position: fixed; 
             top: 0;              
             left: 0;             
             width: 100%;         
             height: 80px;        
-            background-color: transparent !important; /* Made completely transparent */
+            
+            /* 1. Restored the beige background, but with 70% opacity */
+            background-color: rgba(250, 248, 245, 0.7) !important; 
+            
+            /* 2. Added a frosted glass blur effect (highly recommended for readability!) */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
             display: flex;
             align-items: center;
             justify-content: center; 
@@ -123,13 +130,13 @@ nav {
             pointer-events: none; 
             transition: opacity 2s ease-in-out;
         }
+        nav.fade-in { opacity: 1; pointer-events: auto; }
 
-nav.fade-in { opacity: 1; pointer-events: auto; }
-
-.nav-links a {
+        /* Unselected State: Reverted to dark gray, removed the white text shadow */
+        .nav-links a {
             text-decoration: none;
-            color: rgba(255, 255, 255, 0.85); /* Slightly faded white */
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6); /* Shadow guarantees visibility on light backgrounds */
+            color: #888888; 
+            text-shadow: none; 
             font-size: 16px; 
             font-weight: 300; 
             letter-spacing: 2px;
@@ -138,32 +145,18 @@ nav.fade-in { opacity: 1; pointer-events: auto; }
             transition: all 0.3s ease;
             white-space: nowrap; 
         }
-        .nav-links a:hover { color: #ffffff; }
 
-/* Unselected State: Smaller and Lighter */
-.nav-links a {
-    text-decoration: none;
-    color: #888888; 
-    font-size: 16px; 
-    font-weight: 300; 
-    letter-spacing: 2px;
-    position: relative;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap; 
-}
+        .nav-links a:hover { color: #555555; }
 
-.nav-links a:hover { color: #555; }
-
-/* Selected State: Pure White and Bold */
+        /* Selected State: Reverted to your dark #3A3836 color */
         .nav-links a.active { 
             font-size: 22px; 
             font-weight: bold; 
-            color: #ffffff; /* Pure white */
-            text-shadow: 0 2px 6px rgba(0,0,0,0.8); /* Slightly stronger shadow */
+            color: #3A3836; 
+            text-shadow: none; 
             border-bottom: none; 
         }
-        
+
 .menu-icon {
     display: none !important;
 }
@@ -831,15 +824,21 @@ nav {
             text-align: left;
             font-weight: bold; 
             margin-bottom: 30px;
-            color: #ffffff; 
-            text-shadow: 0 2px 6px rgba(0,0,0,0.4); 
+            
+            /* Reverted back to dark text for the light background */
+            color: #3A3836; 
+            text-shadow: none; 
         }
         
         .content-page {
-            display: flex; /* This was previously set to 'none' in your file! */
+            display: flex; 
             position: relative;
             width: 100%;
-            background-color: transparent; 
+            
+            /* Changed from transparent back to your solid beige */
+            background-color: #FAF8F5; 
+            
+            /* The high z-index makes these pages slide OVER the willow tree */
             z-index: 100; 
             box-sizing: border-box;
             padding-top: 100px; 
@@ -847,7 +846,6 @@ nav {
             flex-direction: column;
             align-items: center;
             opacity: 1;
-            transition: none;
         }
         
         .content-page.active { display: flex; opacity: 1; }
