@@ -1472,73 +1472,42 @@ nav {
         // 3. Switch icon
         menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
     }
+// --- CINEMATIC SEQUENCE LOGIC ---
 
+    function finishAnimation() {
+        // 1. Trigger the background blur immediately
+        landingScene.classList.add('blurred');
 
-    // A. OPEN ENVELOPE CLICK (INSTANT DISSOLVE)
+        // 2. Reveal Invitation, Nav, and Mute Btn immediately (No setTimeout)
+        invitationCard.style.display = 'block'; 
+        invitationCard.classList.add('fade-in');
+        nav.classList.add('fade-in');
+        muteBtn.classList.add('fade-in');
+    }
+
+    // OPEN ENVELOPE CLICK
     let envelopeOpened = false;
     openEnvelopeBtn.addEventListener('click', function() {
-        if (envelopeOpened) return; // Prevent double clicks
+        if (envelopeOpened) return; 
         envelopeOpened = true;
 
-        // Hide texts immediately
-        const instruction = document.getElementById('instruction-text');
-        if (instruction) instruction.style.opacity = '0';
-        
-        const entranceHeader = document.getElementById('entrance-header');
-        if (entranceHeader) entranceHeader.style.opacity = '0';
-
-        // 1. Instantly trigger the dissolve effect on click
-        const envelopeContainer = document.getElementById('new-envelope-container');
-        envelopeContainer.classList.add('dissolve');
-        
-        // Remove it from the DOM flow after the 1.5s transition finishes
-        setTimeout(() => envelopeContainer.style.display = 'none', 1500);
+        // 1. Instantly hide the ENTIRE envelope container (This hides the text and envelope at once)
+        document.getElementById('new-envelope-container').style.display = 'none';
         
         // 2. Play Music
         if (bgMusic.paused) {
             bgMusic.play().catch(e => console.log("Audio playback error:", e));
         }
 
-        // 3. Reveal Tree & Birds
+        // 3. Reveal Background & Birds instantly
         landingScene.style.display = 'block'; 
-        setTimeout(() => landingScene.classList.add('show-elements'), 10);
+        landingScene.classList.add('show-elements');
 
-        // 4. SHOW SKIP BUTTON (DELAYED 2 SECONDS) WITH 8s COUNTDOWN
-        skipDelayTimer = setTimeout(() => {
-            if (!landingScene.classList.contains('blurred')) {
-                skipBtn.classList.add('visible');
-                
-                let timeLeft = 8;
-                skipBtn.textContent = `SKIP (${timeLeft}s) >>`;
-                
-                countdownInterval = setInterval(() => {
-                    timeLeft--;
-                    if (timeLeft > 0) {
-                        skipBtn.textContent = `SKIP (${timeLeft}s) >>`;
-                    } else {
-                        clearInterval(countdownInterval);
-                        skipBtn.textContent = `SKIP >>`;
-                    }
-                }, 1000);
-            }
-        }, 2000);
-
-        // 5. Start the 10-Second Timer for Animation End
-        animationTimer = setTimeout(() => {
-            finishAnimation();
-        }, 10000); 
-
+        // 4. Show the invitation card and navigation instantly
+        finishAnimation(); 
     });
+
     
-    // B. SKIP BUTTON CLICK
-    skipBtn.addEventListener('click', () => {
-        // 1. Stop the timers
-        clearTimeout(animationTimer);
-        clearTimeout(skipDelayTimer);
-        
-        // 2. Jump straight to the end
-        finishAnimation();
-    });
     
 // --- CAROUSEL LOGIC ---
     function scrollCarousel(trackId, direction) {
