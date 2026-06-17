@@ -456,11 +456,13 @@ nav {
             opacity: 1;
         }
 
-    
-
+    /* --- OPTIMIZED MIST EFFECT (Fades the scene slightly for readability) --- */
+        #landing-scene.blurred #willow-bg-container,
         #landing-scene.blurred .shadow-overlay {
-            animation-play-state: paused;
+            opacity: 1; /* Changed from 0.25 to 1 */
+            transition: opacity 3s ease-in-out;
         }
+
 
         /* 1. Static Willow Background & Blur Overlay */
         #willow-bg-container {
