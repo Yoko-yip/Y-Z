@@ -892,7 +892,8 @@ nav {
             width: 100%;
             background-color: transparent; 
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* This forces the text to drop BELOW the image */
+            align-items: center;    /* This centers both the image and the text */
             margin-bottom: 50px;
         }
         
@@ -902,7 +903,16 @@ nav {
             height: auto;
             display: block;
         }
-        
+
+        /* Styles for the small hint text */
+        .map-save-hint {
+            font-size: 12px;
+            color: #888888; /* Soft grey color */
+            margin-top: 8px; /* Very small gap between image and text */
+            margin-bottom: 0;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
 
         /* --- SECTION MAIN TITLES (Details & Why We Chose Here) --- */
         .details-wrapper > h2,
@@ -1342,6 +1352,10 @@ nav {
 
         <div class="map-banner">
             <img src="images/map1.jpg" alt="Venue Layout">
+            <p class="map-save-hint">
+                <span class="lang-zh">长按可保存图片</span>
+                <span class="lang-en">Long press to save image</span>
+            </p>
         </div>
 
         <div class="address-container" style="margin: 0 auto;">
