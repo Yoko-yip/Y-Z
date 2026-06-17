@@ -221,18 +221,36 @@ nav.fade-in { opacity: 1; pointer-events: auto; }
     
     .menu-icon { display: none !important; } /* Hamburger completely hidden */
 
+            
+nav { 
+        height: 60px; 
+        padding: 0 20px !important; /* Gives 20px of breathing room on the left and right */
+        justify-content: flex-start !important; 
+        overflow-x: auto; 
+        scrollbar-width: none; 
+    }
+            
     .nav-links {
         display: flex !important; 
         position: static;
-        width: max-content; /* Lets the list stretch past the screen width */
+        /* Make the menu take up the full width of the phone screen */
+        width: 100%; 
+        /* Ensures it can still horizontally scroll if the phone screen is extremely small */
+        min-width: max-content; 
+        /* This magic line forces the items to spread out evenly! */
+        justify-content: space-between; 
+        
         height: auto;
         background-color: transparent; 
         backdrop-filter: none;
         -webkit-backdrop-filter: none; 
         flex-direction: row;
         align-items: baseline;
-        gap: 25px; 
-        animation: none; /* Removes the old fade-in animation */
+        
+        /* This acts as a minimum safety gap so they never overlap on tiny screens */
+        gap: 20px; 
+        
+        animation: none; 
     }
     
     /* Mobile Unselected */
