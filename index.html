@@ -131,6 +131,17 @@
             transition: opacity 2s ease-in-out;
         }
         nav.fade-in { opacity: 1; pointer-events: auto; }
+        
+        /* This container holds the list items */
+        .nav-links {
+            list-style: none; /* Removes the bullet points */
+            display: flex;    /* Places the items side-by-side horizontally */
+            justify-content: center;
+            align-items: baseline; 
+            gap: 40px;        /* The space between each word on a laptop */
+            padding: 0;
+            margin: 0;
+        }
 
         /* Unselected State: Reverted to dark gray, removed the white text shadow */
         .nav-links a {
