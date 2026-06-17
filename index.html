@@ -308,14 +308,17 @@ nav {
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('images/envelopebg.png');            
-            background-size: cover;
-            background-position: center;            
+            
+            /* THIS IS YOUR TINT: 15% opacity black */
+            background-color: rgba(0, 0, 0, 0.15); 
+            
             z-index: 100;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            
+            /* This line controls the smooth zoom and fade transition */
             transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
             transform-origin: center center;
         }
@@ -468,10 +471,19 @@ nav {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 5; 
-            pointer-events: none; 
+            
+            /* Set the universal background image here */
+            background-image: url('images/willowbg.png');
+            background-size: cover;
+            background-position: center;
             background-color: #000000; 
         }
 
+        /* Hide the old inline image version so they don't double up! */
+        .willow-bg-image {
+            display: none; 
+        }
+        
         #willow-bg-container, 
         .shadow-overlay, 
         .lottie-bird-container {
@@ -1369,7 +1381,7 @@ nav {
     <div id="address-page" class="content-page" style="padding-left:0; padding-right:0;">
         
         <div class="address-container" style="margin: 0 auto;">
-            <h1><span class="lang-zh">仪式地址</span><span class="lang-en">Location</span></h1>
+            <h1><span class="lang-zh">仪式场地</span><span class="lang-en">Location</span></h1>
         </div>
 
         <div class="map-banner">
@@ -1588,25 +1600,31 @@ nav {
         if (envelopeOpened) return; 
         envelopeOpened = true;
 
-        // 1. Instantly hide the ENTIRE envelope container
-        document.getElementById('new-envelope-container').style.display = 'none';
-        
-        // 2. Play Music
+        const envelopeContainer = document.getElementById('new-envelope-container');
+
+        // 1. Play Music
         if (bgMusic.paused) {
             bgMusic.play().catch(e => console.log("Audio playback error:", e));
         }
 
-        // 3. Reveal Background & Birds instantly
+        // 2. Trigger the Zoom-Through Animation (scales up and fades out the envelope and tint)
+        envelopeContainer.style.transform = 'scale(5)'; 
+        envelopeContainer.style.opacity = '0';
+
+        // 3. Reveal the main scene elements instantly beneath it
         landingScene.style.display = 'block'; 
         landingScene.classList.add('show-elements');
 
-        // 4. Show the invitation card and navigation instantly
+        // 4. Show the invitation card and navigation
         finishAnimation(); 
-        
-        // 5. Unlock scrolling so the user can explore the single-page site
-        document.body.style.overflow = 'auto';
-    });
 
+        // 5. Wait for the zoom animation to finish (1.5s) before removing the envelope from the code
+        setTimeout(() => {
+            envelopeContainer.style.display = 'none';
+            // Unlock scrolling so the user can explore
+            document.body.style.overflow = 'auto';
+        }, 1500); 
+    });
     
     
 // --- CAROUSEL LOGIC ---
