@@ -909,7 +909,11 @@ nav {
         .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
         .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
         .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
-        .address-container { width: 90%; max-width: 800px; text-align: center; }
+        .address-container { width: 90%; max-width: 800px; text-align: left; margin: 0 auto;}
+        .address-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
         .map-figure { width: 100%; margin-bottom: 50px; border: none; }
         .map-figure img { width: 100%; height: auto; display: block; background-color: #ddd; }
         
@@ -995,12 +999,14 @@ nav {
             width: 90%;
             max-width: 800px;
             margin: 0 auto 60px auto;
-            text-align: center;
+            text-align: left;
         }
+        
 
         .attire-header-section h1 {
             width: 100%;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .attire-description {
@@ -1486,7 +1492,6 @@ nav {
     <div class="address-container" style="margin: 0 auto; text-align: center;">
         <h1>哪儿玩儿</h1>
         <div class="details-wrapper">
-            <h2>推荐路线</h2>
                 <p class="attire-description">
                 <span class="lang-zh">
                     尽管仪式只有一个晚上，但是我们希望大家能用这次来北京的时间好好休息，或许也可以从下面这些我们俩非常喜欢的位置里，选到合您胃口的地点，给您的北京之行留下难忘的记忆。
