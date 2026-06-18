@@ -310,7 +310,7 @@ nav {
             height: 100%;
             
             /* THIS IS YOUR TINT: 15% opacity black */
-            background-color: rgba(0, 0, 0, 0.15); 
+            background-color: rgba(0, 0, 0, 0.3); 
             
             z-index: 100;
             display: flex;
@@ -878,7 +878,7 @@ nav {
         .content-page h1 {
             width: 90%;
             max-width: 800px;
-            text-align: left;
+            text-align: center;
             font-weight: bold; 
             margin-bottom: 30px;
             
@@ -909,7 +909,7 @@ nav {
         .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
         .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
         .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
-        .address-container { width: 90%; max-width: 800px; text-align: left; }
+        .address-container { width: 90%; max-width: 800px; text-align: center; }
         .map-figure { width: 100%; margin-bottom: 50px; border: none; }
         .map-figure img { width: 100%; height: auto; display: block; background-color: #ddd; }
         
@@ -995,7 +995,7 @@ nav {
             width: 90%;
             max-width: 800px;
             margin: 0 auto 60px auto;
-            text-align: left;
+            text-align: center;
         }
 
         .attire-header-section h1 {
@@ -1394,9 +1394,7 @@ nav {
 
         <div class="address-container" style="margin: 0 auto;">
             
-            <div class="details-wrapper">
-                <h2><span class="lang-zh">详情信息</span><span class="lang-en">Details</span></h2>
-                
+            <div class="details-wrapper">                
                 <div class="info-section with-border">
                     <h3><span class="lang-zh">场地</span><span class="lang-en">The Venue</span></h3>
                     <p>
@@ -1601,28 +1599,31 @@ nav {
         envelopeOpened = true;
 
         const envelopeContainer = document.getElementById('new-envelope-container');
+        const entranceHeader = document.getElementById('entrance-header');
+        const instructionText = document.getElementById('instruction-text');
 
         // 1. Play Music
         if (bgMusic.paused) {
             bgMusic.play().catch(e => console.log("Audio playback error:", e));
         }
 
-        // 2. Trigger the Zoom-Through Animation (scales up and fades out the envelope and tint)
-        envelopeContainer.style.transform = 'scale(5)'; 
-        envelopeContainer.style.opacity = '0';
+        // 2. DISSOLVE EVERYTHING IN PLACE (No zooming!)
+        if (entranceHeader) entranceHeader.style.opacity = '0';
+        if (instructionText) instructionText.style.opacity = '0';
+        openEnvelopeBtn.style.opacity = '0'; // Only fading the envelope now
+        envelopeContainer.style.opacity = '0'; // Fading the dark tint
 
-        // 3. Reveal the main scene elements instantly beneath it
+        // 3. Reveal the main scene instantly beneath it
         landingScene.style.display = 'block'; 
         landingScene.classList.add('show-elements');
 
         // 4. Show the invitation card and navigation
         finishAnimation(); 
 
-        // 5. Wait for the zoom animation to finish (1.5s) before removing the envelope from the code
+        // 5. Wait for animations to finish (1.5s) before removing from code
         setTimeout(() => {
             envelopeContainer.style.display = 'none';
-            // Unlock scrolling so the user can explore
-            document.body.style.overflow = 'auto';
+            document.body.style.overflow = 'auto'; // Unlock scrolling
         }, 1500); 
     });
     
