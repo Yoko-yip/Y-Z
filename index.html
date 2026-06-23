@@ -16,6 +16,12 @@
             font-weight: normal;
             font-style: normal;
         }
+
+        html {
+            /* Changed from mandatory to proximity to allow free scrolling later */
+            scroll-snap-type: y proximity; 
+            scroll-behavior: smooth;
+        }
         
         html, body { 
             margin: 0; 
@@ -457,7 +463,7 @@ nav {
 
         /* New Location: Same font family, slightly smaller size, holds the bottom border */
         .location {
-            font-size: 22px; 
+            font-size: 14px; 
             letter-spacing: 3px; 
             margin-bottom: 50px; 
             border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
@@ -884,6 +890,9 @@ nav {
             align-items: center;
             justify-content: center;
             z-index: 10; 
+            scroll-snap-align: start; 
+            scroll-snap-stop: always; /* Forces the scroll to stop here, increasing friction */
+        }
         }
 
         /* --- CONTENT PAGES --- */
@@ -915,6 +924,12 @@ nav {
             flex-direction: column;
             align-items: center;
             opacity: 1;
+        }
+        
+        /* --- FIRST SCROLL SNAP TARGET --- */
+        #about-page {
+            /* This makes the page act as the magnetic destination for the first scroll */
+            scroll-snap-align: start; 
         }
         
         .content-page.active { display: flex; opacity: 1; }
@@ -1549,18 +1564,43 @@ nav {
     });
 
    // --- SINGLE PAGE SCROLLING LOGIC ---
+    // --- 高级平滑滚动逻辑 (SINGLE PAGE SCROLLING LOGIC) ---
     function scrollToSection(sectionId) {
         const target = document.getElementById(sectionId);
-        if (target) {
-            const headerOffset = 80; 
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+        if (!target) return;
 
-            window.scrollTo({
-                 top: offsetPosition,
-                 behavior: "smooth"
-            });
+        const headerOffset = 80; 
+        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        
+        // 【在这里调整速度！】
+        // 1000 代表 1秒。你可以把手机的速度调慢（比如 1200 或 1500）
+        const isMobile = window.innerWidth <= 768;
+        const duration = isMobile ? 1200 : 800; 
+        
+        let start = null;
+
+        // 缓动算法：让开始和结束时速度变慢，中间快，实现极其丝滑的过渡
+        function easeInOutQuad(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
         }
+
+        function animation(currentTime) {
+            if (start === null) start = currentTime;
+            const timeElapsed = currentTime - start;
+            const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            
+            if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+            }
+        }
+
+        requestAnimationFrame(animation);
     }
 
     // Automatically highlight the active navigation tab while scrolling
