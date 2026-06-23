@@ -18,8 +18,8 @@
         }
 
         html {
-            /* Changed from mandatory to proximity to allow free scrolling later */
-            scroll-snap-type: y proximity; 
+            /* 必须设为 mandatory，手机浏览器才会强制执行摩擦力和停顿 */
+            scroll-snap-type: y mandatory; 
             scroll-behavior: smooth;
         }
         
@@ -894,6 +894,11 @@ nav {
             scroll-snap-align: start; 
             scroll-snap-stop: always; /* Forces the scroll to stop here, increasing friction */
         }
+        
+         /* --- FIRST SCROLL SNAP TARGET --- */
+        #about-page {
+            /* This makes the page act as the magnetic destination for the first scroll */
+            scroll-snap-align: start; 
         }
 
         /* --- CONTENT PAGES --- */
@@ -927,11 +932,7 @@ nav {
             opacity: 1;
         }
         
-        /* --- FIRST SCROLL SNAP TARGET --- */
-        #about-page {
-            /* This makes the page act as the magnetic destination for the first scroll */
-            scroll-snap-align: start; 
-        }
+       
         
         .content-page.active { display: flex; opacity: 1; }
         .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
