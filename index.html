@@ -1642,32 +1642,50 @@ nav {
         if (envelopeOpened) return; 
         envelopeOpened = true;
 
+        // 1. SAFELY GRAB ALL ELEMENTS (Prevents "undefined" crashes)
         const envelopeContainer = document.getElementById('new-envelope-container');
         const entranceHeader = document.getElementById('entrance-header');
         const instructionText = document.getElementById('instruction-text');
+        const landingScene = document.getElementById('landing-scene'); 
+        
+        // Make sure the ID below matches your actual audio tag's ID!
+        const bgMusic = document.getElementById('bg-music'); 
 
-        // 1. Play Music
-        if (bgMusic.paused) {
+        // 2. Play Music safely
+        if (bgMusic && bgMusic.paused) {
             bgMusic.play().catch(e => console.log("Audio playback error:", e));
         }
 
-        // 2. DISSOLVE EVERYTHING IN PLACE (No zooming!)
+        // 3. DISSOLVE EVERYTHING IN PLACE
         if (entranceHeader) entranceHeader.style.opacity = '0';
         if (instructionText) instructionText.style.opacity = '0';
-        openEnvelopeBtn.style.opacity = '0'; // Only fading the envelope now
-        envelopeContainer.style.opacity = '0'; // Fading the dark tint
+        openEnvelopeBtn.style.opacity = '0'; 
+        if (envelopeContainer) envelopeContainer.style.opacity = '0';
 
-        // 3. Reveal the main scene instantly beneath it
-        landingScene.style.display = 'block'; 
-        landingScene.classList.add('show-elements');
+        // 4. Reveal the main scene safely
+        if (landingScene) {
+            landingScene.style.display = 'block'; 
+            landingScene.classList.add('show-elements');
+        }
 
-        // 4. Show the invitation card and navigation
-        finishAnimation(); 
+        // 5. Protect the finishAnimation function
+        // If there is an error inside finishAnimation, this prevents it from breaking the page!
+        try {
+            if (typeof finishAnimation === "function") {
+                finishAnimation(); 
+            }
+        } catch (error) {
+            console.error("Oops! There is a bug inside finishAnimation:", error);
+        }
 
-        // 5. Wait for animations to finish (1.5s) before removing from code
+        // 6. Wait 1.5s, remove envelope, and UNLOCK SCROLLING
         setTimeout(() => {
-            envelopeContainer.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Unlock scrolling
+            if (envelopeContainer) envelopeContainer.style.display = 'none';
+            
+            document.body.style.overflow = 'auto'; // This is the magic line that lets you scroll!
+            
+            // Safety measure: Ensure scroll-snap is ready
+            document.documentElement.style.scrollSnapType = ''; 
         }, 1500); 
     });
     
