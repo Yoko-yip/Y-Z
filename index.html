@@ -19,7 +19,6 @@
 
         html {
             /* 必须设为 mandatory，手机浏览器才会强制执行摩擦力和停顿 */
-            scroll-snap-type: y mandatory; 
             scroll-behavior: smooth;
         }
         
@@ -1566,14 +1565,29 @@ nav {
     });
 
    // --- SINGLE PAGE SCROLLING LOGIC ---
-   // --- SINGLE PAGE SCROLLING LOGIC ---
+    // --- 智能磁吸管理器 (SMART MAGNET MANAGER) ---
+    let isNavigating = false; 
+
+    // 这个函数用来实时判断：现在该不该开启磁吸？
+    function evaluateMagnet() {
+        const aboutPage = document.getElementById('about-page');
+        if (!aboutPage) return;
+        
+        // 如果“我们”页面的底部已经完全滑到了屏幕上方（说明用户在看后面的内容）
+        if (aboutPage.getBoundingClientRect().bottom < 0) {
+            document.documentElement.style.scrollSnapType = 'none'; // 彻底关闭磁吸，自由滑动！
+        } else {
+            document.documentElement.style.scrollSnapType = 'y mandatory'; // 开启主页的强制摩擦力！
+        }
+    }
+
+    // --- 单页平滑滚动逻辑 ---
     function scrollToSection(sectionId) {
         const target = document.getElementById(sectionId);
         if (target) {
-            // 1. 跳转前：暂时关闭网页的磁吸摩擦力，防止它拦截跳转动画
-            document.documentElement.style.scrollSnapType = 'none';
+            isNavigating = true; // 告诉系统：我正在跳转，别打扰我
+            document.documentElement.style.scrollSnapType = 'none'; // 跳转时临时关掉磁吸
 
-            // 2. 计算位置并执行原生平滑滚动
             const headerOffset = 80; 
             const elementPosition = target.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -1583,12 +1597,21 @@ nav {
                  behavior: "smooth"
             });
 
-            // 3. 跳转后：等平滑滚动结束（大约800毫秒），重新开启磁吸摩擦力
+            // 跳转结束后（1秒），重新评估并恢复状态
             setTimeout(() => {
-                document.documentElement.style.scrollSnapType = ''; // 清除临时设置，恢复 CSS 中的默认规则
+                isNavigating = false; 
+                evaluateMagnet(); // 检查我们现在停在哪里，决定是否重新开启磁吸
             }, 1000);
         }
     }
+
+    // 监听用户的每一次滑动
+    window.addEventListener('scroll', function() {
+        // 只要不是在点击菜单跳转的过程中，就实时评估磁吸状态
+        if (!isNavigating) {
+            evaluateMagnet();
+        }
+    });
     
 
     // Automatically highlight the active navigation tab while scrolling
