@@ -880,6 +880,10 @@ nav {
         body {
             overflow: hidden; 
         }
+        /* Allow scrolling after envelope is opened */
+        body.envelope-opened {
+            overflow: auto;
+        }
 
         /* Make the home page take up the full first screen */
         #home-page {
@@ -1729,6 +1733,7 @@ nav {
 
         revealElements.forEach(el => observer.observe(el));
     }
+    
 
     
 
