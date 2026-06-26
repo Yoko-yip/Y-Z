@@ -1581,37 +1581,23 @@ nav {
         }
     }
 
-    // --- 单页平滑滚动逻辑 ---
-    function scrollToSection(sectionId) {
-        const target = document.getElementById(sectionId);
-        if (target) {
-            isNavigating = true; // 告诉系统：我正在跳转，别打扰我
-            document.documentElement.style.scrollSnapType = 'none'; // 跳转时临时关掉磁吸
+    // --- 1. SINGLE PAGE SCROLLING LOGIC ---
+function scrollToSection(sectionId) {
+    const target = document.getElementById(sectionId);
+    if (target) {
+        const headerOffset = 80; 
+        const elementPosition = target.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-            const headerOffset = 80; 
-            const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-            window.scrollTo({
-                 top: offsetPosition,
-                 behavior: "smooth"
-            });
-
-            // 跳转结束后（1秒），重新评估并恢复状态
-            setTimeout(() => {
-                isNavigating = false; 
-                evaluateMagnet(); // 检查我们现在停在哪里，决定是否重新开启磁吸
-            }, 1000);
-        }
+        window.scrollTo({
+             top: offsetPosition,
+             behavior: "smooth"
+        });
     }
+}
 
-    // 监听用户的每一次滑动
-    window.addEventListener('scroll', function() {
-        // 只要不是在点击菜单跳转的过程中，就实时评估磁吸状态
-        if (!isNavigating) {
-            evaluateMagnet();
-        }
-    });
+// --- 2. BACKGROUND COLOR SCROLL OBSERVER (Dark Mode) ---
+// (Leave this and everything below it exactly as it is!)
     
 
     // Automatically highlight the active navigation tab while scrolling
