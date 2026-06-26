@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Zoey & Will</title>
+    <link rel="preload" href="images/willowbg.png" as="image">
+    
+    <script src="https://unpkg.com/@dotlottie/player-component@latest/dist/dotlottie-player.mjs" type="module"></script>
+
+    <style>
+        /* --- GLOBAL STYLES --- */
+        @font-face {
+            font-family: 'CactusClassicalSerif';
+            src: url('CactusClassicalSerif.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        html {
+            /* 必须设为 mandatory，手机浏览器才会强制执行摩擦力和停顿 */
+            scroll-behavior: smooth;
+        }
+        
+        html, body { 
+            margin: 0; 
+            padding: 0;
+            width: 100%;
+            /* height: 100%;
+            overflow-x: hidden; 
+            /* Base yellow - revealed if landing scene ever fades out completely */
+            background-color: #FFFBE6; 
+            font-family: 'Courier New', Courier, monospace;
+            touch-action: pan-y; 
+        }
+
+        .lang-switch {
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-right: 30px; 
+            color: 3A3836;
+            position: relative;
+            z-index: 301; /* Above menu overlay */
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 8px; 
+        }
+
+        .lang-option {
+            opacity: 0.3; /* Inactive state */
+            transition: opacity 0.3s, border-bottom 0.3s;
+            padding-bottom: 2px;
+            border-bottom: 2px solid transparent; 
+        }
+        
+        .separator {
+            opacity: 0.3;
+            font-weight: normal;
+        }
+
+        /* Active State Logic */
+        /* If NOT english mode -> Chinese is active */
+        body:not(.english-mode) .lang-option.zh { 
+            opacity: 1; 
+            border-bottom: 2px solid 3A3836; 
+        }
+        
+        /* If English mode -> English is active */
+        body.english-mode .lang-option.en { 
+            opacity: 1; 
+            border-bottom: 2px solid 3A3836; 
+        }
+        /* --- LANGUAGE VISIBILITY LOGIC (UNIVERSAL FIX) --- */
+        
+        /* 1. Default (Chinese Mode) */
+        /* Hide all English elements (divs, spans, images) */
+        .lang-en, 
+        div.lang-en, 
+        span.lang-en, 
+        img.lang-en { 
+            display: none !important; 
+        }
+        
+        /* Show all Chinese elements */
+        .lang-zh, 
+        div.lang-zh, 
+        span.lang-zh { 
+            display: inherit !important; 
+        }
+        img.lang-zh { display: block !important; }
+
+
+        /* 2. English Mode */
+        /* Hide all Chinese elements */
+        body.english-mode .lang-zh, 
+        body.english-mode div.lang-zh, 
+        body.english-mode span.lang-zh, 
+        body.english-mode img.lang-zh { 
+            display: none !important; 
+        }
+
+        /* Show all English elements */
+        body.english-mode .lang-en, 
+        body.english-mode div.lang-en, 
+        body.english-mode span.lang-en { 
+            display: inherit !important; 
+        }
+        body.english-mode img.lang-en { display: block !important; }
+
+       
+        
+        
+/* --- NAVIGATION BAR --- */
+        nav {
+            position: fixed; 
+            top: 0;              
+            left: 0;             
+            width: 100%;         
+            height: 80px;        
+            
+            /* 1. Restored the beige background, but with 70% opacity */
+            background-color: rgba(250, 248, 245, 0.7) !important; 
+            
+            /* 2. Added a frosted glass blur effect (highly recommended for readability!) */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            
+            display: flex;
+            align-items: center;
+            justify-content: center; 
+            box-sizing: border-box;
+            z-index: 200; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 2s ease-in-out;
+        }
+        nav.fade-in { opacity: 1; pointer-events: auto; }
+        
+        /* This container holds the list items */
+        .nav-links {
+            list-style: none; /* Removes the bullet points */
+            display: flex;    /* Places the items side-by-side horizontally */
+            justify-content: center;
+            align-items: baseline; 
+            gap: 40px;        /* The space between each word on a laptop */
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Unselected State: Reverted to dark gray, removed the white text shadow */
+        .nav-links a {
+            text-decoration: none;
+            color: #888888; 
+            text-shadow: none; 
+            font-size: 16px; 
+            font-weight: 300; 
+            letter-spacing: 2px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap; 
+        }
+
+        .nav-links a:hover { color: #555555; }
+
+        /* Selected State: Reverted to your dark #3A3836 color */
+        .nav-links a.active { 
+            font-size: 22px; 
+            font-weight: bold; 
+            color: #3A3836; 
+            text-shadow: none; 
+            border-bottom: none; 
+        }
+
+.menu-icon {
+    display: none !important;
+}
+        
+        @media (max-width: 768px) {
+    nav { 
+        height: 60px; 
+        padding: 0 15px !important; 
+        justify-content: flex-start !important; 
+        overflow-x: auto; /* Enables horizontal scrolling */
+        scrollbar-width: none; /* Hides scrollbar in Firefox */
+    }
+    
+    /* Hides scrollbar in Chrome/Safari */
+    nav::-webkit-scrollbar { 
+        display: none; 
+    }
+
+    .content-page { padding-top: 80px !important; }
+    
+    .menu-icon { display: none !important; } /* Hamburger completely hidden */
+
+            
+nav { 
+        height: 60px; 
+        padding: 0 20px !important; /* Gives 20px of breathing room on the left and right */
+        justify-content: flex-start !important; 
+        overflow-x: auto; 
+        scrollbar-width: none; 
+    }
+            
+    .nav-links {
+        display: flex !important; 
+        position: static;
+        /* Make the menu take up the full width of the phone screen */
+        width: 100%; 
+        /* Ensures it can still horizontally scroll if the phone screen is extremely small */
+        min-width: max-content; 
+        /* This magic line forces the items to spread out evenly! */
+        justify-content: space-between; 
+        
+        height: auto;
+        background-color: transparent; 
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none; 
+        flex-direction: row;
+        align-items: baseline;
+        
+        /* This acts as a minimum safety gap so they never overlap on tiny screens */
+        gap: 20px; 
+        
+        animation: none; 
+    }
+    
+    /* Mobile Unselected */
+    .nav-links a { 
+        font-size: 15px; 
+        color: #999;
+        opacity: 1; 
+    }
+    
+    /* Mobile Selected */
+    .nav-links a.active { 
+        font-size: 19px; 
+        font-weight: bold;
+        color: #3A3836;
+        padding-bottom: 0; 
+        border-bottom: none;
+    }
+                
+
+            /* -- NEW: ATTIRE PAGE MOBILE ADJUSTMENTS -- */
+            .scroll-image-wrapper:nth-child(n) {
+                width: 60% !important; 
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
+            .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
+            
+            .color-palette.sticky-bottom {
+                bottom: 50px; 
+                padding: 12px 20px; 
+            }
+        }
+        
+        @keyframes fadeInMenu { from { opacity: 0; } to { opacity: 1; } }
+
+        .color-palette.sticky-bottom .color-icon {
+            width: 16%; 
+            height: auto;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
+            cursor: pointer; /* Makes it look like a clickable link */
+            transition: transform 0.2s ease; /* Smooth pop effect */
+        }
+
+        .color-palette.sticky-bottom .color-icon:hover,
+        .color-palette.sticky-bottom .color-icon:active {
+            transform: scale(1.15); /* Slightly enlarges the circle when tapped/hovered */
+        }
+        
+        /* --- MUTE BUTTON --- */
+        #muteBtn {
+        position: fixed;
+        bottom: 24px;         /* Moved to 24px from bottom */
+        right: 24px;          /* Moved to right side */
+        z-index: 200;
+        color: #3A3836;       /* Added missing '#' for the hex color */
+        opacity: 0; 
+        transition: opacity 2s ease-in-out;
+            /* Frosted Glass & Shape Effects */
+            background: rgba(255, 255, 255, 0.6);       /* Slightly more opaque to stand out */
+        backdrop-filter: blur(12px); 
+        -webkit-backdrop-filter: blur(12px); 
+        border-radius: 50%; 
+        border: 1px solid rgba(0, 0, 0, 0.08);      /* Faint dark border instead of white */
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06); /* Soft drop shadow creates depth */
+        
+        padding: 0; 
+        cursor: pointer;
+        width: 48px;          /* Updated width */
+        height: 48px;         /* Updated height */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+        #muteBtn svg {
+        width: 24px;
+        height: 24px;
+        }
+        #muteBtn.fade-in { opacity: 0.7; }
+        #muteBtn:hover { opacity: 1; }
+
+        /* --- NEW ANIMATED ENVELOPE EFFECT --- */
+        #new-envelope-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            /* THIS IS YOUR TINT: 15% opacity black */
+            background-color: rgba(0, 0, 0, 0.3); 
+            
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            
+            /* This line controls the smooth zoom and fade transition */
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+            transform-origin: center center;
+        }
+
+        #new-envelope-container.dissolve {
+            opacity: 0;
+            transform: scale(1.1); /* Slight scale-up as it fades */
+            pointer-events: none;
+        }
+
+        .entrance-header {
+            text-align: center;
+            margin-bottom: 40px;
+            margin-top: -60px;
+            transition: opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* SEQUENCE 1: "YOU'VE GOT A MAIL FROM" */
+        .entrance-subtitle {
+            font-size: 0.85rem;
+            letter-spacing: 0.25em;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            font-weight: 400;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* Soft shadow for visibility */
+            font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
+            opacity: 0;
+            animation: fadeInDown 1s ease forwards;
+            animation-delay: 0.2s; 
+        }
+
+        /* SEQUENCE 2: Name SVG */
+        .names-svg {
+            width: 250px; /* Adjust this width to make the image larger or smaller */
+            height: auto;
+            opacity: 0;
+            animation: fadeInDown 1s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+        /* SEQUENCE 3: Envelope */
+        .envelope-wrapper {
+            position: relative;
+            width: 60vw;
+            max-width: 420px;
+            cursor: pointer;
+            user-select: none;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+            animation-delay: 1.5s; 
+        }
+
+        .static-envelope-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            /* Webkit prefix and filter included */
+            -webkit-filter: drop-shadow(0 15px 35px rgba(0,0,0,0.3));
+            filter: drop-shadow(0 15px 35px rgba(0,0,0,0.2));
+            transition: transform 0.3s ease, filter 0.3s ease;
+            
+            /* Hardware acceleration fixes to stop the shadow from glitching */
+            transform: translateZ(0); 
+            will-change: transform, filter;
+        }
+
+        .envelope-wrapper:hover .static-envelope-img {
+            transform: scale(1.02) translateZ(0);
+        }
+
+        /* SEQUENCE 4: Chinese Instruction Text */
+        .entrance-instruction {
+            font-size: 0.8rem; 
+            letter-spacing: 0.2em;
+            margin-top: 30px;
+            text-transform: uppercase;
+            cursor: pointer;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.4); /* Soft shadow for visibility */
+            font-family: 'CactusClassicalSerif', serif; /* New Font Applied */
+            opacity: 0;
+            /* Fades in at 3.5s, then immediately starts pulsing */
+            animation: pulse 2s infinite;
+            animation-delay: 1.8s; /* Change this number to exactly match when you want it to pop in! */
+            transition: opacity 0.5s ease;
+        }
+        
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* --- INVITATION CARD --- */
+        #invitation-card {
+            position: absolute;
+            z-index: 20; 
+            text-align: center;
+            color: #ffffff;
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3); /* Soft shadow to separate text from background */
+            font-family: 'Times New Roman', Times, serif; 
+            opacity: 0; 
+            transition: opacity 2s ease-in-out;
+            width: 100%; max-width: 500px;
+            top: 45%; left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none; 
+        }
+        .fade-in { opacity: 1 !important; pointer-events: auto !important; }
+
+        h1 { font-size: 24px; letter-spacing: 5px; margin-bottom: 5px; text-transform: uppercase; font-weight: normal; }
+        .sub-title { font-size: 14px; letter-spacing: 3px; color: #eeeeee; margin-bottom: 40px; text-transform: uppercase; }        
+        .names { margin-bottom: 20px; }
+        .names h2 { font-size: 28px; margin: 5px 0; font-weight: normal; letter-spacing: 3px; }
+        /* Updated Date: Removed the bottom border and shrunk the gap */
+        .date { 
+            font-size: 28px; 
+            letter-spacing: 2px; 
+            margin-bottom: 10px; /* Reduced gap so the location sits snugly below */
+        }   
+
+        /* New Location: Same font family, slightly smaller size, holds the bottom border */
+        .location {
+            font-size: 14px; 
+            letter-spacing: 3px; 
+            margin-bottom: 50px; 
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5); 
+            display: inline-block; 
+            padding-bottom: 15px;
+        }   
+        .schedule { font-size: 13px; line-height: 2.2; letter-spacing: 1px; color: #eeeeee; }
+        .schedule .time { margin-right: 15px; font-weight: bold; color: #ffffff; }
+        
+        /* --- LANDING SCENE (Tree + Background) --- */
+        #landing-scene {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 5; 
+            
+            /* Set the universal background image here */
+            background-image: url('images/willowbg.png');
+            background-size: cover;
+            background-position: center;
+            background-color: #000000; 
+        }
+
+        /* Hide the old inline image version so they don't double up! */
+        .willow-bg-image {
+            display: none; 
+        }
+        
+        #willow-bg-container, 
+        .shadow-overlay, 
+        .lottie-bird-container {
+            opacity: 0;
+            transition: opacity 2s ease-in-out;
+        }
+
+        #landing-scene.show-elements #willow-bg-container,
+        #landing-scene.show-elements .shadow-overlay,
+        #landing-scene.show-elements .lottie-bird-container {
+            opacity: 1;
+        }
+
+    /* --- OPTIMIZED MIST EFFECT (Fades the scene slightly for readability) --- */
+        #landing-scene.blurred #willow-bg-container,
+        #landing-scene.blurred .shadow-overlay {
+            opacity: 1; /* Changed from 0.25 to 1 */
+            transition: opacity 3s ease-in-out;
+        }
+
+
+        /* 1. Static Willow Background & Blur Overlay */
+        #willow-bg-container {
+            position: absolute;
+            top: 0; 
+            left: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: hidden;
+        }
+
+        .willow-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; 
+            object-position: center; 
+        }
+
+       
+        
+        /* 2. Atmospheric Shadow Layer */
+        .shadow-overlay {
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            z-index: 55;
+            pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 240, 0.6) 0%, rgba(255, 255, 240, 0) 60%),
+                radial-gradient(circle at 20% 80%, rgba(250, 250, 210, 0.4) 0%, rgba(250, 250, 210, 0) 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 250, 205, 0.4) 0%, rgba(255, 250, 205, 0) 50%);
+            background-size: 50% 50%;
+            background-repeat: no-repeat;
+            background-position: top right;
+            animation: shadowSway 5s ease-in-out infinite alternate;
+        }
+        
+        @keyframes shadowSway { 
+            0% { transform: translateX(0) rotate(0deg); } 
+            100% { transform: translateX(50px) rotate(3deg); } 
+        }
+
+        /* 3. Lottie Birds */
+        .lottie-bird-container {
+            position: absolute;
+            bottom: -50px; 
+            right: -50px;
+            width: 1000px; 
+            height: 1000px; 
+            z-index: 60;   
+            pointer-events: none;
+        }
+        
+/* --- ABOUT US / OUR STORY STYLES --- */
+        .story-container {
+            width: 100%; /* Spans full width for backgrounds */
+            text-align: left;
+            margin: 0 auto;
+        }
+        .story-header {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+        }
+        .story-header p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+        
+      /* --- MASONRY GALLERY STYLES --- */
+        .story-masonry {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .masonry-top-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .masonry-left {
+            display: flex;
+            flex-direction: column;
+            /* This vertically centers the horizontal image next to the tall one */
+            justify-content: flex-end; 
+        }
+        
+        /* Shared styles for all masonry images */
+        .masonry-left img,
+        .masonry-right img,
+        .masonry-bottom {
+            width: 100%;
+            border-radius: 2px; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            background-color: #EAE7E0; 
+        }
+        
+        /* LEFT IMAGE: Restores the natural horizontal shape without cropping */
+        .masonry-left img {
+            height: auto; 
+        }
+        
+        /* RIGHT IMAGE: Keeps the tall image filling the vertical space */
+        .masonry-right img {
+            height: 100%;
+            object-fit: cover; 
+        }
+        
+        .masonry-bottom {
+            height: auto;
+        }
+        
+        /* --- TIMELINE SECTIONS (DESKTOP) --- */
+        .timeline-section {
+            width: 100%;
+            padding: 80px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .timeline-section.dark-bg {
+            background-color: #233026; /* Dark Green */
+            color: #FAF8F5;
+        }
+        .timeline-section.light-bg {
+            background-color: #FAF8F5; /* Light Beige */
+            color: 3A3836;
+        }
+        .timeline-inner {
+            width: 90%;
+            max-width: 900px;
+            display: flex;
+            gap: 50px;
+        }
+        .timeline-inner.reverse {
+            flex-direction: row-reverse;
+        }
+
+        /* Vertical Titles */
+        .vertical-title-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+            flex-shrink: 0;
+        }
+        /* --- TIMELINE VERTICAL TITLES --- */
+       
+        .vertical-title-area h2 {
+            margin: 0;
+            font-weight: normal;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        /* Chinese Style: Upright stacked characters */
+        .vertical-title-area h2 .lang-zh {
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            font-size: 26px;
+            letter-spacing: 5px;
+        }
+
+        /* English Style: Rotated, reads bottom-to-top, editorial serif */
+        .vertical-title-area h2 .lang-en {
+            writing-mode: vertical-rl;
+            transform: rotate(90 deg);  
+            font-family: 'Times New Roman', Times, serif; 
+            font-size: 16px; 
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-align: left;
+            line-height: 1.4;
+        }
+        
+        .vertical-line {
+            width: 1px;
+            height: 80px;
+            background-color: currentColor;
+            margin: 25px 0;
+            opacity: 0.5;
+        }
+        .vertical-date {
+            writing-mode: vertical-rl;
+            font-size: 14px;
+            letter-spacing: 3px;
+            opacity: 0.8;
+        }
+
+        /* --- CAROUSEL STYLES --- */
+        .carousel-content {
+            flex: 1;
+            min-width: 0; 
+        }
+        .carousel-track {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none; /* Firefox hide scrollbar */
+            -ms-overflow-style: none; /* IE/Edge hide scrollbar */
+            gap: 20px;
+        }
+        .carousel-track::-webkit-scrollbar {
+            display: none; /* Chrome/Safari hide scrollbar */
+        }
+        .carousel-item {
+            flex: 0 0 100%;
+            scroll-snap-align: center;
+        }
+        .carousel-item img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            background-color: rgba(0,0,0,0.05);
+        }
+        .carousel-controls {
+            text-align: center;
+            margin: 20px 0 30px 0;
+            font-size: 14px;
+            letter-spacing: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            opacity: 0.8;
+            font-family: 'Times New Roman', Times, serif;
+        }
+        .carousel-arrow {
+            cursor: pointer;
+            user-select: none;
+            padding: 5px 15px;
+            font-size: 18px;
+            transition: opacity 0.3s;
+        }
+        .carousel-arrow:hover { opacity: 0.5; }
+        .carousel-desc {
+            font-size: 14px;
+            line-height: 1.8;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+
+        /* --- MOBILE OVERRIDES FOR TIMELINE --- */
+        @media (max-width: 768px) {
+            /* Masonry Mobile Overrides */
+            .story-masonry { gap: 10px; margin-bottom: 25px; }
+            .masonry-top-row { gap: 10px; }
+            .masonry-left h1 { margin-bottom: 10px !important; }
+            
+            .timeline-section { padding: 50px 0; }
+            
+            /* Keep it side-by-side on mobile, just reduce the gap and width */
+            .timeline-inner { 
+                width: 95%; 
+                gap: 15px; 
+            }
+            .timeline-inner.reverse { 
+                gap: 15px; 
+            }
+            
+            /* Slightly scale down the vertical titles so they don't squish the images */
+            .vertical-title-area {
+                width: 40px;
+            }
+            .vertical-title-area h2 .lang-zh {
+                font-size: 20px;
+                letter-spacing: 3px;
+            }
+            .vertical-title-area h2 .lang-en {
+                font-size: 12px; /* Scales down the English font for mobile screens */
+                letter-spacing: 2px;
+            }
+            
+            .vertical-line {
+                height: 50px;
+                margin: 15px 0;
+            }
+            .vertical-date {
+                font-size: 12px;
+                letter-spacing: 2px;
+            }
+            
+            /* Make carousel images a bit shorter on mobile if needed */
+            .carousel-item img {
+                max-height: 400px;
+            }
+        }
+
+        /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
+        .scrolling-text-container {
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-top: 20px;
+            padding: 25px 0;
+            box-sizing: border-box;
+            
+            /* The top and bottom borders */
+            border-top: 1px solid #ddd; 
+            border-bottom: 1px solid #ddd; /* ADDED THIS LINE */
+            
+            display: flex;
+            flex-direction: column; 
+            gap: 12px; 
+        }
+
+        /* --- REDUCE THE GAP BETWEEN PAGES --- */
+        #about-page {
+            padding-bottom: 0 !important; /* Removes the extra space at the bottom of the story */
+        }
+        
+        #attire-page {
+            padding-top: 60px !important; /* Shrinks the empty space above the Attire title */
+        }
+
+        /* --- ADDRESS PAGE SPACING & DIVIDER --- */
+        #address-page {
+            /* 1. Shrinks the gap right above the title */
+            padding-top: 40px !important; 
+            
+            /* 2. Adds the delicate dividing line (matches your scrolling text line) */
+            border-top: 1px solid #ddd; 
+            
+            /* 3. Ensures the line stretches nicely across the container */
+            width: 100%; 
+        }
+
+        /* --- PLAY PAGE SPACING & DIVIDER --- */
+        #play-page {
+            /* 1. Shrinks the gap right above the title */
+            padding-top: 40px !important; 
+            
+            /* 2. Adds the delicate dividing line */
+            border-top: 1px solid #ddd; 
+            
+            /* 3. Ensures the line stretches nicely across the container */
+            width: 100%; 
+        }
+
+        .scrolling-text {
+            display: block;
+            font-size: 16px;
+            font-style: italic;
+            color: #aaa;
+            letter-spacing: 3px;
+        }
+
+        .line-1 { animation: scroll-left 22s linear infinite; }
+        .line-2 { animation: scroll-left 18s linear infinite; margin-left: 100px; }
+
+        .scrolling-text-container:hover .scrolling-text {
+            animation-play-state: paused;
+        }
+
+        @keyframes scroll-left {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Prevent scrolling before the envelope is opened */
+        body {
+            overflow: hidden; 
+        }
+        
+
+        /* Make the home page take up the full first screen */
+        #home-page {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10; 
+            scroll-snap-align: start; 
+            scroll-snap-stop: always; /* Forces the scroll to stop here, increasing friction */
+        }
+        
+         /* --- FIRST SCROLL SNAP TARGET --- */
+        #about-page {
+            /* This makes the page act as the magnetic destination for the first scroll */
+            scroll-snap-align: start; 
+        }
+
+        /* --- CONTENT PAGES --- */
+        .content-page h1 {
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            font-weight: bold; 
+            margin-bottom: 30px;
+            
+            /* Reverted back to dark text for the light background */
+            color: #3A3836; 
+            text-shadow: none; 
+        }
+        
+        .content-page {
+            display: flex; 
+            position: relative;
+            width: 100%;
+            
+            /* Changed from transparent back to your solid beige */
+            background-color: #FAF8F5; 
+            
+            /* The high z-index makes these pages slide OVER the willow tree */
+            z-index: 100; 
+            box-sizing: border-box;
+            padding-top: 100px; 
+            padding-bottom: 50px;
+            flex-direction: column;
+            align-items: center;
+            opacity: 1;
+        }
+        
+       
+        
+        .content-page.active { display: flex; opacity: 1; }
+        .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
+        .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
+        .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
+        .address-container { width: 90%; max-width: 800px; text-align: left; margin: 0 auto;}
+        .address-container h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .map-figure { width: 100%; margin-bottom: 50px; border: none; }
+        .map-figure img { width: 100%; height: auto; display: block; background-color: #ddd; }
+        
+        /* --- DETAILS SECTION WRAPPER --- */
+        .details-wrapper {
+            padding: 10px 0 30px 0;
+            margin-bottom: 20px;
+        }
+
+        /* --- NEW: MAP BANNER STYLES --- */
+        .map-banner {
+            width: 100%;
+            background-color: transparent; 
+            display: flex;
+            flex-direction: column; /* This forces the text to drop BELOW the image */
+            align-items: center;    /* This centers both the image and the text */
+            margin-bottom: 50px;
+        }
+        
+        .map-banner img {
+            width: 100%;
+            max-width: 1000px;
+            height: auto;
+            display: block;
+        }
+
+        /* Styles for the small hint text */
+        .map-save-hint {
+            font-size: 12px;
+            color: #888888; /* Soft grey color */
+            margin-top: 8px; /* Very small gap between image and text */
+            margin-bottom: 0;
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        /* --- SECTION MAIN TITLES (Details & Why We Chose Here) --- */
+        .details-wrapper > h2,
+        .info-section > h2 {
+            font-size: 22px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin: 0 0 30px 0;
+            font-weight: normal; 
+            text-align: center;  
+            color: #3A3836;
+        }
+
+        /* --- INFO SECTIONS WITH LEFT BORDER --- */
+        .info-section.with-border {
+            border-left: 3px solid #3A3836;
+            padding-left: 18px;
+            margin-bottom: 35px;
+        }
+        
+        .details-wrapper .info-section:last-child { margin-bottom: 0; } 
+        
+        /* --- SUB-HEADERS (The Venue, Getting There, Accommodation) --- */
+        .info-section h3 { 
+            font-size: 18px; 
+            text-transform: uppercase; 
+            letter-spacing: 3px; 
+            margin: 0 0 10px 0; 
+            font-weight: bold; 
+            color: #3A3836;
+            text-align: left; 
+        }
+        .info-section p { font-size: 16px; line-height: 1.6; color: #555; margin: 0; }
+        
+        /* --- TRANSPORTATION SPACING --- */
+        .transport-item {
+            margin-bottom: 15px; /* Adds space between lines */
+            line-height: 1.6;
+            color: #555; /* ADD THIS LINE to match the other paragraphs */
+        }
+        
+        .color-palette { display: flex; justify-content: center; gap: 15px; margin: 20px 0 15px 0; flex-wrap: wrap; }
+        .color-icon { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1));}
+        .attire-description { text-align: center; font-size: 14px; color: #555; margin-bottom: 50px; max-width: 100%; line-height: 1.6; letter-spacing: 1px; }
+        
+/* --- ATTIRE PAGE: TEXT & HEADER --- */
+        .attire-header-section {
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto 60px auto;
+            text-align: left;
+        }
+        
+
+        .attire-header-section h1 {
+            width: 100%;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .attire-description {
+            text-align: center;
+            font-size: 15px;
+            color: #555;
+            margin: 0;
+            line-height: 1.8;
+            letter-spacing: 1px;
+        }
+
+        /* --- STICKY COLOR PALETTE --- */
+        .color-palette.sticky-bottom {
+            position: sticky;
+            top: 80px; /* Sits right beneath your navigation bar */
+            display: flex;
+            justify-content: space-between; 
+            width: 90%; 
+            max-width: 350px; 
+            
+            /* MARGIN MATH: 
+               0px (top margin: closer to the text)
+               auto (centers it horizontally)
+               40px (bottom margin: gap before the first image)
+               auto (centers it horizontally) */
+            margin: 0px auto 40px auto; 
+            
+            padding: 10px 15px;
+            z-index: 50; /* Forces it to stay ON TOP of the photos */
+            
+            /* Pro-tip: Adding a background matching your page prevents 
+               the photos from showing through the gaps between the circles! */
+            background-color: rgba(250, 248, 245, 0.95); 
+            border-radius: 30px; /* Gives it a nice floating pill shape */
+        }
+
+        .color-palette.sticky-bottom .color-icon {
+            /* Width is a percentage so they scale up/down with the screen */
+            width: 16%; 
+            height: auto;
+            /* Keeps them visible when dark photos scroll behind them */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
+        }
+
+        /* --- OVERLAPPING COLLAGE LAYOUT --- */
+        .attire-scroll-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 80px; /* Space for the bottom sticky palette */
+        }
+
+        .scroll-image-wrapper {
+            position: relative;
+        }
+
+        .scroll-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15); 
+            background-color: #EAE7E0;
+        }
+
+        /* --- THE ANIMATION CLASSES --- */
+        .reveal-item {
+            opacity: 0;
+            transform: translateY(60px); 
+            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal-item.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- THE OVERLAP MATH --- */
+        .scroll-image-wrapper:nth-child(1) { width: 30%; align-self: flex-start; z-index: 1; }
+        .scroll-image-wrapper:nth-child(2) { width: 20%; align-self: flex-end; margin-top: -15%; margin-right: 5%; z-index: 2; }
+        .scroll-image-wrapper:nth-child(3) { width: 35%; align-self: flex-start; margin-top: -10%; margin-left: 10%; z-index: 3; }
+        .scroll-image-wrapper:nth-child(4) { width: 45%; align-self: flex-end; margin-top: 15%; z-index: 1; }
+        .scroll-image-wrapper:nth-child(5) { width: 20%; align-self: flex-start; margin-top: -30%; z-index: 0; }
+        .scroll-image-wrapper:nth-child(6) { width: 35%; align-self: flex-end; margin-top: 5%; margin-right: 15%; z-index: 2; }
+        .scroll-image-wrapper:nth-child(7) { width: 25%; align-self: flex-start; margin-top: -15%; z-index: 3; }
+        .scroll-image-wrapper:nth-child(8) { width: 35%; align-self: flex-start; margin-top: -10%; z-index: 1; }
+        .scroll-image-wrapper:nth-child(9) { width: 45%; align-self: flex-start; margin-top: 10%; z-index: 2; }
+        .scroll-image-wrapper:nth-child(10) { width: 15%; align-self: flex-start; margin-top: -15%; z-index: 3; }
+
+
+        /* --- MOBILE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
+            /* 1. Make the images smaller on mobile */
+            .scroll-image-wrapper:nth-child(n) {
+                /* Reduced from 70% down to 60% for more side padding */
+                width: 60% !important; 
+                margin-left: 0 !important;
+                margin-right: 0 !important;
+            }
+            .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
+            .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="landing-scene">
+        
+        <div id="willow-bg-container">
+            <img src="images/willowbg.png" alt="Willow Tree Background" class="willow-bg-image">
+        </div>
+
+        <div class="lottie-bird-container">
+            <dotlottie-player 
+                src="Birds.lottie" 
+                background="transparent" 
+                speed="1" 
+                style="width: 100%; height: 100%;" 
+                loop 
+                autoplay>
+            </dotlottie-player>
+        </div>
+        
+    </div>
+
+    <!-- APPLE STYLE MUTE BUTTON -->
+    <button id="muteBtn">
+    <svg id="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+    </svg>
+    <svg id="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <line x1="23" y1="9" x2="17" y2="15"></line>
+        <line x1="17" y1="9" x2="23" y2="15"></line>
+    </svg>
+</button>
+
+    <nav id="navbar">
+        <ul class="nav-links" id="navLinks">
+            <li><a onclick="scrollToSection('home-page')" id="link-home" class="active">主页</a></li>
+            <li><a onclick="scrollToSection('about-page')" id="link-about">我们</a></li>
+            <li><a onclick="scrollToSection('attire-page')" id="link-attire">穿什么</a></li>
+            <li><a onclick="scrollToSection('address-page')" id="link-address">哪儿见</a></li>
+            <li><a onclick="scrollToSection('play-page')" id="link-play">哪儿玩</a></li>
+        </ul>
+    </nav>
+
+    <!-- NEW ENTRANCE SCREEN (STATIC ENVELOPE IMAGE) -->
+    <div id="new-envelope-container">
+        
+        <div class="entrance-header" id="entrance-header">
+            <p class="entrance-subtitle">YOU'VE GOT A MAIL FROM</p>
+            <img src="images/Namesfont.svg" alt="Z & Y" class="names-svg">
+        </div>
+
+        <div class="envelope-wrapper" id="openEnvelopeBtn">
+            <img src="images/envelope.png" alt="Wax Seal Envelope" class="static-envelope-img">
+        </div>
+
+        <p class="entrance-instruction" id="instruction-text"> 点击信封打开邀请函 </p>
+    </div>
+        
+    <div id="home-page">
+        <div id="invitation-card">
+            <h1>婚礼邀请</h1>
+            <div class="sub-title">Invitation</div>
+            <div class="names">
+                <h2>叶 子 & 张 维 翀</h2>
+                <div class="en">Zoey & Will</div>
+            </div>
+            <div class="date">2026.09.12</div>
+            <div class="location">Temple 东景缘</div>
+            <div class="schedule">
+                <div>Schedule</div>
+                <div><span class="time">18:00</span> Sign in / 签到</div>
+                <div><span class="time">19:00</span> Ceremony / 仪式</div>
+                <div><span class="time">19:30</span> Dinner & Party / 晚宴</div>
+            </div>
+        </div>
+    </div>
+<div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
+        <div class="story-container">
+            
+           <div class="story-header">
+               
+               <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+                <div class="story-masonry">
+                    <div class="masonry-top-row">
+                        <div class="masonry-left">
+                            <img src="images/us1.jpg" alt="Story Image 1">
+                        </div>
+                        
+                        <div class="masonry-right">
+                            <img src="images/us2.jpg" alt="Story Image 2">
+                        </div>
+                    </div>
+                    
+                    <img src="images/us3.jpg" alt="Story Image 3" class="masonry-bottom">
+                </div>
+
+                <div class="lang-zh">
+                    <p>一切都要从2022年的NC State Fair说起,两个在北卡待了很久却都没去过state fair的人莫名其妙。虽然从那一天开始我们聊天的频率更多了,但是一个人在北卡一个人在匹兹堡的异地情况让我们的关系没有太多进展,终于在寒假的时候,我们在华盛顿一起过了圣诞并且确认了关系(当然也是因为叶子很喜欢圣诞节所以想要把这一天的仪式感拉满)。</p>
+                    <p>于是从2023年开始,我们开始不停的解锁新地点,新体验。我们在南卡罗莱纳山顶的教堂看了日出,在纽约的寒风中排队看乐队演出,在坦帕一起浮潜看海牛,也一起划船从暴雨划到出彩虹。</p>
+                    <p>2024年我们搬到了美西,从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有很多”安静”的时刻,我们指的是那些坐在篝火前的夜晚,雪山旁的夜路,雨中的湖畔旁等等。</p>
+                    <p>2025年3月31日,在我们在坎昆度假旅行要结束的前一天,张维翀说他定了落日晚餐,我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中,但是钝感力十足的叶子毫无察觉。我们走到沙滩上,叶子看到了被布置好的场地以及摄像师的时候,仍然以为是落日晚餐套餐的一部分,直到拍完背影合照后看到张维种单膝跪地。</p>
+                    <p>2025年10月16日,我们在最“我们”的日子里,在平时最喜欢坐着发呆的湖边officially tie the knot(我们选择的见证人是圣诞节会去扮演圣诞老人的一位老人,叶子真的很喜欢过圣诞节)。</p>
+                    <p>这一次,我们非常期待与我们有着深深羁绊的你们,在北京一起庆祝我们的婚礼。感谢你们愿意作为我们故事的一部分。</p>
+                </div>
+                
+                <div class="lang-en">
+                    <p><em>(English main story placeholder)</em></p>
+                </div>
+            </div>
+            
+
+            <div class="timeline-section dark-bg">
+                <div class="timeline-inner">
+                    <div class="vertical-title-area">
+                        <h2><span class="lang-zh">订婚那天</span><span class="lang-en">A Look into<br>the Engagement</span></h2>                        <div class="vertical-line"></div>
+                        <span class="vertical-date">3/31/2025</span>
+                    </div>
+                    
+                    <div class="carousel-content">
+                        <div class="carousel-track" id="track-eng" onscroll="updateCarousel('track-eng', 'ind-eng')">
+                            <div class="carousel-item"><img src="images/engage1.jpg" alt="Engagement 1"></div>
+                            <div class="carousel-item"><img src="images/engage2.jpg" alt="Engagement 2"></div>
+                            <div class="carousel-item"><img src="images/engage3.jpg" alt="Engagement 3"></div>
+                        </div>
+                        
+                        <div class="carousel-controls">
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-eng', -1)">&lt;</span>
+                            <span id="ind-eng">1 / 3</span>
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-eng', 1)">&gt;</span>
+                        </div>
+                        
+                        <p class="carousel-desc">
+                            <span class="lang-zh">和我们一起重温一些我们订婚中最美好的时刻。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
+                            <span class="lang-en">Take a peek through some of our favorite moments from our engagement. These photos hold so much of what we were feeling joy, nerves, laughter, and love as we got ready for the next chapter. We hope you enjoy looking through them as much as we loved taking them.</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-section light-bg">
+                <div class="timeline-inner reverse">
+                    <div class="vertical-title-area">
+                        <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Our Elopement<br>Ceremony</span></h2>
+                        <div class="vertical-line"></div>
+                        <span class="vertical-date">10/16/2025</span>
+                    </div>
+                    
+                    <div class="carousel-content">
+                        <div class="carousel-track" id="track-elo" onscroll="updateCarousel('track-elo', 'ind-elo')">
+                            <div class="carousel-item"><img src="images/ceremony1.jpg" alt="Ceremony 1"></div>
+                            <div class="carousel-item"><img src="images/ceremony2.jpg" alt="Ceremony 2"></div>
+                            <div class="carousel-item"><img src="images/ceremony3.jpg" alt="Ceremony 3"></div>
+                        </div>
+                        
+                        <div class="carousel-controls">
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-elo', -1)">&lt;</span>
+                            <span id="ind-elo">1 / 3</span>
+                            <span class="carousel-arrow" onclick="scrollCarousel('track-elo', 1)">&gt;</span>
+                        </div>
+                        
+                        <p class="carousel-desc">
+                            <span class="lang-zh">幸运的是，我们为这一天亲自挑选了专属的‘法庭’！我们没有选择去法院，而是来到了Medina Beach Park。这里紧邻水岸，拥有观赏Mt.Rainier的绝佳视野。这也是我们一直钟爱的地方，在这里正式定下终身，让那一刻变得更加意义非凡。<br>尽管当时的太平洋西北地区已经进入了雨季，但云层在那一刻奇迹般地为我们散开了。我们迎来了一个清爽无雨的完美日落；那是一个氛围感十足、美丽且充满爱的傍晚——这正是我们一直憧憬的开始！</span>
+                            <span class="lang-en">Fortunately, we got to pick our own 'office' for the day! We traded the courthouse for Medina Beach Park, right on the water with a perfect view of Mt. Rainier. It's a spot we've always loved, and making it official there made the moment feel even more special. Even though PNW had already settled into its rainy season, the clouds parted just long enough for us. We had a perfectly dry sunset moment; it was a moody, beautiful evening filled with love and exactly the start we've always imagined!</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scrolling-text-container">
+                <div class="scrolling-text line-1">
+                    <span class="lang-zh">
+                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!”
+                    </span>
+                    <span class="lang-en">
+                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!"
+                    </span>
+                </div>
+                <div class="scrolling-text line-2">
+                    <span class="lang-zh">
+                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!”
+                    </span>
+                    <span class="lang-en">
+                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!"
+                    </span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+    <div id="attire-page" class="content-page">
+        
+        <div class="attire-header-section">
+            <h1><span class="lang-zh">着装建议</span><span class="lang-en">Dress Code</span></h1>
+            <p class="attire-description">
+                <span class="lang-zh">
+                    以下是我们推荐的着装配色以及搭配灵感。<br><br>
+                    建议您以鸡尾酒会风格作为选择，如果您在下方推荐中找不到灵感，可以自由发挥，只是请避免穿着蓝色牛仔裤和运动服饰。
+                    期待您盛装出席。
+                </span>
+                <span class="lang-en">
+                    Our color recommendations are shown below.<br><br>
+                    We encourage you to dress up in whatever makes you feel both festive and like yourself. <br>
+                    The only thing we ask is that you avoid blue jeans and athletic wear.
+                </span>
+            </p>
+        </div>
+        
+        <div class="attire-gallery-wrapper" style="width: 100%;">
+            
+            <div class="color-palette sticky-bottom">
+                <img src="images/color1.svg" class="color-icon" alt="Color option 1" onclick="scrollToOutfit('outfit-1')">
+                <img src="images/color2.svg" class="color-icon" alt="Color option 2" onclick="scrollToOutfit('outfit-2')">
+                <img src="images/color3.svg" class="color-icon" alt="Color option 3" onclick="scrollToOutfit('outfit-3')">
+                <img src="images/color4.svg" class="color-icon" alt="Color option 4" onclick="scrollToOutfit('outfit-4')">
+                <img src="images/color5.svg" class="color-icon" alt="Color option 5" onclick="scrollToOutfit('outfit-5')">
+            </div>
+            
+            <div class="attire-scroll-container">
+                <div id="outfit-1" class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_1.png" alt="Men Style 1">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_1.png" alt="Women Style 1">
+                </div>
+                
+                <div id="outfit-2" class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_2.png" alt="Men Style 2">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_2.png" alt="Women Style 2">
+                </div>
+                
+                <div id="outfit-3" class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_3.png" alt="Women Style 3">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_3.png" alt="Men Style 3">
+                </div>
+
+                <div id="outfit-4" class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_4.png" alt="Women Style 4">
+                </div>
+                
+                <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_4.png" alt="Men Style 4">
+                </div>
+
+                <div id="outfit-5" class="scroll-image-wrapper reveal-item">
+                    <img src="images/men_image_5.png" alt="Men Style 5">
+                </div>
+
+                 <div class="scroll-image-wrapper reveal-item">
+                    <img src="images/women_image_5.png" alt="Women Style 5">
+                </div>
+            </div>
+            
+        </div>
+
+    </div>
+
+    <div id="address-page" class="content-page" style="padding-left:0; padding-right:0;">
+        
+        <div class="address-container" style="margin: 0 auto;">
+            <h1><span class="lang-zh">仪式场地</span><span class="lang-en">Location</span></h1>
+        </div>
+
+        <div class="map-banner">
+            <img src="images/map1.jpg" alt="Venue Layout">
+            <p class="map-save-hint">
+                <span class="lang-zh">长按可保存图片</span>
+                <span class="lang-en">Long press to save image</span>
+            </p>
+        </div>
+
+        <div class="address-container" style="margin: 0 auto;">
+            
+            <div class="details-wrapper">                
+                <div class="info-section with-border">
+                    <h3><span class="lang-zh">场地</span><span class="lang-en">The Venue</span></h3>
+                    <p>
+                        <span class="lang-zh">仪式将于<strong>东景缘主殿——智珠寺</strong>举行。从正门进入后根据指示牌方向即可到达。</span>
+                        <span class="lang-en">The ceremony will be held at the <strong>Zhizhusi (Main Hall of The Temple)</strong>. Please arrive through the main gate and follow the signs to the garden area.</span>
+                    </p>
+                </div>
+
+                <div class="info-section with-border" style="margin-bottom: 20px;">
+                    <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
+                    
+                    <div class="lang-zh">
+                        <div class="transport-item">
+                            <strong>打车：</strong>导航至 <a href="geo:0,0?q=北京市东城区沙滩北街二十三号智珠寺" style="text-decoration: underline; color: #5d4037; font-weight: bold;">北京市东城区沙滩北街二十三号智珠寺</a>
+                        </div>
+                        <div class="transport-item">
+                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
+                        </div>
+                        <div class="transport-item">
+                            <strong>自驾：</strong>东景缘提供的停车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考下方地图。
+                        </div>
+                    </div>
+                     <div class="map-figure" style="margin-bottom: 60px;">
+                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
+                     </div>
+                </div>
+                
+                 <div class="info-section with-border">
+                    <h3><span class="lang-zh">餐饮</span><span class="lang-en">Dinner</span></h3>
+                    <p>
+                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。卢卡斯主厨的烹饪风格“独具匠心且原汁原味”，深谙法国传统烹饪精髓，并巧妙融入现代灵感。<br><br>
+                        为了给您带来别具一格的体验，本次晚宴将有别于传统的中式圆桌筵席，而是精心为您准备了经典的法式套餐（4 courses）。主厨将采撷初秋最鲜美的应季食材，将层次丰富的口感与艺术品般的摆盘完美交织，让每一道菜肴都娓娓道来一个独特的故事。席间，我们更准备了精选红白葡萄酒为您无限量供应。期待这场精致的味觉与微醺盛宴，能为您留下难忘的美好回忆。   
+                        </span>
+                        <span class="lang-en">Our wedding dinner will be catered by the renowned French restaurant TRB Hutong, thoughtfully curated by Chef Lucas Garigliano. "Creative and authentic" perfectly describe Chef Lucas’s culinary style. Deeply inspired by classic French traditions, he masterfully elevates his dishes with a modern twist.<br><br>
+                        To offer you a truly unique experience, our reception will step away from the traditional Chinese family-style banquet. Instead, we have carefully prepared a classic, individually plated 4-course French menu. Featuring the finest seasonal ingredients of early autumn, Chef Lucas beautifully blends rich flavors with artistic presentations, ensuring every dish tells its own unique story.<br><br>
+                        Throughout the evening, you will also enjoy an unlimited flow of carefully selected red and white wines. We hope this extraordinary culinary experience will leave you with beautiful and lasting memories of our special night.</span>
+                    </p>
+                </div>
+                
+                <div class="info-section with-border">
+                    <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
+                    <p> 
+                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了两晚（9/11-9/13）房间。如果您有其他安排，请提前告知。</span>
+                        <span class="lang-en">We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking.</span>
+                    </p>          
+                </div>
+
+                
+            </div>
+
+           
+            <div class="info-section why-we-chose">
+                <h2><span class="lang-zh">为什么选这里？</span><span class="lang-en">Why We Chose Here?</span></h2>
+                
+                <div class="lang-zh">
+                    <p>在成为我们许下誓言的殿堂之前，智珠寺已经在这片胡同深处静静伫立了六百余年。它的历史可追溯至明朝永乐年间，后于清康熙时期重修。这里曾是皇家印经厂的所在，墨香与梵音曾在此交织。我们走过世界很多地方，但最终决定在这座红墙古刹前结为夫妻，不仅因为它极简高级的美学，更因为它本身，就是一篇关于“时间与爱”的隐喻。</p>
+                    <br>
+                    <p>张维翀选择北京，因为这是他从小长大的地方。虽然他平时没少吐槽北京的交通和春天的柳絮，但离开北京后，他最想念的，偏偏是回家路上那隐隐约约的鸽哨声。而叶子对这座城市的喜爱，更多是喜欢身处北京时,松弛，自在的自己。</p>
+                    <br>
+                    <p>很多时候，北京对我们来说就是一种很具体的“感觉”。是红墙和蓝天撞在一起的颜色，是冬天铜锅涮肉飘出来的白气蒙住了玻璃，是我们俩很爱在北京约会散步，走到什刹海，然后静静地跟晚霞一起融进夜色里。</p>
+                    <br>
+                    <p>筹备婚礼的时候我们一直在想，到底什么样的空间，能把我们对这座城市的感情，以及它对我们的意义装进去呢？直到我们找到了“东景缘”。几乎是同一时间，我们毫不犹豫地说：“就是这儿了。”</p>
+                    <br>
+                    <p>它就在故宫旁边，是一座被精心修复过、有着600年历史的藏传佛教寺庙（智珠寺）。其实我们俩本身并没有特定的宗教信仰，但站在这里，那些古老的木梁和安静的院落，就是有一种能让人瞬间平静下来的力量。厚重的历史和现代艺术在这里交织得很自然，好像在喧闹的市中心辟出了一块净土。在这样一个历经岁月洗礼的地方，去开启我们共同的未来，这种不言而喻的浪漫让我们特别着迷。</p>
+                    <br>
+                    <p>而且，熟悉我们的朋友都知道，我们俩在探索吃这件事上有着无穷的热情。场地里的 TRB Hutong 餐厅，主厨是 Lucas——就是那位成功把法餐和北京豆汁儿奇妙融合在一起的大厨。这也算是满足了我们的一点小私心。</p>
+                    <br>
+                    <p>我们迫不及待想在这个低调又宁静的空间里，和最爱的亲友们一起分享这份踏实感。</p>
+                </div>
+
+                <div class="lang-en">
+                    <p>Will chose Beijing because it’s where he grew up. Even though he often complains about the traffic and the spring willow catkins, what he misses most when he’s away is the faint sound of pigeon whistles on his way home. For Zoey, her love for this city is more about liking who she is when she’s here—relaxed and at ease.</p>
+                    <br>
+                    <p>Most of the time, Beijing is a very specific "feeling" for us. It’s the striking contrast of red walls against a blue sky; it’s the white steam rising from a copper hot pot in winter, fogging up the windows; it’s how we love going on walking dates in the city, strolling all the way to Shichahai, and quietly melting into the night along with the sunset.</p>
+                    <br>
+                    <p>While planning the wedding, we kept wondering: what kind of space could truly hold our feelings for this city and what it means to us? That was until we found Dongjingyuan. Almost at the exact same time, we said without hesitation, "This is it."</p>
+                    <br>
+                    <p>Located right next to the Forbidden City, it is a meticulously restored, 600-year-old Tibetan Buddhist temple (Zhizhu Temple). Neither of us follows a specific religion, but standing there, the ancient wooden beams and the quiet courtyard possess a power that makes you feel instantly at peace. The weight of history and modern art blend seamlessly, carving out a pure sanctuary right in the middle of a bustling downtown. The unspoken romance of stepping into our future together in a place that has weathered so much time completely captivated us.</p>
+                    <br>
+                    <p>Plus, friends who know us well know we have an endless enthusiasm for exploring food. The venue is home to TRB Hutong, led by Chef Lucas—the very chef who miraculously fused French fine dining with traditional Beijing Douzhi (fermented mung bean milk). You could say this satisfies a little selfish craving of ours.</p>
+                    <br>
+                    <p>We can't wait to share this deep sense of groundedness with our favorite people in this understated, serene space.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div id="play-page" class="content-page" style="padding-left:0; padding-right:0;">
+    <div class="address-container" style="margin: 0 auto; text-align: center;">
+        <h1>哪儿玩儿</h1>
+        <div class="details-wrapper">
+                <p class="attire-description">
+                <span class="lang-zh">
+                    尽管仪式只有一个晚上，但是我们希望大家能用这次来北京的时间好好休息，或许也可以从下面这些我们俩非常喜欢的位置里，选到合您胃口的地点，给您的北京之行留下难忘的记忆。
+                </span>
+            </p>
+        </div>
+    </div>
+</div>
+    
+<script>
+    // --- VARIABLES ---
+    const bgMusic = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+    const openEnvelopeBtn = document.getElementById('openEnvelopeBtn');
+    const landingScene = document.getElementById('landing-scene');
+    const invitationCard = document.getElementById('invitation-card');
+    const nav = document.querySelector('nav');
+
+
+    // --- LANGUAGE LOGIC ---
+    function toggleLanguage() {
+        const body = document.body;
+        const langBtn = document.querySelector('.lang-switch'); // Updated this selector
+        
+        // Toggle the class on the body
+        body.classList.toggle('english-mode');
+    }
+
+    // --- MUTE BUTTON LOGIC (APPLE STYLE SVG TOGGLE) ---
+    muteBtn.addEventListener('click', () => {
+        bgMusic.muted = !bgMusic.muted;
+        
+        const iconUnmuted = document.getElementById('icon-unmuted');
+        const iconMuted = document.getElementById('icon-muted');
+        
+        if (bgMusic.muted) {
+            iconUnmuted.style.display = 'none';
+            iconMuted.style.display = 'block';
+        } else {
+            iconUnmuted.style.display = 'block';
+            iconMuted.style.display = 'none';
+        }
+    });
+
+   // --- SINGLE PAGE SCROLLING LOGIC ---
+    // --- 智能磁吸管理器 (SMART MAGNET MANAGER) ---
+    let isNavigating = false; 
+
+    // 这个函数用来实时判断：现在该不该开启磁吸？
+    function evaluateMagnet() {
+        const aboutPage = document.getElementById('about-page');
+        if (!aboutPage) return;
+        
+        // 如果“我们”页面的底部已经完全滑到了屏幕上方（说明用户在看后面的内容）
+        if (aboutPage.getBoundingClientRect().bottom < 0) {
+            document.documentElement.style.scrollSnapType = 'none'; // 彻底关闭磁吸，自由滑动！
+        } else {
+            document.documentElement.style.scrollSnapType = 'y mandatory'; // 开启主页的强制摩擦力！
+        }
+    }
+
+    // --- 单页平滑滚动逻辑 ---
+    function scrollToSection(sectionId) {
+        const target = document.getElementById(sectionId);
+        if (target) {
+            isNavigating = true; // 告诉系统：我正在跳转，别打扰我
+            document.documentElement.style.scrollSnapType = 'none'; // 跳转时临时关掉磁吸
+
+            const headerOffset = 80; 
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+            window.scrollTo({
+                 top: offsetPosition,
+                 behavior: "smooth"
+            });
+
+            // 跳转结束后（1秒），重新评估并恢复状态
+            setTimeout(() => {
+                isNavigating = false; 
+                evaluateMagnet(); // 检查我们现在停在哪里，决定是否重新开启磁吸
+            }, 1000);
+        }
+    }
+
+    // 监听用户的每一次滑动
+    window.addEventListener('scroll', function() {
+        // 只要不是在点击菜单跳转的过程中，就实时评估磁吸状态
+        if (!isNavigating) {
+            evaluateMagnet();
+        }
+    });
+    
+
+    // Automatically highlight the active navigation tab while scrolling
+    window.addEventListener('scroll', () => {
+        const sections = ['home-page', 'about-page', 'attire-page', 'address-page']; // Removed play-page since it's not in your HTML yet
+        let current = '';
+
+        sections.forEach(id => {
+            const section = document.getElementById(id);
+            if (section) {
+                const sectionTop = section.offsetTop;
+                if (window.pageYOffset >= sectionTop - 150) {
+                    current = id;
+                }
+            }
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.classList.remove('active');
+            if (current && a.getAttribute('onclick').includes(current)) {
+                a.classList.add('active');
+            }
+        });
+    });
+
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = document.querySelector('.menu-icon');
+        const navbar = document.getElementById('navbar'); 
+        
+        navLinks.classList.toggle('show');
+        navbar.classList.toggle('menu-open');
+        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
+    }
+
+    // --- CINEMATIC SEQUENCE LOGIC ---
+
+    function finishAnimation() {
+        // Trigger the background blur immediately
+        landingScene.classList.add('blurred');
+
+        // Reveal Invitation, Nav, and Mute Btn immediately
+        invitationCard.style.display = 'block'; 
+        invitationCard.classList.add('fade-in');
+        nav.classList.add('fade-in');
+        muteBtn.classList.add('fade-in');
+    }
+
+    // OPEN ENVELOPE CLICK
+    let envelopeOpened = false;
+    openEnvelopeBtn.addEventListener('click', function() {
+        if (envelopeOpened) return; 
+        envelopeOpened = true;
+
+        // 1. SAFELY GRAB ALL ELEMENTS (Prevents "undefined" crashes)
+        const envelopeContainer = document.getElementById('new-envelope-container');
+        const entranceHeader = document.getElementById('entrance-header');
+        const instructionText = document.getElementById('instruction-text');
+        const landingScene = document.getElementById('landing-scene'); 
+        
+        // Make sure the ID below matches your actual audio tag's ID!
+        const bgMusic = document.getElementById('bg-music'); 
+
+        // 2. Play Music safely
+        if (bgMusic && bgMusic.paused) {
+            bgMusic.play().catch(e => console.log("Audio playback error:", e));
+        }
+
+        // 3. DISSOLVE EVERYTHING IN PLACE
+        if (entranceHeader) entranceHeader.style.opacity = '0';
+        if (instructionText) instructionText.style.opacity = '0';
+        openEnvelopeBtn.style.opacity = '0'; 
+        if (envelopeContainer) envelopeContainer.style.opacity = '0';
+
+        // 4. Reveal the main scene safely
+        if (landingScene) {
+            landingScene.style.display = 'block'; 
+            landingScene.classList.add('show-elements');
+        }
+
+        // 5. Protect the finishAnimation function
+        // If there is an error inside finishAnimation, this prevents it from breaking the page!
+        try {
+            if (typeof finishAnimation === "function") {
+                finishAnimation(); 
+            }
+        } catch (error) {
+            console.error("Oops! There is a bug inside finishAnimation:", error);
+        }
+
+        // 6. Wait 1.5s, remove envelope, and UNLOCK SCROLLING
+        setTimeout(() => {
+            if (envelopeContainer) envelopeContainer.style.display = 'none';
+            
+            document.body.style.overflow = 'auto'; // This is the magic line that lets you scroll!
+            
+            // Safety measure: Ensure scroll-snap is ready
+            document.documentElement.style.scrollSnapType = ''; 
+        }, 1500); 
+    });
+    
+    
+// --- CAROUSEL LOGIC ---
+    function scrollCarousel(trackId, direction) {
+        const track = document.getElementById(trackId);
+        // Scroll exactly one image width left (-1) or right (1)
+        const width = track.offsetWidth;
+        track.scrollBy({ left: width * direction, behavior: 'smooth' });
+    }
+
+    function updateCarousel(trackId, indicatorId) {
+        const track = document.getElementById(trackId);
+        const indicator = document.getElementById(indicatorId);
+        const totalItems = track.children.length;
+        
+        // Calculate which image is currently in view
+        const scrollLeft = track.scrollLeft;
+        const width = track.offsetWidth;
+        let currentIndex = Math.round(scrollLeft / width) + 1;
+        
+        // Failsafes 
+        if(currentIndex > totalItems) currentIndex = totalItems;
+        if(currentIndex < 1) currentIndex = 1;
+        
+        indicator.textContent = `${currentIndex} / ${totalItems}`;
+    }
+
+    // --- COLOR PALETTE SCROLL LOGIC ---
+    function scrollToOutfit(outfitId) {
+        const target = document.getElementById(outfitId);
+        if (target) {
+            // block: 'center' ensures the image sits perfectly in the middle of the screen,
+            // avoiding being covered by the sticky header or the color palette itself!
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+    
+    // --- SCROLL REVEAL LOGIC ---
+    function setupScrollReveal() {
+        const revealElements = document.querySelectorAll('.reveal-item');
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+
+        // We added 'observerInstance' here so we can tell it to stop watching
+        const observer = new IntersectionObserver((entries, observerInstance) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // 1. Add the active class to animate it in
+                    entry.target.classList.add('active');
+                    
+                    // 2. Tell the observer to STOP watching this specific image.
+                    // This completely prevents the chaotic flashing on fast scrolls!
+                    observerInstance.unobserve(entry.target); 
+                } 
+                // Notice we deleted the "else" block that was removing the class!
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => observer.observe(el));
+    }
+    
+
+    
+
+    // Initialize the observer when the DOM is ready
+    document.addEventListener('DOMContentLoaded', setupScrollReveal);
+    
+    // Also re-trigger the check when changing pages to ensure visibility
+    const originalShowPage = showPage;
+    showPage = function(pageId) {
+        originalShowPage(pageId);
+        // Small delay to allow CSS transitions to finish before checking intersections
+        setTimeout(() => {
+             // Force a tiny scroll to trigger the observer if items are already in view
+             window.scrollBy(0, 1);
+             window.scrollBy(0, -1);
+        }, 100);
+    }
+</script>
+    
+    
+</body>
+</html>
