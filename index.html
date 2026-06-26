@@ -1147,6 +1147,9 @@ nav {
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
     </audio>
+    <audio id="introMusic">
+        <source src="intro.mp3" type="audio/mpeg">
+    </audio>
 
     <div id="landing-scene">
         
@@ -1550,12 +1553,23 @@ nav {
 
     // --- MUTE BUTTON LOGIC (APPLE STYLE SVG TOGGLE) ---
     muteBtn.addEventListener('click', () => {
-        bgMusic.muted = !bgMusic.muted;
+        // 1. Figure out if we are muting or unmuting
+        const isMuted = !bgMusic.muted;
         
+        // 2. Apply the muted state to the main background music
+        bgMusic.muted = isMuted;
+        
+        // 3. Find the intro music and apply the exact same muted state
+        const introMusic = document.getElementById('introMusic');
+        if (introMusic) {
+            introMusic.muted = isMuted;
+        }
+        
+        // 4. Update the SVG icons based on the new state
         const iconUnmuted = document.getElementById('icon-unmuted');
         const iconMuted = document.getElementById('icon-muted');
         
-        if (bgMusic.muted) {
+        if (isMuted) {
             iconUnmuted.style.display = 'none';
             iconMuted.style.display = 'block';
         } else {
@@ -1563,23 +1577,6 @@ nav {
             iconMuted.style.display = 'none';
         }
     });
-
-   // --- SINGLE PAGE SCROLLING LOGIC ---
-    // --- 智能磁吸管理器 (SMART MAGNET MANAGER) ---
-    let isNavigating = false; 
-
-    // 这个函数用来实时判断：现在该不该开启磁吸？
-    function evaluateMagnet() {
-        const aboutPage = document.getElementById('about-page');
-        if (!aboutPage) return;
-        
-        // 如果“我们”页面的底部已经完全滑到了屏幕上方（说明用户在看后面的内容）
-        if (aboutPage.getBoundingClientRect().bottom < 0) {
-            document.documentElement.style.scrollSnapType = 'none'; // 彻底关闭磁吸，自由滑动！
-        } else {
-            document.documentElement.style.scrollSnapType = 'y mandatory'; // 开启主页的强制摩擦力！
-        }
-    }
 
     // --- 1. SINGLE PAGE SCROLLING LOGIC ---
 function scrollToSection(sectionId) {
@@ -1659,11 +1656,61 @@ function scrollToSection(sectionId) {
         const landingScene = document.getElementById('landing-scene'); 
         
         // Make sure the ID below matches your actual audio tag's ID!
-        const bgMusic = document.getElementById('bgmusic'); 
+        const bgMusic = document.getElementById('bgMusic'); 
+        const introMusic = document.getElementById('introMusic');
 
-        // 2. Play Music safely
-        if (bgMusic && bgMusic.paused) {
+        // Helper function to smoothly fade volume up or down
+        function fadeVolume(audioElement, targetVolume, duration) {
+            const steps = 20; 
+            const stepTime = duration / steps;
+            const volumeStep = (targetVolume - audioElement.volume) / steps;
+            
+            const fadeInterval = setInterval(() => {
+                let newVolume = audioElement.volume + volumeStep;
+                // Keep volume between 0 and 1 to prevent errors
+                if (newVolume >= 1) newVolume = 1;
+                if (newVolume <= 0) newVolume = 0;
+                
+                audioElement.volume = newVolume;
+                
+                if ((volumeStep > 0 && audioElement.volume >= targetVolume) || 
+                    (volumeStep < 0 && audioElement.volume <= targetVolume)) {
+                    clearInterval(fadeInterval);
+                    audioElement.volume = targetVolume;
+                    if (targetVolume === 0) audioElement.pause(); // Pause when fully faded out
+                }
+            }, stepTime);
+        }
+
+        // 2. Play Music with Crossfade Sequence
+        if (introMusic) {
+            // Start Intro Music silently and fade up over 2 seconds (2000ms)
+            introMusic.volume = 0;
+            introMusic.play().catch(e => console.log("Intro playback error:", e));
+            fadeVolume(introMusic, 1, 2000); 
+
+            // --- CROSSFADE TIMING ---
+            // Set this to how many milliseconds you want the intro to play BEFORE 
+            // the main music starts blending in. (e.g., 5000 = 5 seconds)
+            const overlapStartTime = 5000; 
+
+            setTimeout(() => {
+                // Fade out the intro over 2 seconds
+                fadeVolume(introMusic, 0, 2000);
+                
+                // Fade in the main background music over 3 seconds
+                if (bgMusic && bgMusic.paused) {
+                    bgMusic.volume = 0;
+                    bgMusic.play().catch(e => console.log("Audio playback error:", e));
+                    fadeVolume(bgMusic, 1, 3000);
+                }
+            }, overlapStartTime);
+
+        } else if (bgMusic && bgMusic.paused) {
+            // Fallback just in case the intro is missing
+            bgMusic.volume = 0;
             bgMusic.play().catch(e => console.log("Audio playback error:", e));
+            fadeVolume(bgMusic, 1, 2000);
         }
 
         // 3. DISSOLVE EVERYTHING IN PLACE
