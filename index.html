@@ -566,25 +566,28 @@ nav {
 /* --- NEW SCROLL-STACK STORY STYLES --- */
         .story-scroll-container {
             width: 90%;
-            max-width: 500px; /* Prevents stretching and fixes mobile cutoff */
+            max-width: 500px;
             margin: 0 auto;
             position: relative;
         }
 
         .story-year-block {
             position: relative;
-            /* The solid background acts as a curtain that slides UP over the previous year's photos */
-            background-color: #FAF8F5; 
             padding-top: 20px;
-            z-index: 20; 
+            margin-bottom: 15vh; /* Gap before the next year starts */
+            z-index: 20;
+            /* The JS will handle the smooth fade-out */
+            transition: opacity 0.1s ease-out; 
         }
 
         .year-header-sticky {
             position: sticky;
             top: 80px; /* Sticks right below your desktop nav */
-            background-color: #FAF8F5; 
-            padding: 20px 0 15px 0;
-            z-index: 30; /* Stays above the scrolling photos */
+            
+            /* Added a slight gradient background so it blends smoothly with the page */
+            background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 80%, rgba(250, 248, 245, 0) 100%);
+            padding: 20px 0 30px 0;
+            z-index: 30; 
             text-align: center;
         }
 
@@ -606,23 +609,25 @@ nav {
 
         .year-photos-stack {
             position: relative;
-            margin-top: 50px;
+            margin-top: 10px;
         }
 
         .stack-photo-card {
             position: sticky;
             width: 100%;
             background: #fff;
-            padding: 15px 15px 40px 15px; /* Polaroid frame effect */
+            padding: 15px 15px 40px 15px; 
             box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             border-radius: 4px;
-            box-sizing: border-box; /* Ensures padding doesn't push it off screen */
-            margin-bottom: 70vh; /* How far you scroll before the NEXT card appears */
+            box-sizing: border-box; 
+            
+            /* REDUCED GAP: Images stack much faster now */
+            margin-bottom: 40vh; 
             transition: all 0.3s ease;
         }
 
         .stack-photo-card:last-child {
-            margin-bottom: 20vh; /* Shorter scroll after the last card of the year */
+            margin-bottom: 10vh; /* Shorter scroll after the final card */
         }
 
         .stack-photo-card img {
@@ -646,26 +651,22 @@ nav {
             letter-spacing: 1px;
         }
 
-        /* Top offsets and slight rotations to make them stack like a messy pile */
-        .stack-photo-card.card-1 { top: 280px; z-index: 11; transform: rotate(-2deg); }
-        .stack-photo-card.card-2 { top: 285px; z-index: 12; transform: rotate(1.5deg); }
-        .stack-photo-card.card-3 { top: 290px; z-index: 13; transform: rotate(-1deg); }
+        /* MOVED LOWER: top is now 45vh (45% down the screen) so text never hides them */
+        .stack-photo-card.card-1 { top: 45vh; z-index: 11; transform: rotate(-3deg); }
+        .stack-photo-card.card-2 { top: 46vh; z-index: 12; transform: rotate(1.5deg); }
+        .stack-photo-card.card-3 { top: 47vh; z-index: 13; transform: rotate(-1deg); }
 
         @media (max-width: 768px) {
-            .year-header-sticky {
-                top: 60px; /* Sticks right below your mobile nav */
-                padding: 10px 0 15px 0;
-            }
+            .year-header-sticky { top: 60px; padding: 10px 0 25px 0; }
             .year-title { font-size: 34px; }
             .year-desc { font-size: 14px; }
             
             /* Mobile stack positions */
-            .stack-photo-card.card-1 { top: 260px; }
-            .stack-photo-card.card-2 { top: 265px; }
-            .stack-photo-card.card-3 { top: 270px; }
-
+            .stack-photo-card { margin-bottom: 45vh; }
+            .stack-photo-card.card-1 { top: 42vh; }
+            .stack-photo-card.card-2 { top: 43vh; }
+            .stack-photo-card.card-3 { top: 44vh; }
             .stack-photo-card img { max-height: 250px; }
-            .stack-photo-card { margin-bottom: 80vh; }
         }
         
         /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
@@ -1499,8 +1500,34 @@ function scrollToSection(sectionId) {
     
 
     // Automatically highlight the active navigation tab while scrolling
+    // --- STORY SCROLL FADE LOGIC ---
+    function handleStoryFade() {
+        const blocks = document.querySelectorAll('.story-year-block');
+        const windowHeight = window.innerHeight;
+
+        blocks.forEach(block => {
+            const rect = block.getBoundingClientRect();
+            // When the bottom of the year block reaches 40% of the screen height, it fades out
+            let fadePoint = windowHeight * 0.40;
+            
+            if (rect.bottom < fadePoint) {
+                // Calculates a smooth opacity from 1 down to 0
+                let opacity = Math.max(0, rect.bottom / fadePoint);
+                block.style.opacity = opacity;
+            } else {
+                block.style.opacity = 1;
+            }
+        });
+    }
+
+    // Automatically highlight the active navigation tab while scrolling
     window.addEventListener('scroll', () => {
-        const sections = ['home-page', 'about-page', 'attire-page', 'address-page']; // Removed play-page since it's not in your HTML yet
+        
+        // 1. Run the new story fade logic (THIS IS THE ONLY NEW LINE WE ADDED INSIDE)
+        handleStoryFade();
+
+        // 2. Navigation Highlighting (KEPT ALL YOUR EXISTING CODE BELOW)
+        const sections = ['home-page', 'about-page', 'attire-page', 'address-page']; 
         let current = '';
 
         sections.forEach(id => {
