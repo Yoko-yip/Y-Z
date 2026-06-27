@@ -614,8 +614,8 @@ nav {
                This gives the 3rd image enough room to slide up and stick! */
             padding-bottom: 60vh; 
         }
-
-        .stack-photo-card {
+            
+   .stack-photo-card {
             position: sticky;
             width: 100%;
             background: #fff;
@@ -624,18 +624,17 @@ nav {
             border-radius: 4px;
             box-sizing: border-box; 
             
+            /* Spacing between images in the stack */
             margin-bottom: 40vh; 
             transition: all 0.3s ease;
+            
+            /* Ensures images don't spill out of the frame */
+            overflow: hidden; 
         }
 
         .stack-photo-card:last-child {
-            /* Changed to 0 because the padding-bottom above handles the runway now */
+            /* Last image shouldn't push the container down */
             margin-bottom: 0; 
-        }
-            
-            /* REDUCED GAP: Images stack much faster now */
-            margin-bottom: 40vh; 
-            transition: all 0.3s ease;
         }
 
         .stack-photo-card img {
@@ -645,6 +644,8 @@ nav {
             object-fit: cover;
             display: block;
             border-radius: 2px;
+            /* Ensures image sits inside the white frame */
+            z-index: 1; 
         }
 
         .card-caption {
