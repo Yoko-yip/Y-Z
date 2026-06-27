@@ -1466,7 +1466,7 @@ function handleContinuousStack() {
     }
 }
     
-    // Automatically highlight the active navigation tab while scrolling
+    // 2. Call it inside your existing scroll listener
     window.addEventListener('scroll', () => {
         
         // 1. Run the new story fade logic (THIS IS THE ONLY NEW LINE WE ADDED INSIDE)
@@ -1677,24 +1677,10 @@ function handleContinuousStack() {
 
         revealElements.forEach(el => observer.observe(el));
     }
-    
-
-    
-
     // Initialize the observer when the DOM is ready
     document.addEventListener('DOMContentLoaded', setupScrollReveal);
     
-    // Also re-trigger the check when changing pages to ensure visibility
-    const originalShowPage = showPage;
-    showPage = function(pageId) {
-        originalShowPage(pageId);
-        // Small delay to allow CSS transitions to finish before checking intersections
-        setTimeout(() => {
-             // Force a tiny scroll to trigger the observer if items are already in view
-             window.scrollBy(0, 1);
-             window.scrollBy(0, -1);
-        }, 100);
-    }
+    
 </script>
     
     
