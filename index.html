@@ -1358,7 +1358,8 @@ nav {
     </div>
 </div>
     
-<script>
+
+    <script>
     // --- VARIABLES ---
     const bgMusic = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
@@ -1367,31 +1368,22 @@ nav {
     const invitationCard = document.getElementById('invitation-card');
     const nav = document.querySelector('nav');
 
-
     // --- LANGUAGE LOGIC ---
     function toggleLanguage() {
         const body = document.body;
-        const langBtn = document.querySelector('.lang-switch'); // Updated this selector
-        
-        // Toggle the class on the body
         body.classList.toggle('english-mode');
     }
 
-    // --- MUTE BUTTON LOGIC (APPLE STYLE SVG TOGGLE) ---
+    // --- MUTE BUTTON LOGIC ---
     muteBtn.addEventListener('click', () => {
-        // 1. Figure out if we are muting or unmuting
         const isMuted = !bgMusic.muted;
-        
-        // 2. Apply the muted state to the main background music
         bgMusic.muted = isMuted;
         
-        // 3. Find the intro music and apply the exact same muted state
         const introMusic = document.getElementById('introMusic');
         if (introMusic) {
             introMusic.muted = isMuted;
         }
         
-        // 4. Update the SVG icons based on the new state
         const iconUnmuted = document.getElementById('icon-unmuted');
         const iconMuted = document.getElementById('icon-muted');
         
@@ -1404,74 +1396,196 @@ nav {
         }
     });
 
-    // --- 1. SINGLE PAGE SCROLLING LOGIC ---
-function scrollToSection(sectionId) {
-    const target = document.getElementById(sectionId);
-    if (target) {
-        const headerOffset = 80; 
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    // --- SINGLE PAGE SCROLLING LOGIC ---
+    function scrollToSection(sectionId) {
+        const target = document.getElementById(sectionId);
+        if (target) {
+            const headerOffset = 80; 
+            const elementPosition = target.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
-        window.scrollTo({
-             top: offsetPosition,
-             behavior: "smooth"
-        });
-    }
-}
-
-// --- 2. BACKGROUND COLOR SCROLL OBSERVER (Dark Mode) ---
-// (Leave this and everything below it exactly as it is!)
-    
-
-    // --- DYNAMIC SCROLL TRACKING FOR TEXT CROSSFADE ---
-function handleContinuousStack() {
-    const cards = document.querySelectorAll('.stack-card');
-    const dynamicYear = document.getElementById('dynamic-year');
-    const dynamicDesc = document.getElementById('dynamic-desc');
-    const textContent = document.getElementById('pinned-text-content');
-
-    let currentYear = "2022年"; // Tracks active chapter
-
-    // The point on the screen where a card is considered "active"
-    // Set slightly below the actual sticky top (45vh) to trigger exactly as it arrives
-    const triggerPoint = window.innerHeight * 0.50; 
-
-    // Find the LAST card that has crossed the trigger point
-    let activeCard = null;
-    cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        if (rect.top <= triggerPoint) {
-            activeCard = card;
+            window.scrollTo({
+                 top: offsetPosition,
+                 behavior: "smooth"
+            });
         }
-    });
+    }
 
-    // If an image is active, check if its chapter is different
-    if (activeCard) {
-        const cardYear = activeCard.getAttribute('data-year');
-        const cardDesc = activeCard.getAttribute('data-desc');
+    function toggleMenu() {
+        const navLinks = document.getElementById('navLinks');
+        const menuIcon = document.querySelector('.menu-icon');
+        const navbar = document.getElementById('navbar'); 
+        
+        navLinks.classList.toggle('show');
+        navbar.classList.toggle('menu-open');
+        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
+    }
 
-        if (cardYear !== currentYear) {
-            currentYear = cardYear; // Update tracker
+    // --- CINEMATIC ENVELOPE SEQUENCE LOGIC ---
+    function finishAnimation() {
+        landingScene.classList.add('blurred');
+        invitationCard.style.display = 'block'; 
+        invitationCard.classList.add('fade-in');
+        nav.classList.add('fade-in');
+        muteBtn.classList.add('fade-in');
+    }
+
+    let envelopeOpened = false;
+    openEnvelopeBtn.addEventListener('click', function() {
+        if (envelopeOpened) return; 
+        envelopeOpened = true;
+
+        const envelopeContainer = document.getElementById('new-envelope-container');
+        const entranceHeader = document.getElementById('entrance-header');
+        const instructionText = document.getElementById('instruction-text');
+        const landingScene = document.getElementById('landing-scene'); 
+        const bgMusic = document.getElementById('bgMusic'); 
+        const introMusic = document.getElementById('introMusic');
+
+        function fadeVolume(audioElement, targetVolume, duration) {
+            const steps = 20; 
+            const stepTime = duration / steps;
+            const volumeStep = (targetVolume - audioElement.volume) / steps;
             
-            // 1. Fade Out
-            textContent.style.opacity = 0;
+            const fadeInterval = setInterval(() => {
+                let newVolume = audioElement.volume + volumeStep;
+                if (newVolume >= 1) newVolume = 1;
+                if (newVolume <= 0) newVolume = 0;
+                
+                audioElement.volume = newVolume;
+                
+                if ((volumeStep > 0 && audioElement.volume >= targetVolume) || 
+                    (volumeStep < 0 && audioElement.volume <= targetVolume)) {
+                    clearInterval(fadeInterval);
+                    audioElement.volume = targetVolume;
+                    if (targetVolume === 0) audioElement.pause(); 
+                }
+            }, stepTime);
+        }
 
-            // 2. Wait for fade out, swap text, then Fade In
+        if (introMusic) {
+            introMusic.volume = 0;
+            introMusic.play().catch(e => console.log("Intro playback error:", e));
+            fadeVolume(introMusic, 1, 2000); 
+
+            const overlapStartTime = 2500; 
             setTimeout(() => {
-                dynamicYear.innerText = cardYear;
-                dynamicDesc.innerHTML = `<span class="lang-zh">${cardDesc}</span>`;
-                textContent.style.opacity = 1;
-            }, 400); // 400ms matches the CSS transition time
+                fadeVolume(introMusic, 0, 2000);
+                if (bgMusic && bgMusic.paused) {
+                    bgMusic.volume = 0;
+                    bgMusic.play().catch(e => console.log("Audio playback error:", e));
+                    fadeVolume(bgMusic, 1, 2000);
+                }
+            }, overlapStartTime);
+        } else if (bgMusic && bgMusic.paused) {
+            bgMusic.volume = 0;
+            bgMusic.play().catch(e => console.log("Audio playback error:", e));
+            fadeVolume(bgMusic, 1, 2000);
+        }
+
+        if (entranceHeader) entranceHeader.style.opacity = '0';
+        if (instructionText) instructionText.style.opacity = '0';
+        openEnvelopeBtn.style.opacity = '0'; 
+        if (envelopeContainer) envelopeContainer.style.opacity = '0';
+
+        if (landingScene) {
+            landingScene.style.display = 'block'; 
+            landingScene.classList.add('show-elements');
+        }
+
+        try {
+            if (typeof finishAnimation === "function") finishAnimation(); 
+        } catch (error) {
+            console.error("Oops! There is a bug inside finishAnimation:", error);
+        }
+
+        setTimeout(() => {
+            if (envelopeContainer) envelopeContainer.style.display = 'none';
+            document.body.style.overflow = 'auto'; 
+            document.documentElement.style.scrollSnapType = ''; 
+        }, 1500); 
+    });
+    
+    // --- COLOR PALETTE SCROLL LOGIC ---
+    function scrollToOutfit(outfitId) {
+        const target = document.getElementById(outfitId);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
     }
-}
     
-    // 2. Call it inside your existing scroll listener
+    // --- SCROLL REVEAL LOGIC (For Attire Page) ---
+    function setupScrollReveal() {
+        const revealElements = document.querySelectorAll('.reveal-item');
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
+
+        const observer = new IntersectionObserver((entries, observerInstance) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observerInstance.unobserve(entry.target); 
+                } 
+            });
+        }, observerOptions);
+
+        revealElements.forEach(el => observer.observe(el));
+    }
+    
+    document.addEventListener('DOMContentLoaded', setupScrollReveal);
+
+    // ===================================================================
+    // --- NEW: DYNAMIC SCROLL TRACKING FOR TEXT CROSSFADE (ABOUT US) ---
+    // ===================================================================
+    function handleContinuousStack() {
+        const cards = document.querySelectorAll('.stack-card');
+        const dynamicYear = document.getElementById('dynamic-year');
+        const dynamicDesc = document.getElementById('dynamic-desc');
+        const textContent = document.getElementById('pinned-text-content');
+
+        // Only run if the elements actually exist on the page
+        if (!dynamicYear || !dynamicDesc || !textContent || cards.length === 0) return;
+
+        let currentYear = dynamicYear.innerText; 
+        const triggerPoint = window.innerHeight * 0.50; 
+
+        let activeCard = null;
+        cards.forEach(card => {
+            const rect = card.getBoundingClientRect();
+            // Check if the card has scrolled up into the active viewing area
+            if (rect.top <= triggerPoint) {
+                activeCard = card;
+            }
+        });
+
+        if (activeCard) {
+            const cardYear = activeCard.getAttribute('data-year');
+            const cardDesc = activeCard.getAttribute('data-desc');
+
+            if (cardYear !== currentYear) {
+                currentYear = cardYear; 
+                
+                // Fade out text
+                textContent.style.opacity = 0;
+
+                // Wait for fade out, swap text, then fade back in
+                setTimeout(() => {
+                    dynamicYear.innerText = cardYear;
+                    dynamicDesc.innerHTML = `<span class="lang-zh">${cardDesc}</span>`;
+                    textContent.style.opacity = 1;
+                }, 400); 
+            }
+        }
+    }
+
+    // ===================================================================
+    // --- MAIN SCROLL LISTENER ---
+    // ===================================================================
     window.addEventListener('scroll', () => {
         
-        // 1. Run the new story fade logic (THIS IS THE ONLY NEW LINE WE ADDED INSIDE)
+        // 1. Run the continuous stacking tracker
         handleContinuousStack();
-        // 2. Navigation Highlighting (KEPT ALL YOUR EXISTING CODE BELOW)
+
+        // 2. Navigation Highlighting
         const sections = ['home-page', 'about-page', 'attire-page', 'address-page']; 
         let current = '';
 
@@ -1493,196 +1607,4 @@ function handleContinuousStack() {
         });
     });
 
-    function toggleMenu() {
-        const navLinks = document.getElementById('navLinks');
-        const menuIcon = document.querySelector('.menu-icon');
-        const navbar = document.getElementById('navbar'); 
-        
-        navLinks.classList.toggle('show');
-        navbar.classList.toggle('menu-open');
-        menuIcon.textContent = navLinks.classList.contains('show') ? '✕' : '☰';
-    }
-
-    // --- CINEMATIC SEQUENCE LOGIC ---
-
-    function finishAnimation() {
-        // Trigger the background blur immediately
-        landingScene.classList.add('blurred');
-
-        // Reveal Invitation, Nav, and Mute Btn immediately
-        invitationCard.style.display = 'block'; 
-        invitationCard.classList.add('fade-in');
-        nav.classList.add('fade-in');
-        muteBtn.classList.add('fade-in');
-    }
-
-    // OPEN ENVELOPE CLICK
-    let envelopeOpened = false;
-    openEnvelopeBtn.addEventListener('click', function() {
-        if (envelopeOpened) return; 
-        envelopeOpened = true;
-
-        // 1. SAFELY GRAB ALL ELEMENTS (Prevents "undefined" crashes)
-        const envelopeContainer = document.getElementById('new-envelope-container');
-        const entranceHeader = document.getElementById('entrance-header');
-        const instructionText = document.getElementById('instruction-text');
-        const landingScene = document.getElementById('landing-scene'); 
-        
-        // Make sure the ID below matches your actual audio tag's ID!
-        const bgMusic = document.getElementById('bgMusic'); 
-        const introMusic = document.getElementById('introMusic');
-
-        // Helper function to smoothly fade volume up or down
-        function fadeVolume(audioElement, targetVolume, duration) {
-            const steps = 20; 
-            const stepTime = duration / steps;
-            const volumeStep = (targetVolume - audioElement.volume) / steps;
-            
-            const fadeInterval = setInterval(() => {
-                let newVolume = audioElement.volume + volumeStep;
-                // Keep volume between 0 and 1 to prevent errors
-                if (newVolume >= 1) newVolume = 1;
-                if (newVolume <= 0) newVolume = 0;
-                
-                audioElement.volume = newVolume;
-                
-                if ((volumeStep > 0 && audioElement.volume >= targetVolume) || 
-                    (volumeStep < 0 && audioElement.volume <= targetVolume)) {
-                    clearInterval(fadeInterval);
-                    audioElement.volume = targetVolume;
-                    if (targetVolume === 0) audioElement.pause(); // Pause when fully faded out
-                }
-            }, stepTime);
-        }
-
-        // 2. Play Music with Crossfade Sequence
-        if (introMusic) {
-            // Start Intro Music silently and fade up over 2 seconds (2000ms)
-            introMusic.volume = 0;
-            introMusic.play().catch(e => console.log("Intro playback error:", e));
-            fadeVolume(introMusic, 1, 2000); 
-
-            // --- CROSSFADE TIMING ---
-            // Set this to how many milliseconds you want the intro to play BEFORE 
-            // the main music starts blending in. (e.g., 5000 = 5 seconds)
-            const overlapStartTime = 2500; 
-
-            setTimeout(() => {
-                // Fade out the intro over 2 seconds
-                fadeVolume(introMusic, 0, 2000);
-                
-                // Fade in the main background music over 2 seconds
-                if (bgMusic && bgMusic.paused) {
-                    bgMusic.volume = 0;
-                    bgMusic.play().catch(e => console.log("Audio playback error:", e));
-                    fadeVolume(bgMusic, 1, 2000);
-                }
-            }, overlapStartTime);
-
-        } else if (bgMusic && bgMusic.paused) {
-            // Fallback just in case the intro is missing
-            bgMusic.volume = 0;
-            bgMusic.play().catch(e => console.log("Audio playback error:", e));
-            fadeVolume(bgMusic, 1, 2000);
-        }
-
-        // 3. DISSOLVE EVERYTHING IN PLACE
-        if (entranceHeader) entranceHeader.style.opacity = '0';
-        if (instructionText) instructionText.style.opacity = '0';
-        openEnvelopeBtn.style.opacity = '0'; 
-        if (envelopeContainer) envelopeContainer.style.opacity = '0';
-
-        // 4. Reveal the main scene safely
-        if (landingScene) {
-            landingScene.style.display = 'block'; 
-            landingScene.classList.add('show-elements');
-        }
-
-        // 5. Protect the finishAnimation function
-        // If there is an error inside finishAnimation, this prevents it from breaking the page!
-        try {
-            if (typeof finishAnimation === "function") {
-                finishAnimation(); 
-            }
-        } catch (error) {
-            console.error("Oops! There is a bug inside finishAnimation:", error);
-        }
-
-        // 6. Wait 1.5s, remove envelope, and UNLOCK SCROLLING
-        setTimeout(() => {
-            if (envelopeContainer) envelopeContainer.style.display = 'none';
-            
-            document.body.style.overflow = 'auto'; // This is the magic line that lets you scroll!
-            
-            // Safety measure: Ensure scroll-snap is ready
-            document.documentElement.style.scrollSnapType = ''; 
-        }, 1500); 
-    });
-    
-    
-// --- CAROUSEL LOGIC ---
-    function scrollCarousel(trackId, direction) {
-        const track = document.getElementById(trackId);
-        // Scroll exactly one image width left (-1) or right (1)
-        const width = track.offsetWidth;
-        track.scrollBy({ left: width * direction, behavior: 'smooth' });
-    }
-
-    function updateCarousel(trackId, indicatorId) {
-        const track = document.getElementById(trackId);
-        const indicator = document.getElementById(indicatorId);
-        const totalItems = track.children.length;
-        
-        // Calculate which image is currently in view
-        const scrollLeft = track.scrollLeft;
-        const width = track.offsetWidth;
-        let currentIndex = Math.round(scrollLeft / width) + 1;
-        
-        // Failsafes 
-        if(currentIndex > totalItems) currentIndex = totalItems;
-        if(currentIndex < 1) currentIndex = 1;
-        
-        indicator.textContent = `${currentIndex} / ${totalItems}`;
-    }
-
-    // --- COLOR PALETTE SCROLL LOGIC ---
-    function scrollToOutfit(outfitId) {
-        const target = document.getElementById(outfitId);
-        if (target) {
-            // block: 'center' ensures the image sits perfectly in the middle of the screen,
-            // avoiding being covered by the sticky header or the color palette itself!
-            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-    }
-    
-    // --- SCROLL REVEAL LOGIC ---
-    function setupScrollReveal() {
-        const revealElements = document.querySelectorAll('.reveal-item');
-        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.15 };
-
-        // We added 'observerInstance' here so we can tell it to stop watching
-        const observer = new IntersectionObserver((entries, observerInstance) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    // 1. Add the active class to animate it in
-                    entry.target.classList.add('active');
-                    
-                    // 2. Tell the observer to STOP watching this specific image.
-                    // This completely prevents the chaotic flashing on fast scrolls!
-                    observerInstance.unobserve(entry.target); 
-                } 
-                // Notice we deleted the "else" block that was removing the class!
-            });
-        }, observerOptions);
-
-        revealElements.forEach(el => observer.observe(el));
-    }
-    // Initialize the observer when the DOM is ready
-    document.addEventListener('DOMContentLoaded', setupScrollReveal);
-    
-    
 </script>
-    
-    
-</body>
-</html>
