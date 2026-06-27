@@ -610,6 +610,9 @@ nav {
         .year-photos-stack {
             position: relative;
             margin-top: 10px;
+            /* THE FIX: Adds a massive invisible space at the bottom. 
+               This gives the 3rd image enough room to slide up and stick! */
+            padding-bottom: 60vh; 
         }
 
         .stack-photo-card {
@@ -621,13 +624,18 @@ nav {
             border-radius: 4px;
             box-sizing: border-box; 
             
-            /* REDUCED GAP: Images stack much faster now */
             margin-bottom: 40vh; 
             transition: all 0.3s ease;
         }
 
         .stack-photo-card:last-child {
-            margin-bottom: 10vh; /* Shorter scroll after the final card */
+            /* Changed to 0 because the padding-bottom above handles the runway now */
+            margin-bottom: 0; 
+        }
+            
+            /* REDUCED GAP: Images stack much faster now */
+            margin-bottom: 40vh; 
+            transition: all 0.3s ease;
         }
 
         .stack-photo-card img {
