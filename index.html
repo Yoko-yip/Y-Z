@@ -563,109 +563,110 @@ nav {
             pointer-events: none;
         }
         
-/* --- NEW STORY CARD STACK STYLES --- */
-        .story-chapter {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 80px;
+/* --- NEW SCROLL-STACK STORY STYLES --- */
+        .story-scroll-container {
+            width: 90%;
+            max-width: 500px; /* Prevents stretching and fixes mobile cutoff */
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .story-year-block {
+            position: relative;
+            /* The solid background acts as a curtain that slides UP over the previous year's photos */
+            background-color: #FAF8F5; 
+            padding-top: 20px;
+            z-index: 20; 
+        }
+
+        .year-header-sticky {
+            position: sticky;
+            top: 80px; /* Sticks right below your desktop nav */
+            background-color: #FAF8F5; 
+            padding: 20px 0 15px 0;
+            z-index: 30; /* Stays above the scrolling photos */
             text-align: center;
         }
 
-        .story-chapter-title {
-            font-size: 28px;
+        .year-title {
+            font-size: 42px;
             color: #3A3836;
-            margin-bottom: 5px;
-            font-weight: bold;
+            margin: 0 0 15px 0;
+            font-family: 'Times New Roman', Times, serif;
+            letter-spacing: 3px;
         }
 
-        .story-chapter-subtitle {
-            font-size: 16px;
-            color: #3A3836;
-            margin-bottom: 20px;
-            font-weight: normal;
-        }
-
-        .story-chapter-text {
-            width: 90%;
-            max-width: 600px;
+        .year-desc {
             font-size: 15px;
             color: #555;
-            line-height: 1.6;
-            margin-bottom: 40px;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0 10px;
         }
 
-        .card-stack {
+        .year-photos-stack {
             position: relative;
-            width: 90%;
-            max-width: 500px;
-            height: 350px; /* Adjust based on image height */
-            margin: 0 auto;
+            margin-top: 50px;
         }
 
-        /* Base styling for all cards in the stack */
-        .story-card {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .stack-photo-card {
+            position: sticky;
             width: 100%;
             background: #fff;
-            padding: 15px 15px 40px 15px; /* Creates the Polaroid border effect */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 15px 15px 40px 15px; /* Polaroid frame effect */
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
             border-radius: 4px;
-            box-sizing: border-box;
-            transition: transform 0.3s ease, z-index 0.3s;
+            box-sizing: border-box; /* Ensures padding doesn't push it off screen */
+            margin-bottom: 70vh; /* How far you scroll before the NEXT card appears */
+            transition: all 0.3s ease;
         }
 
-        .story-card img {
+        .stack-photo-card:last-child {
+            margin-bottom: 20vh; /* Shorter scroll after the last card of the year */
+        }
+
+        .stack-photo-card img {
             width: 100%;
-            height: 250px; /* Fixed height for consistency */
+            height: auto;
+            max-height: 380px;
             object-fit: cover;
             display: block;
+            border-radius: 2px;
         }
 
-        .story-card-caption {
+        .card-caption {
             position: absolute;
-            bottom: 10px;
+            bottom: 12px;
             left: 0;
             width: 100%;
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
             font-family: 'Times New Roman', Times, serif;
             letter-spacing: 1px;
         }
 
-        /* Stacking order and rotation for Chapter 1 (2022) */
-        #stack-2022 .story-card:nth-child(1) { transform: rotate(-4deg) translateY(10px); z-index: 1; }
-        #stack-2022 .story-card:nth-child(2) { transform: rotate(2deg) translateY(-5px); z-index: 2; }
-        #stack-2022 .story-card:nth-child(3) { transform: rotate(-1deg) translateY(0); z-index: 3; }
-
-        /* Stacking order and rotation for Chapter 2 (2023) */
-        #stack-2023 .story-card:nth-child(1) { transform: rotate(3deg) translateY(5px); z-index: 1; }
-        #stack-2023 .story-card:nth-child(2) { transform: rotate(-2deg) translateY(-10px); z-index: 2; }
-        #stack-2023 .story-card:nth-child(3) { transform: rotate(1deg) translateY(0); z-index: 3; }
-        
-        /* Stacking order and rotation for Chapter 3 (2024-2025) */
-        #stack-2024 .story-card:nth-child(1) { transform: rotate(-3deg) translateY(-5px); z-index: 1; }
-        #stack-2024 .story-card:nth-child(2) { transform: rotate(4deg) translateY(5px); z-index: 2; }
-        #stack-2024 .story-card:nth-child(3) { transform: rotate(0deg) translateY(0); z-index: 3; }
-
-
-        /* Hover effect to bring a card to the front */
-        .story-card:hover {
-            z-index: 10 !important;
-            transform: scale(1.05) rotate(0deg) !important;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            cursor: pointer;
-        }
+        /* Top offsets and slight rotations to make them stack like a messy pile */
+        .stack-photo-card.card-1 { top: 280px; z-index: 11; transform: rotate(-2deg); }
+        .stack-photo-card.card-2 { top: 285px; z-index: 12; transform: rotate(1.5deg); }
+        .stack-photo-card.card-3 { top: 290px; z-index: 13; transform: rotate(-1deg); }
 
         @media (max-width: 768px) {
-            .card-stack { height: 280px; }
-            .story-card img { height: 180px; }
-        }
+            .year-header-sticky {
+                top: 60px; /* Sticks right below your mobile nav */
+                padding: 10px 0 15px 0;
+            }
+            .year-title { font-size: 34px; }
+            .year-desc { font-size: 14px; }
+            
+            /* Mobile stack positions */
+            .stack-photo-card.card-1 { top: 260px; }
+            .stack-photo-card.card-2 { top: 265px; }
+            .stack-photo-card.card-3 { top: 270px; }
 
+            .stack-photo-card img { max-height: 250px; }
+            .stack-photo-card { margin-bottom: 80vh; }
+        }
         
         /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
         .scrolling-text-container {
@@ -1090,123 +1091,135 @@ nav {
             </div>
         </div>
     </div>
+
+    <div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
     
-<div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
-    <div class="story-container">
+    <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+
+    <div class="story-scroll-container">
         
-        <div class="story-chapter">
-            <div class="story-chapter-title">our story</div>
-            <div class="story-chapter-subtitle">2022</div>
-            <p class="story-chapter-text">
-                <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
-                <span class="lang-en">It all started at the 2022 NC State Fair. Though we talked more, long distance kept us from progressing, until winter break when we spent Christmas together in D.C. and made it official.</span>
-            </p>
+        <div class="story-year-block">
+            <div class="year-header-sticky">
+                <h2 class="year-title">2022</h2>
+                <p class="year-desc">
+                    <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
+                </p>
+            </div>
             
-            <div class="card-stack" id="stack-2022">
-                <div class="story-card">
+            <div class="year-photos-stack">
+                <div class="stack-photo-card card-1">
                     <img src="images/us1.jpg" alt="2022 Photo 1">
-                    <div class="story-card-caption">NC State Fair</div>
+                    <div class="card-caption">NC State Fair</div>
                 </div>
-                <div class="story-card">
+                <div class="stack-photo-card card-2">
                     <img src="images/us2.jpg" alt="2022 Photo 2">
-                    <div class="story-card-caption">First Trip Together</div>
+                    <div class="card-caption">First Trip Together</div>
                 </div>
-                <div class="story-card">
+                <div class="stack-photo-card card-3">
                     <img src="images/us3.jpg" alt="2022 Photo 3">
-                    <div class="story-card-caption">Christmas in D.C.</div>
+                    <div class="card-caption">Christmas in D.C.</div>
                 </div>
             </div>
         </div>
 
-        <div class="story-chapter">
-            <div class="story-chapter-subtitle">2023</div>
-            <p class="story-chapter-text">
-                <span class="lang-zh">借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图,我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹。</span>
-                <span class="lang-en">Starting in 2023, we began constantly unlocking new places and experiences. From watching the sunrise at a mountaintop chapel in South Carolina, to snorkeling with manatees in Tampa.</span>
-            </p>
+        <div class="story-year-block">
+            <div class="year-header-sticky">
+                <h2 class="year-title">2023</h2>
+                <p class="year-desc">
+                    <span class="lang-zh">借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图,我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.</span>
+                </p>
+            </div>
             
-            <div class="card-stack" id="stack-2023">
-                <div class="story-card">
+            <div class="year-photos-stack">
+                <div class="stack-photo-card card-1">
                     <img src="images/engage1.jpg" alt="2023 Photo 1">
-                    <div class="story-card-caption">Mountaintop Chapel</div>
+                    <div class="card-caption">Mountaintop Chapel</div>
                 </div>
-                <div class="story-card">
+                <div class="stack-photo-card card-2">
                     <img src="images/engage2.jpg" alt="2023 Photo 2">
-                    <div class="story-card-caption">New York Concert</div>
+                    <div class="card-caption">New York Concert</div>
                 </div>
-                <div class="story-card">
+                <div class="stack-photo-card card-3">
                     <img src="images/engage3.jpg" alt="2023 Photo 3">
-                    <div class="story-card-caption">Tampa Manatees</div>
+                    <div class="card-caption">Tampa Manatees</div>
                 </div>
             </div>
         </div>
 
-        <div class="story-chapter">
-            <div class="story-chapter-subtitle">2024</div>
-            <p class="story-chapter-text">
-                <span class="lang-zh">我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。</span>
-            </p>
+        <div class="story-year-block">
+            <div class="year-header-sticky">
+                <h2 class="year-title">2024</h2>
+                <p class="year-desc">
+                    <span class="lang-zh">我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。</span>
+                </p>
+            </div>
             
-            <div class="card-stack" id="stack-2024">
-                <div class="story-card">
+            <div class="year-photos-stack">
+                <div class="stack-photo-card card-1">
                     <img src="images/ceremony1.jpg" alt="2024 Photo 1">
-                    <div class="story-card-caption">West Coast Camping</div>
+                    <div class="card-caption">West Coast Camping</div>
                 </div>
-                <div class="story-card">
+                <div class="stack-photo-card card-2">
                     <img src="images/ceremony2.jpg" alt="2024 Photo 2">
-                    <div class="story-card-caption">Cancun Proposal</div>
+                    <div class="card-caption">Cancun Proposal</div>
                 </div>
-                <div class="story-card">
+                <div class="stack-photo-card card-3">
                     <img src="images/ceremony3.jpg" alt="2024 Photo 3">
-                    <div class="story-card-caption">Tying the Knot</div>
+                    <div class="card-caption">Tying the Knot</div>
                 </div>
             </div>
         </div>
-
-        <div class="story-chapter">
-            <div class="story-chapter-subtitle">2025年3月31日</div>
-            <p class="story-chapter-text">
-                <span class="lang-zh">在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。</span>
-            </p>
+        
+        <div class="story-year-block">
+            <div class="year-header-sticky">
+                <h2 class="year-title">2025年3月31日</h2>
+                <p class="year-desc">
+                    <span class="lang-zh">在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。</span>
+                </p>
+            </div>
             
-            <div class="card-stack" id="stack-2025">
-                <div class="story-card">
-                    <img src="images/ceremony1.jpg" alt="2025 Photo 1">
-                    <div class="story-card-caption">West Coast Camping</div>
+            <div class="year-photos-stack">
+                <div class="stack-photo-card card-1">
+                    <img src="images/ceremony1.jpg" alt="2024 Photo 1">
+                    <div class="card-caption">West Coast Camping</div>
                 </div>
-                <div class="story-card">
-                    <img src="images/ceremony2.jpg" alt="2025 Photo 2">
-                    <div class="story-card-caption">Cancun Proposal</div>
+                <div class="stack-photo-card card-2">
+                    <img src="images/ceremony2.jpg" alt="2024 Photo 2">
+                    <div class="card-caption">Cancun Proposal</div>
                 </div>
-                <div class="story-card">
-                    <img src="images/ceremony3.jpg" alt="2025 Photo 3">
-                    <div class="story-card-caption">Tying the Knot</div>
+                <div class="stack-photo-card card-3">
+                    <img src="images/ceremony3.jpg" alt="2024 Photo 3">
+                    <div class="card-caption">Tying the Knot</div>
                 </div>
             </div>
         </div>
 
-        <div class="story-chapter">
-            <div class="story-chapter-subtitle">2025年10月16日</div>
-            <p class="story-chapter-text">
-                <span class="lang-zh">这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
-            </p>
+        <div class="story-year-block">
+            <div class="year-header-sticky">
+                <h2 class="year-title">2025年10月16日</h2>
+                <p class="year-desc">
+                    <span class="lang-zh">这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
+                </p>
+            </div>
             
-            <div class="card-stack" id="stack-2025">
-                <div class="story-card">
-                    <img src="images/ceremony1.jpg" alt="2025 Photo 1">
-                    <div class="story-card-caption">West Coast Camping</div>
+            <div class="year-photos-stack">
+                <div class="stack-photo-card card-1">
+                    <img src="images/ceremony1.jpg" alt="2024 Photo 1">
+                    <div class="card-caption">West Coast Camping</div>
                 </div>
-                <div class="story-card">
-                    <img src="images/ceremony2.jpg" alt="2025 Photo 2">
-                    <div class="story-card-caption">Cancun Proposal</div>
+                <div class="stack-photo-card card-2">
+                    <img src="images/ceremony2.jpg" alt="2024 Photo 2">
+                    <div class="card-caption">Cancun Proposal</div>
                 </div>
-                <div class="story-card">
-                    <img src="images/ceremony3.jpg" alt="2025 Photo 3">
-                    <div class="story-card-caption">Tying the Knot</div>
+                <div class="stack-photo-card card-3">
+                    <img src="images/ceremony3.jpg" alt="2024 Photo 3">
+                    <div class="card-caption">Tying the Knot</div>
                 </div>
             </div>
         </div>
-
+        
+    </div>
+    
             <div class="scrolling-text-container">
                 <div class="scrolling-text line-1">
                     <span class="lang-zh">
@@ -1584,13 +1597,13 @@ function scrollToSection(sectionId) {
 
             setTimeout(() => {
                 // Fade out the intro over 2 seconds
-                fadeVolume(introMusic, 0, 1500);
+                fadeVolume(introMusic, 0, 2000);
                 
-                // Fade in the main background music over 3 seconds
+                // Fade in the main background music over 2 seconds
                 if (bgMusic && bgMusic.paused) {
                     bgMusic.volume = 0;
                     bgMusic.play().catch(e => console.log("Audio playback error:", e));
-                    fadeVolume(bgMusic, 1, 3000);
+                    fadeVolume(bgMusic, 1, 2000);
                 }
             }, overlapStartTime);
 
