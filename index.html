@@ -563,247 +563,110 @@ nav {
             pointer-events: none;
         }
         
-/* --- ABOUT US / OUR STORY STYLES --- */
-        .story-container {
-            width: 100%; /* Spans full width for backgrounds */
-            text-align: left;
+/* --- NEW STORY CARD STACK STYLES --- */
+        .story-chapter {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 80px;
+            text-align: center;
+        }
+
+        .story-chapter-title {
+            font-size: 28px;
+            color: #3A3836;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .story-chapter-subtitle {
+            font-size: 16px;
+            color: #3A3836;
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .story-chapter-text {
+            width: 90%;
+            max-width: 600px;
+            font-size: 15px;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 90%;
+            max-width: 500px;
+            height: 350px; /* Adjust based on image height */
             margin: 0 auto;
         }
-        .story-header {
-            width: 90%;
-            max-width: 800px;
-            margin: 0 auto 40px auto;
-        }
-        .story-header p {
-            font-size: 15px;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-        }
-        
-      /* --- MASONRY GALLERY STYLES --- */
-        .story-masonry {
-            margin-bottom: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .masonry-top-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        
-        .masonry-left {
-            display: flex;
-            flex-direction: column;
-            /* This vertically centers the horizontal image next to the tall one */
-            justify-content: flex-end; 
-        }
-        
-        /* Shared styles for all masonry images */
-        .masonry-left img,
-        .masonry-right img,
-        .masonry-bottom {
+
+        /* Base styling for all cards in the stack */
+        .story-card {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            border-radius: 2px; 
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            background-color: #EAE7E0; 
+            background: #fff;
+            padding: 15px 15px 40px 15px; /* Creates the Polaroid border effect */
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease, z-index 0.3s;
         }
-        
-        /* LEFT IMAGE: Restores the natural horizontal shape without cropping */
-        .masonry-left img {
-            height: auto; 
-        }
-        
-        /* RIGHT IMAGE: Keeps the tall image filling the vertical space */
-        .masonry-right img {
-            height: 100%;
-            object-fit: cover; 
-        }
-        
-        .masonry-bottom {
-            height: auto;
-        }
-        
-        /* --- TIMELINE SECTIONS (DESKTOP) --- */
-        .timeline-section {
+
+        .story-card img {
             width: 100%;
-            padding: 80px 0;
-            display: flex;
-            justify-content: center;
-        }
-        .timeline-section.dark-bg {
-            background-color: #233026; /* Dark Green */
-            color: #FAF8F5;
-        }
-        .timeline-section.light-bg {
-            background-color: #FAF8F5; /* Light Beige */
-            color: 3A3836;
-        }
-        .timeline-inner {
-            width: 90%;
-            max-width: 900px;
-            display: flex;
-            gap: 50px;
-        }
-        .timeline-inner.reverse {
-            flex-direction: row-reverse;
+            height: 250px; /* Fixed height for consistency */
+            object-fit: cover;
+            display: block;
         }
 
-        /* Vertical Titles */
-        .vertical-title-area {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 60px;
-            flex-shrink: 0;
-        }
-        /* --- TIMELINE VERTICAL TITLES --- */
-       
-        .vertical-title-area h2 {
-            margin: 0;
-            font-weight: normal;
-            display: flex;
-            justify-content: flex-start;
-        }
-
-        /* Chinese Style: Upright stacked characters */
-        .vertical-title-area h2 .lang-zh {
-            writing-mode: vertical-rl;
-            text-orientation: upright;
-            font-size: 26px;
-            letter-spacing: 5px;
-        }
-
-        /* English Style: Rotated, reads bottom-to-top, editorial serif */
-        .vertical-title-area h2 .lang-en {
-            writing-mode: vertical-rl;
-            transform: rotate(90 deg);  
-            font-family: 'Times New Roman', Times, serif; 
-            font-size: 16px; 
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            text-align: left;
-            line-height: 1.4;
-        }
-        
-        .vertical-line {
-            width: 1px;
-            height: 80px;
-            background-color: currentColor;
-            margin: 25px 0;
-            opacity: 0.5;
-        }
-        .vertical-date {
-            writing-mode: vertical-rl;
-            font-size: 14px;
-            letter-spacing: 3px;
-            opacity: 0.8;
-        }
-
-        /* --- CAROUSEL STYLES --- */
-        .carousel-content {
-            flex: 1;
-            min-width: 0; 
-        }
-        .carousel-track {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scrollbar-width: none; /* Firefox hide scrollbar */
-            -ms-overflow-style: none; /* IE/Edge hide scrollbar */
-            gap: 20px;
-        }
-        .carousel-track::-webkit-scrollbar {
-            display: none; /* Chrome/Safari hide scrollbar */
-        }
-        .carousel-item {
-            flex: 0 0 100%;
-            scroll-snap-align: center;
-        }
-        .carousel-item img {
+        .story-card-caption {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
             width: 100%;
-            height: auto;
-            max-height: 500px;
-            object-fit: contain;
-            background-color: rgba(0,0,0,0.05);
-        }
-        .carousel-controls {
             text-align: center;
-            margin: 20px 0 30px 0;
-            font-size: 14px;
-            letter-spacing: 2px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            opacity: 0.8;
+            font-size: 13px;
+            color: #555;
             font-family: 'Times New Roman', Times, serif;
-        }
-        .carousel-arrow {
-            cursor: pointer;
-            user-select: none;
-            padding: 5px 15px;
-            font-size: 18px;
-            transition: opacity 0.3s;
-        }
-        .carousel-arrow:hover { opacity: 0.5; }
-        .carousel-desc {
-            font-size: 14px;
-            line-height: 1.8;
             letter-spacing: 1px;
-            opacity: 0.9;
         }
 
-        /* --- MOBILE OVERRIDES FOR TIMELINE --- */
+        /* Stacking order and rotation for Chapter 1 (2022) */
+        #stack-2022 .story-card:nth-child(1) { transform: rotate(-4deg) translateY(10px); z-index: 1; }
+        #stack-2022 .story-card:nth-child(2) { transform: rotate(2deg) translateY(-5px); z-index: 2; }
+        #stack-2022 .story-card:nth-child(3) { transform: rotate(-1deg) translateY(0); z-index: 3; }
+
+        /* Stacking order and rotation for Chapter 2 (2023) */
+        #stack-2023 .story-card:nth-child(1) { transform: rotate(3deg) translateY(5px); z-index: 1; }
+        #stack-2023 .story-card:nth-child(2) { transform: rotate(-2deg) translateY(-10px); z-index: 2; }
+        #stack-2023 .story-card:nth-child(3) { transform: rotate(1deg) translateY(0); z-index: 3; }
+        
+        /* Stacking order and rotation for Chapter 3 (2024-2025) */
+        #stack-2024 .story-card:nth-child(1) { transform: rotate(-3deg) translateY(-5px); z-index: 1; }
+        #stack-2024 .story-card:nth-child(2) { transform: rotate(4deg) translateY(5px); z-index: 2; }
+        #stack-2024 .story-card:nth-child(3) { transform: rotate(0deg) translateY(0); z-index: 3; }
+
+
+        /* Hover effect to bring a card to the front */
+        .story-card:hover {
+            z-index: 10 !important;
+            transform: scale(1.05) rotate(0deg) !important;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            cursor: pointer;
+        }
+
         @media (max-width: 768px) {
-            /* Masonry Mobile Overrides */
-            .story-masonry { gap: 10px; margin-bottom: 25px; }
-            .masonry-top-row { gap: 10px; }
-            .masonry-left h1 { margin-bottom: 10px !important; }
-            
-            .timeline-section { padding: 50px 0; }
-            
-            /* Keep it side-by-side on mobile, just reduce the gap and width */
-            .timeline-inner { 
-                width: 95%; 
-                gap: 15px; 
-            }
-            .timeline-inner.reverse { 
-                gap: 15px; 
-            }
-            
-            /* Slightly scale down the vertical titles so they don't squish the images */
-            .vertical-title-area {
-                width: 40px;
-            }
-            .vertical-title-area h2 .lang-zh {
-                font-size: 20px;
-                letter-spacing: 3px;
-            }
-            .vertical-title-area h2 .lang-en {
-                font-size: 12px; /* Scales down the English font for mobile screens */
-                letter-spacing: 2px;
-            }
-            
-            .vertical-line {
-                height: 50px;
-                margin: 15px 0;
-            }
-            .vertical-date {
-                font-size: 12px;
-                letter-spacing: 2px;
-            }
-            
-            /* Make carousel images a bit shorter on mobile if needed */
-            .carousel-item img {
-                max-height: 400px;
-            }
+            .card-stack { height: 280px; }
+            .story-card img { height: 180px; }
         }
 
+        
         /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
         .scrolling-text-container {
             width: 100%;
@@ -1227,97 +1090,122 @@ nav {
             </div>
         </div>
     </div>
+    
 <div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
-        <div class="story-container">
+    <div class="story-container">
+        
+        <div class="story-chapter">
+            <div class="story-chapter-title">our story</div>
+            <div class="story-chapter-subtitle">2022</div>
+            <p class="story-chapter-text">
+                <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
+                <span class="lang-en">It all started at the 2022 NC State Fair. Though we talked more, long distance kept us from progressing, until winter break when we spent Christmas together in D.C. and made it official.</span>
+            </p>
             
-           <div class="story-header">
-               
-               <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
-                <div class="story-masonry">
-                    <div class="masonry-top-row">
-                        <div class="masonry-left">
-                            <img src="images/us1.jpg" alt="Story Image 1">
-                        </div>
-                        
-                        <div class="masonry-right">
-                            <img src="images/us2.jpg" alt="Story Image 2">
-                        </div>
-                    </div>
-                    
-                    <img src="images/us3.jpg" alt="Story Image 3" class="masonry-bottom">
+            <div class="card-stack" id="stack-2022">
+                <div class="story-card">
+                    <img src="images/us1.jpg" alt="2022 Photo 1">
+                    <div class="story-card-caption">NC State Fair</div>
                 </div>
-
-                <div class="lang-zh">
-                    <p>一切都要从2022年的NC State Fair说起,两个在北卡待了很久却都没去过state fair的人莫名其妙。虽然从那一天开始我们聊天的频率更多了,但是一个人在北卡一个人在匹兹堡的异地情况让我们的关系没有太多进展,终于在寒假的时候,我们在华盛顿一起过了圣诞并且确认了关系(当然也是因为叶子很喜欢圣诞节所以想要把这一天的仪式感拉满)。</p>
-                    <p>于是从2023年开始,我们开始不停的解锁新地点,新体验。我们在南卡罗莱纳山顶的教堂看了日出,在纽约的寒风中排队看乐队演出,在坦帕一起浮潜看海牛,也一起划船从暴雨划到出彩虹。</p>
-                    <p>2024年我们搬到了美西,从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有很多”安静”的时刻,我们指的是那些坐在篝火前的夜晚,雪山旁的夜路,雨中的湖畔旁等等。</p>
-                    <p>2025年3月31日,在我们在坎昆度假旅行要结束的前一天,张维翀说他定了落日晚餐,我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中,但是钝感力十足的叶子毫无察觉。我们走到沙滩上,叶子看到了被布置好的场地以及摄像师的时候,仍然以为是落日晚餐套餐的一部分,直到拍完背影合照后看到张维种单膝跪地。</p>
-                    <p>2025年10月16日,我们在最“我们”的日子里,在平时最喜欢坐着发呆的湖边officially tie the knot(我们选择的见证人是圣诞节会去扮演圣诞老人的一位老人,叶子真的很喜欢过圣诞节)。</p>
-                    <p>这一次,我们非常期待与我们有着深深羁绊的你们,在北京一起庆祝我们的婚礼。感谢你们愿意作为我们故事的一部分。</p>
+                <div class="story-card">
+                    <img src="images/us2.jpg" alt="2022 Photo 2">
+                    <div class="story-card-caption">First Trip Together</div>
                 </div>
-                
-                <div class="lang-en">
-                    <p><em>(English main story placeholder)</em></p>
+                <div class="story-card">
+                    <img src="images/us3.jpg" alt="2022 Photo 3">
+                    <div class="story-card-caption">Christmas in D.C.</div>
                 </div>
             </div>
+        </div>
+
+        <div class="story-chapter">
+            <div class="story-chapter-subtitle">2023</div>
+            <p class="story-chapter-text">
+                <span class="lang-zh">借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图,我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹。</span>
+                <span class="lang-en">Starting in 2023, we began constantly unlocking new places and experiences. From watching the sunrise at a mountaintop chapel in South Carolina, to snorkeling with manatees in Tampa.</span>
+            </p>
             
-
-            <div class="timeline-section dark-bg">
-                <div class="timeline-inner">
-                    <div class="vertical-title-area">
-                        <h2><span class="lang-zh">订婚那天</span><span class="lang-en">A Look into<br>the Engagement</span></h2>                        <div class="vertical-line"></div>
-                        <span class="vertical-date">3/31/2025</span>
-                    </div>
-                    
-                    <div class="carousel-content">
-                        <div class="carousel-track" id="track-eng" onscroll="updateCarousel('track-eng', 'ind-eng')">
-                            <div class="carousel-item"><img src="images/engage1.jpg" alt="Engagement 1"></div>
-                            <div class="carousel-item"><img src="images/engage2.jpg" alt="Engagement 2"></div>
-                            <div class="carousel-item"><img src="images/engage3.jpg" alt="Engagement 3"></div>
-                        </div>
-                        
-                        <div class="carousel-controls">
-                            <span class="carousel-arrow" onclick="scrollCarousel('track-eng', -1)">&lt;</span>
-                            <span id="ind-eng">1 / 3</span>
-                            <span class="carousel-arrow" onclick="scrollCarousel('track-eng', 1)">&gt;</span>
-                        </div>
-                        
-                        <p class="carousel-desc">
-                            <span class="lang-zh">和我们一起重温一些我们订婚中最美好的时刻。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
-                            <span class="lang-en">Take a peek through some of our favorite moments from our engagement. These photos hold so much of what we were feeling joy, nerves, laughter, and love as we got ready for the next chapter. We hope you enjoy looking through them as much as we loved taking them.</span>
-                        </p>
-                    </div>
+            <div class="card-stack" id="stack-2023">
+                <div class="story-card">
+                    <img src="images/engage1.jpg" alt="2023 Photo 1">
+                    <div class="story-card-caption">Mountaintop Chapel</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/engage2.jpg" alt="2023 Photo 2">
+                    <div class="story-card-caption">New York Concert</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/engage3.jpg" alt="2023 Photo 3">
+                    <div class="story-card-caption">Tampa Manatees</div>
                 </div>
             </div>
+        </div>
 
-            <div class="timeline-section light-bg">
-                <div class="timeline-inner reverse">
-                    <div class="vertical-title-area">
-                        <h2><span class="lang-zh">领证仪式</span><span class="lang-en">Our Elopement<br>Ceremony</span></h2>
-                        <div class="vertical-line"></div>
-                        <span class="vertical-date">10/16/2025</span>
-                    </div>
-                    
-                    <div class="carousel-content">
-                        <div class="carousel-track" id="track-elo" onscroll="updateCarousel('track-elo', 'ind-elo')">
-                            <div class="carousel-item"><img src="images/ceremony1.jpg" alt="Ceremony 1"></div>
-                            <div class="carousel-item"><img src="images/ceremony2.jpg" alt="Ceremony 2"></div>
-                            <div class="carousel-item"><img src="images/ceremony3.jpg" alt="Ceremony 3"></div>
-                        </div>
-                        
-                        <div class="carousel-controls">
-                            <span class="carousel-arrow" onclick="scrollCarousel('track-elo', -1)">&lt;</span>
-                            <span id="ind-elo">1 / 3</span>
-                            <span class="carousel-arrow" onclick="scrollCarousel('track-elo', 1)">&gt;</span>
-                        </div>
-                        
-                        <p class="carousel-desc">
-                            <span class="lang-zh">幸运的是，我们为这一天亲自挑选了专属的‘法庭’！我们没有选择去法院，而是来到了Medina Beach Park。这里紧邻水岸，拥有观赏Mt.Rainier的绝佳视野。这也是我们一直钟爱的地方，在这里正式定下终身，让那一刻变得更加意义非凡。<br>尽管当时的太平洋西北地区已经进入了雨季，但云层在那一刻奇迹般地为我们散开了。我们迎来了一个清爽无雨的完美日落；那是一个氛围感十足、美丽且充满爱的傍晚——这正是我们一直憧憬的开始！</span>
-                            <span class="lang-en">Fortunately, we got to pick our own 'office' for the day! We traded the courthouse for Medina Beach Park, right on the water with a perfect view of Mt. Rainier. It's a spot we've always loved, and making it official there made the moment feel even more special. Even though PNW had already settled into its rainy season, the clouds parted just long enough for us. We had a perfectly dry sunset moment; it was a moody, beautiful evening filled with love and exactly the start we've always imagined!</span>
-                        </p>
-                    </div>
+        <div class="story-chapter">
+            <div class="story-chapter-subtitle">2024</div>
+            <p class="story-chapter-text">
+                <span class="lang-zh">我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。</span>
+            </p>
+            
+            <div class="card-stack" id="stack-2024">
+                <div class="story-card">
+                    <img src="images/ceremony1.jpg" alt="2024 Photo 1">
+                    <div class="story-card-caption">West Coast Camping</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/ceremony2.jpg" alt="2024 Photo 2">
+                    <div class="story-card-caption">Cancun Proposal</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/ceremony3.jpg" alt="2024 Photo 3">
+                    <div class="story-card-caption">Tying the Knot</div>
                 </div>
             </div>
+        </div>
+
+        <div class="story-chapter">
+            <div class="story-chapter-subtitle">2025年3月31日</div>
+            <p class="story-chapter-text">
+                <span class="lang-zh">在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。</span>
+            </p>
+            
+            <div class="card-stack" id="stack-2025">
+                <div class="story-card">
+                    <img src="images/ceremony1.jpg" alt="2025 Photo 1">
+                    <div class="story-card-caption">West Coast Camping</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/ceremony2.jpg" alt="2025 Photo 2">
+                    <div class="story-card-caption">Cancun Proposal</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/ceremony3.jpg" alt="2025 Photo 3">
+                    <div class="story-card-caption">Tying the Knot</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="story-chapter">
+            <div class="story-chapter-subtitle">2025年10月16日</div>
+            <p class="story-chapter-text">
+                <span class="lang-zh">这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
+            </p>
+            
+            <div class="card-stack" id="stack-2025">
+                <div class="story-card">
+                    <img src="images/ceremony1.jpg" alt="2025 Photo 1">
+                    <div class="story-card-caption">West Coast Camping</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/ceremony2.jpg" alt="2025 Photo 2">
+                    <div class="story-card-caption">Cancun Proposal</div>
+                </div>
+                <div class="story-card">
+                    <img src="images/ceremony3.jpg" alt="2025 Photo 3">
+                    <div class="story-card-caption">Tying the Knot</div>
+                </div>
+            </div>
+        </div>
 
             <div class="scrolling-text-container">
                 <div class="scrolling-text line-1">
@@ -1692,11 +1580,11 @@ function scrollToSection(sectionId) {
             // --- CROSSFADE TIMING ---
             // Set this to how many milliseconds you want the intro to play BEFORE 
             // the main music starts blending in. (e.g., 5000 = 5 seconds)
-            const overlapStartTime = 3000; 
+            const overlapStartTime = 2500; 
 
             setTimeout(() => {
                 // Fade out the intro over 2 seconds
-                fadeVolume(introMusic, 0, 2000);
+                fadeVolume(introMusic, 0, 1500;
                 
                 // Fade in the main background music over 3 seconds
                 if (bgMusic && bgMusic.paused) {
