@@ -564,123 +564,83 @@ nav {
         }
         
 /* --- NEW SCROLL-STACK STORY STYLES --- */
-        .story-scroll-container {
-            width: 90%;
-            max-width: 500px;
-            margin: 0 auto;
-            position: relative;
-        }
+.about-scroll-wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+}
 
-        .story-year-block {
-            position: relative;
-            padding-top: 20px;
-            margin-bottom: 15vh; /* Gap before the next year starts */
-            z-index: 20;
-            /* The JS will handle the smooth fade-out */
-            transition: opacity 0.1s ease-out; 
-        }
+/* 1. The Pinned Text Container */
+.pinned-text-container {
+    position: sticky;
+    top: 80px; 
+    height: 35vh; 
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 20px;
+    z-index: 50; 
+    background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 70%, rgba(250, 248, 245, 0) 100%);
+    pointer-events: none; 
+}
 
-        .year-header-sticky {
-            position: sticky;
-            top: 80px; /* Sticks right below your desktop nav */
-            
-            /* Added a slight gradient background so it blends smoothly with the page */
-            background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 80%, rgba(250, 248, 245, 0) 100%);
-            padding: 20px 0 30px 0;
-            z-index: 30; 
-            text-align: center;
-        }
+.text-content {
+    text-align: center;
+    transition: opacity 0.4s ease-in-out;
+}
 
-        .year-title {
-            font-size: 42px;
-            color: #3A3836;
-            margin: 0 0 15px 0;
-            font-family: 'Times New Roman', Times, serif;
-            letter-spacing: 3px;
-        }
+/* 2. The Image Track & Cards */
+.image-track {
+    /* Padding at bottom gives the final image room to scroll up and stick */
+    padding-bottom: 70vh; 
+}
 
-        .year-desc {
-            font-size: 15px;
-            color: #555;
-            line-height: 1.8;
-            margin: 0;
-            padding: 0 10px;
-        }
+.stack-card {
+    position: sticky;
+    top: 45vh; /* All cards lock into this exact position */
+    background: #fff;
+    padding: 15px 15px 40px 15px; 
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    border-radius: 4px;
+    margin-bottom: 60vh; /* The scroll gap before the next image arrives */
+    will-change: transform;
+}
+
+.stack-card img {
+    width: 100%;
+    height: auto;
+    max-height: 380px;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+/* We kept your caption style! */
+.card-caption {
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+    font-family: 'Times New Roman', Times, serif;
+    letter-spacing: 1px;
+}
+
+/* Creates the messy, realistic photo stack look automatically */
+.stack-card:nth-child(3n+1) { transform: rotate(-2deg); }
+.stack-card:nth-child(3n+2) { transform: rotate(1.5deg); }
+.stack-card:nth-child(3n) { transform: rotate(-1deg); }
+
+/* --- MOBILE ADJUSTMENTS FOR THE NEW LAYOUT --- */
+@media (max-width: 768px) {
+    .pinned-text-container { top: 60px; height: 40vh; }
+    .stack-card { top: 48vh; margin-bottom: 65vh; }
+    .stack-card img { max-height: 250px; }
+}
         
-        .year-photos-stack {
-            position: relative;
-            margin-top: 10px;
-        }
-        
-        /* Add this pseudo-element to create the "invisible runway" */
-        .year-photos-stack::after {
-            content: "";
-            display: block;
-            height: 60vh; 
-        }
-            
-   .stack-photo-card {
-            position: sticky;
-            width: 100%;
-            background: #fff;
-            padding: 15px 15px 40px 15px; 
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            border-radius: 4px;
-            box-sizing: border-box; 
-            
-            /* Spacing between images in the stack */
-            margin-bottom: 40vh; 
-            transition: all 0.3s ease;
-            
-            /* Ensures images don't spill out of the frame */
-            overflow: hidden; 
-        }
 
-        .stack-photo-card:last-child {
-            /* Last image shouldn't push the container down */
-            margin-bottom: 0; 
-        }
-
-        .stack-photo-card img {
-            width: 100%;
-            height: auto;
-            max-height: 380px;
-            object-fit: cover;
-            display: block;
-            border-radius: 2px;
-            /* Ensures image sits inside the white frame */
-            z-index: 1; 
-        }
-
-        .card-caption {
-            position: absolute;
-            bottom: 12px;
-            left: 0;
-            width: 100%;
-            text-align: center;
-            font-size: 14px;
-            color: #555;
-            font-family: 'Times New Roman', Times, serif;
-            letter-spacing: 1px;
-        }
-
-        /* MOVED LOWER: top is now 45vh (45% down the screen) so text never hides them */
-        .stack-photo-card.card-1 { top: 45vh; z-index: 11; transform: rotate(-3deg); }
-        .stack-photo-card.card-2 { top: 46vh; z-index: 12; transform: rotate(1.5deg); }
-        .stack-photo-card.card-3 { top: 47vh; z-index: 13; transform: rotate(-1deg); }
-
-        @media (max-width: 768px) {
-            .year-header-sticky { top: 60px; padding: 10px 0 25px 0; }
-            .year-title { font-size: 34px; }
-            .year-desc { font-size: 14px; }
-            
-            /* Mobile stack positions */
-            .stack-photo-card { margin-bottom: 45vh; }
-            .stack-photo-card.card-1 { top: 42vh; }
-            .stack-photo-card.card-2 { top: 43vh; }
-            .stack-photo-card.card-3 { top: 44vh; }
-            .stack-photo-card img { max-height: 250px; }
-        }
         
         /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
         .scrolling-text-container {
@@ -1106,133 +1066,84 @@ nav {
         </div>
     </div>
 
-    <div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
+    <div class="image-track">
     
-    <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
-
-    <div class="story-scroll-container">
-        
-        <div class="story-year-block">
-            <div class="year-header-sticky">
-                <h2 class="year-title">2022年</h2>
-                <p class="year-desc">
-                    <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
-                </p>
-            </div>
-            
-            <div class="year-photos-stack">
-                <div class="stack-photo-card card-1">
-                    <img src="images/us1.jpg" alt="2022 Photo 1">
-                    <div class="card-caption">NC State Fair</div>
-                </div>
-                <div class="stack-photo-card card-2">
-                    <img src="images/us2.jpg" alt="2022 Photo 2">
-                    <div class="card-caption">First Trip Together</div>
-                </div>
-                <div class="stack-photo-card card-3">
-                    <img src="images/us3.jpg" alt="2022 Photo 3">
-                    <div class="card-caption">Christmas in D.C.</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="story-year-block">
-            <div class="year-header-sticky">
-                <h2 class="year-title">2023年</h2>
-                <p class="year-desc">
-                    <span class="lang-zh">借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图,我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.</span>
-                </p>
-            </div>
-            
-            <div class="year-photos-stack">
-                <div class="stack-photo-card card-1">
-                    <img src="images/engage1.jpg" alt="2023 Photo 1">
-                    <div class="card-caption">Mountaintop Chapel</div>
-                </div>
-                <div class="stack-photo-card card-2">
-                    <img src="images/engage2.jpg" alt="2023 Photo 2">
-                    <div class="card-caption">New York Concert</div>
-                </div>
-                <div class="stack-photo-card card-3">
-                    <img src="images/engage3.jpg" alt="2023 Photo 3">
-                    <div class="card-caption">Tampa Manatees</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="story-year-block">
-            <div class="year-header-sticky">
-                <h2 class="year-title">2024年</h2>
-                <p class="year-desc">
-                    <span class="lang-zh">我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。</span>
-                </p>
-            </div>
-            
-            <div class="year-photos-stack">
-                <div class="stack-photo-card card-1">
-                    <img src="images/ceremony1.jpg" alt="2024 Photo 1">
-                    <div class="card-caption">West Coast Camping</div>
-                </div>
-                <div class="stack-photo-card card-2">
-                    <img src="images/ceremony2.jpg" alt="2024 Photo 2">
-                    <div class="card-caption">Cancun Proposal</div>
-                </div>
-                <div class="stack-photo-card card-3">
-                    <img src="images/ceremony3.jpg" alt="2024 Photo 3">
-                    <div class="card-caption">Tying the Knot</div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="story-year-block">
-            <div class="year-header-sticky">
-                <h2 class="year-title">2025年3月31日</h2>
-                <p class="year-desc">
-                    <span class="lang-zh">在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。</span>
-                </p>
-            </div>
-            
-            <div class="year-photos-stack">
-                <div class="stack-photo-card card-1">
-                    <img src="images/ceremony1.jpg" alt="2024 Photo 1">
-                    <div class="card-caption">West Coast Camping</div>
-                </div>
-                <div class="stack-photo-card card-2">
-                    <img src="images/ceremony2.jpg" alt="2024 Photo 2">
-                    <div class="card-caption">Cancun Proposal</div>
-                </div>
-                <div class="stack-photo-card card-3">
-                    <img src="images/ceremony3.jpg" alt="2024 Photo 3">
-                    <div class="card-caption">Tying the Knot</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="story-year-block">
-            <div class="year-header-sticky">
-                <h2 class="year-title">2025年10月16日</h2>
-                <p class="year-desc">
-                    <span class="lang-zh">这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
-                </p>
-            </div>
-            
-            <div class="year-photos-stack">
-                <div class="stack-photo-card card-1">
-                    <img src="images/ceremony1.jpg" alt="2024 Photo 1">
-                    <div class="card-caption">West Coast Camping</div>
-                </div>
-                <div class="stack-photo-card card-2">
-                    <img src="images/ceremony2.jpg" alt="2024 Photo 2">
-                    <div class="card-caption">Cancun Proposal</div>
-                </div>
-                <div class="stack-photo-card card-3">
-                    <img src="images/ceremony3.jpg" alt="2024 Photo 3">
-                    <div class="card-caption">Tying the Knot</div>
-                </div>
-            </div>
-        </div>
-        
+    <div class="stack-card" 
+         data-year="2022年" 
+         data-desc="我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。">
+        <img src="images/us1.jpg" alt="2022 Photo 1">
+        <div class="card-caption">NC State Fair</div>
     </div>
+    <div class="stack-card" data-year="2022年" data-desc="我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。">
+        <img src="images/us2.jpg" alt="2022 Photo 2">
+        <div class="card-caption">First Trip Together</div>
+    </div>
+    <div class="stack-card" data-year="2022年" data-desc="我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。">
+        <img src="images/us3.jpg" alt="2022 Photo 3">
+        <div class="card-caption">Christmas in D.C.</div>
+    </div>
+
+    <div class="stack-card" 
+         data-year="2023年" 
+         data-desc="借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.">
+        <img src="images/engage1.jpg" alt="2023 Photo 1">
+        <div class="card-caption">Mountaintop Chapel</div>
+    </div>
+    <div class="stack-card" data-year="2023年" data-desc="借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.">
+        <img src="images/engage2.jpg" alt="2023 Photo 2">
+        <div class="card-caption">New York Concert</div>
+    </div>
+    <div class="stack-card" data-year="2023年" data-desc="借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，对他的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.">
+        <img src="images/engage3.jpg" alt="2023 Photo 3">
+        <div class="card-caption">Tampa Manatees</div>
+    </div>
+
+    <div class="stack-card" 
+         data-year="2024年" 
+         data-desc="我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。">
+        <img src="images/ceremony1.jpg" alt="2024 Photo 1">
+        <div class="card-caption">West Coast Camping</div>
+    </div>
+    <div class="stack-card" data-year="2024年" data-desc="我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。">
+        <img src="images/ceremony2.jpg" alt="2024 Photo 2">
+        <div class="card-caption">Cancun Proposal</div>
+    </div>
+    <div class="stack-card" data-year="2024年" data-desc="我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。">
+        <img src="images/ceremony3.jpg" alt="2024 Photo 3">
+        <div class="card-caption">Tying the Knot</div>
+    </div>
+
+    <div class="stack-card" 
+         data-year="2025年3月31日" 
+         data-desc="在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。">
+        <img src="images/ceremony1.jpg" alt="2025 Cancun Photo 1">
+        <div class="card-caption">Cancun Arrival</div>
+    </div>
+    <div class="stack-card" data-year="2025年3月31日" data-desc="在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。">
+        <img src="images/ceremony2.jpg" alt="2025 Cancun Photo 2">
+        <div class="card-caption">The Beach Setup</div>
+    </div>
+    <div class="stack-card" data-year="2025年3月31日" data-desc="在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，我们俩得认真的打扮一下。张维翀其实为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。">
+        <img src="images/ceremony3.jpg" alt="2025 Cancun Photo 3">
+        <div class="card-caption">Down On One Knee</div>
+    </div>
+
+    <div class="stack-card" 
+         data-year="2025年10月16日" 
+         data-desc="这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。">
+        <img src="images/ceremony1.jpg" alt="Wedding Photo 1">
+        <div class="card-caption">By the Lake</div>
+    </div>
+    <div class="stack-card" data-year="2025年10月16日" data-desc="这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。">
+        <img src="images/ceremony2.jpg" alt="Wedding Photo 2">
+        <div class="card-caption">Our Vows</div>
+    </div>
+    <div class="stack-card" data-year="2025年10月16日" data-desc="这一天，在我们平时最喜欢坐着发呆看雪山的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。">
+        <img src="images/ceremony3.jpg" alt="Wedding Photo 3">
+        <div class="card-caption">Officially Tied</div>
+    </div>
+
+</div>
     
             <div class="scrolling-text-container">
                 <div class="scrolling-text line-1">
@@ -1512,38 +1423,54 @@ function scrollToSection(sectionId) {
 // (Leave this and everything below it exactly as it is!)
     
 
-    // --- STORY SCROLL FADE LOGIC ---
-    function handleStoryFade() {
-    const blocks = document.querySelectorAll('.story-year-block');
-    const windowHeight = window.innerHeight;
+    // --- DYNAMIC SCROLL TRACKING FOR TEXT CROSSFADE ---
+function handleContinuousStack() {
+    const cards = document.querySelectorAll('.stack-card');
+    const dynamicYear = document.getElementById('dynamic-year');
+    const dynamicDesc = document.getElementById('dynamic-desc');
+    const textContent = document.getElementById('pinned-text-content');
 
-    blocks.forEach(block => {
-        // Target JUST the text header to fade out
-        const header = block.querySelector('.year-header-sticky');
-        const rect = block.getBoundingClientRect();
-        
-        // When the bottom of the year block reaches 60% of the screen height, start fading out the text
-        let fadePoint = windowHeight * 0.60;
-        
-        if (header) {
-            if (rect.bottom < fadePoint) {
-                // Calculates a smooth opacity from 1 down to 0
-                let opacity = Math.max(0, rect.bottom / fadePoint);
-                header.style.opacity = opacity;
-            } else {
-                header.style.opacity = 1;
-            }
+    let currentYear = "2022年"; // Tracks active chapter
+
+    // The point on the screen where a card is considered "active"
+    // Set slightly below the actual sticky top (45vh) to trigger exactly as it arrives
+    const triggerPoint = window.innerHeight * 0.50; 
+
+    // Find the LAST card that has crossed the trigger point
+    let activeCard = null;
+    cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top <= triggerPoint) {
+            activeCard = card;
         }
     });
-}
 
+    // If an image is active, check if its chapter is different
+    if (activeCard) {
+        const cardYear = activeCard.getAttribute('data-year');
+        const cardDesc = activeCard.getAttribute('data-desc');
+
+        if (cardYear !== currentYear) {
+            currentYear = cardYear; // Update tracker
+            
+            // 1. Fade Out
+            textContent.style.opacity = 0;
+
+            // 2. Wait for fade out, swap text, then Fade In
+            setTimeout(() => {
+                dynamicYear.innerText = cardYear;
+                dynamicDesc.innerHTML = `<span class="lang-zh">${cardDesc}</span>`;
+                textContent.style.opacity = 1;
+            }, 400); // 400ms matches the CSS transition time
+        }
+    }
+}
     
     // Automatically highlight the active navigation tab while scrolling
     window.addEventListener('scroll', () => {
         
         // 1. Run the new story fade logic (THIS IS THE ONLY NEW LINE WE ADDED INSIDE)
-        handleStoryFade();
-
+        handleContinuousStack();
         // 2. Navigation Highlighting (KEPT ALL YOUR EXISTING CODE BELOW)
         const sections = ['home-page', 'about-page', 'attire-page', 'address-page']; 
         let current = '';
