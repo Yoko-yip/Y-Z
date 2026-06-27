@@ -606,13 +606,17 @@ nav {
             margin: 0;
             padding: 0 10px;
         }
-
+        
         .year-photos-stack {
             position: relative;
             margin-top: 10px;
-            /* THE FIX: Adds a massive invisible space at the bottom. 
-               This gives the 3rd image enough room to slide up and stick! */
-            padding-bottom: 60vh; 
+        }
+        
+        /* Add this pseudo-element to create the "invisible runway" */
+        .year-photos-stack::after {
+            content: "";
+            display: block;
+            height: 60vh; 
         }
             
    .stack-photo-card {
@@ -1508,27 +1512,32 @@ function scrollToSection(sectionId) {
 // (Leave this and everything below it exactly as it is!)
     
 
-    // Automatically highlight the active navigation tab while scrolling
     // --- STORY SCROLL FADE LOGIC ---
     function handleStoryFade() {
-        const blocks = document.querySelectorAll('.story-year-block');
-        const windowHeight = window.innerHeight;
+    const blocks = document.querySelectorAll('.story-year-block');
+    const windowHeight = window.innerHeight;
 
-        blocks.forEach(block => {
-            const rect = block.getBoundingClientRect();
-            // When the bottom of the year block reaches 40% of the screen height, it fades out
-            let fadePoint = windowHeight * 0.40;
-            
+    blocks.forEach(block => {
+        // Target JUST the text header to fade out
+        const header = block.querySelector('.year-header-sticky');
+        const rect = block.getBoundingClientRect();
+        
+        // When the bottom of the year block reaches 60% of the screen height, start fading out the text
+        let fadePoint = windowHeight * 0.60;
+        
+        if (header) {
             if (rect.bottom < fadePoint) {
                 // Calculates a smooth opacity from 1 down to 0
                 let opacity = Math.max(0, rect.bottom / fadePoint);
-                block.style.opacity = opacity;
+                header.style.opacity = opacity;
             } else {
-                block.style.opacity = 1;
+                header.style.opacity = 1;
             }
-        });
-    }
+        }
+    });
+}
 
+    
     // Automatically highlight the active navigation tab while scrolling
     window.addEventListener('scroll', () => {
         
