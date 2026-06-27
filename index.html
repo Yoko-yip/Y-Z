@@ -1487,6 +1487,11 @@ nav {
             }, stepTime);
         }
 
+       if (bgMusic) {
+            bgMusic.volume = 0;
+            bgMusic.play().catch(e => console.log("bgMusic unlock error:", e));
+        }
+
         if (introMusic) {
             introMusic.volume = 0;
             introMusic.play().catch(e => console.log("Intro playback error:", e));
@@ -1494,16 +1499,17 @@ nav {
 
             const overlapStartTime = 2500; 
             setTimeout(() => {
+                // Fade out the intro
                 fadeVolume(introMusic, 0, 2000);
-                if (bgMusic && bgMusic.paused) {
-                    bgMusic.volume = 0;
-                    bgMusic.play().catch(e => console.log("Audio playback error:", e));
+                
+                // The bgMusic is already playing silently, so we just fade it up!
+                if (bgMusic) {
                     fadeVolume(bgMusic, 1, 2000);
                 }
             }, overlapStartTime);
-        } else if (bgMusic && bgMusic.paused) {
-            bgMusic.volume = 0;
-            bgMusic.play().catch(e => console.log("Audio playback error:", e));
+            
+        } else if (bgMusic) {
+            // Fallback if intro music doesn't exist
             fadeVolume(bgMusic, 1, 2000);
         }
 
