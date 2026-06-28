@@ -1497,7 +1497,7 @@ nav {
             introMusic.play().catch(e => console.log("Intro playback error:", e));
             fadeVolume(introMusic, 1, 2000); 
 
-            const overlapStartTime = 2500; 
+            const overlapStartTime = 2000; 
             setTimeout(() => {
                 // Fade out the intro
                 fadeVolume(introMusic, 0, 2000);
