@@ -784,7 +784,7 @@ nav {
         .figures-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 20px; width: 90%; max-width: 1000px; }
         .figure { flex: 1; min-width: 250px; text-align: center; margin-bottom: 30px; }
         .figure img { width: 100%; height: auto; border: 1px solid #ccc; background-color: #e0e0e0; margin-bottom: 15px; }
-        .address-container { width: 90%; max-width: 800px; text-align: left; margin: 0 auto;}
+        .address-container { width: 90%; max-width: 800px; text-align: center; margin: 0 auto;}
         .address-container h1 {
             text-align: center;
             margin-bottom: 30px;
@@ -837,12 +837,6 @@ nav {
             color: #3A3836;
         }
 
-        /* --- INFO SECTIONS WITH LEFT BORDER --- */
-        .info-section.with-border {
-            border-left: 3px solid #3A3836;
-            padding-left: 18px;
-            margin-bottom: 35px;
-        }
         
         .details-wrapper .info-section:last-child { margin-bottom: 0; } 
         
@@ -854,15 +848,14 @@ nav {
             margin: 0 0 10px 0; 
             font-weight: bold; 
             color: #3A3836;
-            text-align: left; 
+            text-align: center; 
         }
-        .info-section p { font-size: 16px; line-height: 1.6; color: #555; margin: 0; }
-        
-        /* --- TRANSPORTATION SPACING --- */
+        .info-section p { font-size: 16px; line-height: 1.6; color: #555; margin: 0; text-align: center; }
         .transport-item {
             margin-bottom: 15px; /* Adds space between lines */
             line-height: 1.6;
             color: #555; /* ADD THIS LINE to match the other paragraphs */
+            text-align: center;
         }
         
         .color-palette { display: flex; justify-content: center; gap: 15px; margin: 20px 0 15px 0; flex-wrap: wrap; }
@@ -984,6 +977,18 @@ nav {
             }
             .scroll-image-wrapper:nth-child(odd) { align-self: flex-start !important; }
             .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
+        }
+
+        /* 增加上下起伏的曲线动画特效 */
+        .curve-text {
+            display: inline-block;
+            animation: scroll-left 40s linear infinite, wave-bounce 4s ease-in-out infinite alternate;
+            white-space: nowrap;
+        }
+
+        @keyframes wave-bounce {
+            0% { transform: translateY(10px); }
+            100% { transform: translateY(-10px); }
         }
 
 
@@ -1168,27 +1173,21 @@ nav {
     </div>
 
 </div>
+        </div>
     
             <div class="scrolling-text-container">
                 <div class="scrolling-text line-1">
                     <span class="lang-zh">
                         “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!”
                     </span>
-                    <span class="lang-en">
-                        "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "What's for dinner!"
-                    </span>
                 </div>
                 <div class="scrolling-text line-2">
                     <span class="lang-zh">
                         “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!”
                     </span>
-                    <span class="lang-en">
-                        "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; "I'll cook!"
-                    </span>
                 </div>
             </div>
 
-        </div>
     </div>
     
     <div id="attire-page" class="content-page">
@@ -1370,6 +1369,15 @@ nav {
         </div>
     </div>
     <div id="play-page" class="content-page" style="padding-left:0; padding-right:0;">
+        <div class="scrolling-text curve-text">
+            <span class="lang-zh" style="font-size: 15px; letter-spacing: 2px;">
+                天堂是什么样子，我不晓得，但是从我的生活经验去判断，北平之秋便是天堂。 &nbsp;&nbsp;❁&nbsp;&nbsp; 
+                北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。 &nbsp;&nbsp;❁&nbsp;&nbsp; 
+                虾蟆陵的石榴，门头沟的核桃，还有秋天的烤白薯，那香味儿能飘满整条胡同 &nbsp;&nbsp;❁&nbsp;&nbsp;
+                
+            </span>
+        </div>
+        
     <div class="address-container" style="margin: 0 auto; text-align: center;">
         <h1>哪儿玩儿</h1>
         <div class="details-wrapper">
@@ -1491,25 +1499,27 @@ nav {
             bgMusic.volume = 0;
             bgMusic.play().catch(e => console.log("bgMusic unlock error:", e));
         }
-
+        
+        
         if (introMusic) {
             introMusic.volume = 0;
             introMusic.play().catch(e => console.log("Intro playback error:", e));
             fadeVolume(introMusic, 1, 2000); 
 
-            const overlapStartTime = 2000; 
-            setTimeout(() => {
-                // Fade out the intro
-                fadeVolume(introMusic, 0, 2000);
-                
-                // The bgMusic is already playing silently, so we just fade it up!
-                if (bgMusic) {
-                    fadeVolume(bgMusic, 1, 2000);
-                }
-            }, overlapStartTime);
+            // 监听 Intro 音乐播放结束的事件
+            introMusic.onended = () => {
+                // 结束后延迟 2 秒 (2000毫秒) 再播放主背景音乐
+                setTimeout(() => {
+                    if (bgMusic) {
+                        bgMusic.volume = 0;
+                        bgMusic.play().catch(e => console.log("bgMusic unlock error:", e));
+                        fadeVolume(bgMusic, 1, 2000);
+                    }
+                }, 2000);
+            };
             
         } else if (bgMusic) {
-            // Fallback if intro music doesn't exist
+            // 如果没有 intro 音乐，则直接播放背景音乐
             fadeVolume(bgMusic, 1, 2000);
         }
 
