@@ -26,7 +26,6 @@
             margin: 0; 
             padding: 0;
             width: 100%;
-            overflow-x: hidden;             
             background-color: #FAF8F5; 
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
@@ -1041,6 +1040,7 @@ nav {
     
 </head>
 <body>
+    <div style="overflow-x: hidden; width: 100%;"> </div> </body>
 
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
@@ -1418,7 +1418,7 @@ nav {
     <div class="wavy-section">
         
         <div class="wave-track">
-            <svg class="wave-item" viewBox="0 0 2500 45">
+            <svg class="wave-item" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg">
                 <path id="wavePath1" d="M 0 25 Q 62.5 0 125 25 T 250 25 T 375 25 T 500 25 T 625 25 T 750 25 T 875 25 T 1000 25 T 1125 25 T 1250 25 T 1375 25 T 1500 25 T 1625 25 T 1750 25 T 1875 25 T 2000 25 T 2125 25 T 2250 25 T 2375 25 T 2500 25" fill="none"/>
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath1" startOffset="0">
@@ -1426,7 +1426,7 @@ nav {
                     </textPath>
                 </text>
             </svg>
-            <svg class="wave-item" viewBox="0 0 2500 45">
+            <svg class="wave-item" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg">
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath1" startOffset="0">
                         <tspan class="lang-zh">天堂是什么样子，我不晓得，但是从我的生活经验去判断，北平之秋便是天堂。</tspan>
@@ -1436,7 +1436,7 @@ nav {
         </div>
 
         <div class="wave-track reverse">
-            <svg class="wave-item" viewBox="0 0 2500 45">
+            <svg class="wave-item" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg">
                 <path id="wavePath2" d="M 0 25 Q 62.5 0 125 25 T 250 25 T 375 25 T 500 25 T 625 25 T 750 25 T 875 25 T 1000 25 T 1125 25 T 1250 25 T 1375 25 T 1500 25 T 1625 25 T 1750 25 T 1875 25 T 2000 25 T 2125 25 T 2250 25 T 2375 25 T 2500 25" fill="none"/>
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath2" startOffset="0">
@@ -1444,7 +1444,7 @@ nav {
                     </textPath>
                 </text>
             </svg>
-            <svg class="wave-item" viewBox="0 0 2500 45">
+            <svg class="wave-item" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg">
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath2" startOffset="0">
                         <tspan class="lang-zh">虾蟆陵的石榴，门头沟的核桃，还有秋天的烤白薯，那香味儿能飘满整条胡同。</tspan>
@@ -1454,7 +1454,7 @@ nav {
         </div>
 
         <div class="wave-track fast">
-            <svg class="wave-item" viewBox="0 0 2500 45">
+            <svg class="wave-item" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg">
                 <path id="wavePath3" d="M 0 25 Q 62.5 0 125 25 T 250 25 T 375 25 T 500 25 T 625 25 T 750 25 T 875 25 T 1000 25 T 1125 25 T 1250 25 T 1375 25 T 1500 25 T 1625 25 T 1750 25 T 1875 25 T 2000 25 T 2125 25 T 2250 25 T 2375 25 T 2500 25" fill="none"/>
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath3" startOffset="0">
@@ -1462,7 +1462,7 @@ nav {
                     </textPath>
                 </text>
             </svg>
-            <svg class="wave-item" viewBox="0 0 2500 45">
+            <svg class="wave-item" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg">
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath3" startOffset="0">
                         <tspan class="lang-zh">北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。 </tspan>
