@@ -1531,7 +1531,7 @@ nav {
         if (target) {
             const headerOffset = 80; 
             const elementPosition = target.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+            const offsetPosition = elementPosition + window.scrollY - headerOffset;
 
             window.scrollTo({
                  top: offsetPosition,
@@ -1738,7 +1738,7 @@ nav {
             const section = document.getElementById(id);
             if (section) {
                 const sectionTop = section.offsetTop;
-                if (window.pageYOffset >= sectionTop - 150) {
+                if (window.scrollY >= sectionTop - 150) {
                     current = id;
                 }
             }
