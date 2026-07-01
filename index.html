@@ -984,20 +984,61 @@ nav {
             .scroll-image-wrapper:nth-child(even) { align-self: flex-end !important; margin-top: -15% !important; }
         }
 
-        /* 增加上下起伏的曲线动画特效 */
-        .curve-text {
-            display: inline-block;
-            animation: scroll-left 40s linear infinite, wave-bounce 4s ease-in-out infinite alternate;
-            white-space: nowrap;
+        
+        /* --- SQUARSPACE-STYLE WAVY MARQUEE --- */
+        .wavy-section {
+            width: 100%;
+            overflow: hidden;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd; /* 增加底部边框 */
+            padding: 30px 0; /* 上下留出呼吸感 */
+            background-color: transparent;
+            display: flex;
+            flex-direction: column;
+            gap: 10px; /* 3条波浪线之间的间距 */
+            margin-bottom: 40px; 
         }
 
-        @keyframes wave-bounce {
-            0% { transform: translateY(10px); }
-            100% { transform: translateY(-10px); }
+        .wave-track {
+            display: flex;
+            width: fit-content;
+            animation: wave-scroll 35s linear infinite;
         }
 
+        /* 第二条线反向滚动 */
+        .wave-track.reverse {
+            animation: wave-scroll-reverse 45s linear infinite;
+            transform: translateX(-50%);
+        }
+
+        /* 第三条线稍微快一点 */
+        .wave-track.fast {
+            animation: wave-scroll 30s linear infinite;
+        }
+
+        /* 鼠标悬停时暂停滚动 */
+        .wave-track:hover {
+            animation-play-state: paused;
+        }
+
+        .wave-item {
+            width: 2500px; /* 必须和 viewBox 的宽度一致 */
+            height: 45px;  /* 波浪的起伏高度 */
+            flex-shrink: 0;
+        }
+
+        @keyframes wave-scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); } /* 无缝循环的关键：向左移动一半 */
+        }
+
+        @keyframes wave-scroll-reverse {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0); }
+        }
 
     </style>
+    
 </head>
 <body>
 
@@ -1399,14 +1440,14 @@ nav {
                 <path id="wavePath2" d="M 0 25 Q 62.5 0 125 25 T 250 25 T 375 25 T 500 25 T 625 25 T 750 25 T 875 25 T 1000 25 T 1125 25 T 1250 25 T 1375 25 T 1500 25 T 1625 25 T 1750 25 T 1875 25 T 2000 25 T 2125 25 T 2250 25 T 2375 25 T 2500 25" fill="none"/>
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath2" startOffset="0">
-                        <tspan class="lang-zh">虾蟆陵的石榴，门头沟的核桃，还有秋天的烤白薯，那香味儿能飘满整条胡同. </tspan>
+                        <tspan class="lang-zh">虾蟆陵的石榴，门头沟的核桃，还有秋天的烤白薯，那香味儿能飘满整条胡同。 </tspan>
                     </textPath>
                 </text>
             </svg>
             <svg class="wave-item" viewBox="0 0 2500 45">
                 <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
                     <textPath href="#wavePath2" startOffset="0">
-                        <tspan class="lang-zh">虾蟆陵的石榴，门头沟的核桃，还有秋天的烤白薯，那香味儿能飘满整条胡同. </tspan>
+                        <tspan class="lang-zh">虾蟆陵的石榴，门头沟的核桃，还有秋天的烤白薯，那香味儿能飘满整条胡同。</tspan>
                     </textPath>
                 </text>
             </svg>
@@ -1710,57 +1751,5 @@ nav {
             }
         });
     });
-
-        /* --- SQUARSPACE-STYLE WAVY MARQUEE --- */
-        .wavy-section {
-            width: 100%;
-            overflow: hidden;
-            border-top: 1px solid #ddd;
-            border-bottom: 1px solid #ddd; /* 增加底部边框 */
-            padding: 30px 0; /* 上下留出呼吸感 */
-            background-color: transparent;
-            display: flex;
-            flex-direction: column;
-            gap: 10px; /* 3条波浪线之间的间距 */
-            margin-bottom: 40px; 
-        }
-
-        .wave-track {
-            display: flex;
-            width: fit-content;
-            animation: wave-scroll 35s linear infinite;
-        }
-
-        /* 第二条线反向滚动 */
-        .wave-track.reverse {
-            animation: wave-scroll-reverse 45s linear infinite;
-            transform: translateX(-50%);
-        }
-
-        /* 第三条线稍微快一点 */
-        .wave-track.fast {
-            animation: wave-scroll 30s linear infinite;
-        }
-
-        /* 鼠标悬停时暂停滚动 */
-        .wave-track:hover {
-            animation-play-state: paused;
-        }
-
-        .wave-item {
-            width: 2500px; /* 必须和 viewBox 的宽度一致 */
-            height: 45px;  /* 波浪的起伏高度 */
-            flex-shrink: 0;
-        }
-
-        @keyframes wave-scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); } /* 无缝循环的关键：向左移动一半 */
-        }
-
-        @keyframes wave-scroll-reverse {
-            0% { transform: translateX(-50%); }
-            100% { transform: translateX(0); }
-        }
 
 </script>
