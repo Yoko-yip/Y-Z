@@ -26,14 +26,11 @@
             margin: 0; 
             padding: 0;
             width: 100%;
-            /* height: 100%;
-            overflow-x: hidden; 
-            /* Base yellow - revealed if landing scene ever fades out completely */
-            background-color: #FFFBE6; 
+            overflow-x: hidden;             
+            background-color: #FAF8F5; 
             font-family: 'Courier New', Courier, monospace;
             touch-action: pan-y; 
         }
-
         .lang-switch {
             font-size: 16px;
             font-weight: bold;
@@ -139,12 +136,19 @@
         nav.fade-in { opacity: 1; pointer-events: auto; }
         
         /* This container holds the list items */
+        /* This container holds the list items */
         .nav-links {
             list-style: none; /* Removes the bullet points */
             display: flex;    /* Places the items side-by-side horizontally */
-            justify-content: center;
+            
+            /* 1. 将 center 改为 space-evenly 或 space-between 让选项分散 */
+            justify-content: space-evenly; 
+            
+            /* 2. 增加宽度限制，决定选项能在屏幕上散得多开 */
+            width: 80%;       
+            max-width: 1000px; /* 限制一个最大宽度，防止在带鱼屏等超大屏幕上散得太远 */
+            
             align-items: baseline; 
-            gap: 40px;        /* The space between each word on a laptop */
             padding: 0;
             margin: 0;
         }
@@ -594,7 +598,7 @@ nav {
 .image-track {
     /* REDUCED from 70vh. This gives the last image just a tiny moment 
        to stick before the whole section gets dragged up! */
-    padding-bottom: 10vh; 
+    padding-bottom: 20vh; 
 }
 
         
@@ -621,7 +625,7 @@ nav {
 }
 
 .stack-card:last-child {
-    margin-bottom: 0; 
+    margin-bottom: 45vh; 
 }
 
 /* We kept your caption style! */
@@ -647,6 +651,7 @@ nav {
     .pinned-text-container { top: 60px; height: 40vh; }
     .stack-card { top: 48vh; margin-bottom: 65vh; }
     .stack-card img { max-height: 250px; }
+    .stack-card:last-child { margin-bottom: 50vh; }
 }
         
 
@@ -1502,27 +1507,35 @@ nav {
         
         
         if (introMusic) {
-            introMusic.volume = 0;
-            introMusic.play().catch(e => console.log("Intro playback error:", e));
-            fadeVolume(introMusic, 1, 2000); 
+    introMusic.volume = 0;
+    introMusic.play().catch(e => console.log("Intro playback error:", e));
+    fadeVolume(introMusic, 1, 2000); 
 
-            // 监听 Intro 音乐播放结束的事件
-            introMusic.onended = () => {
-                // 结束后延迟 2 秒 (2000毫秒) 再播放主背景音乐
-                setTimeout(() => {
-                    if (bgMusic) {
-                        bgMusic.volume = 0;
-                        bgMusic.play().catch(e => console.log("bgMusic unlock error:", e));
-                        fadeVolume(bgMusic, 1, 2000);
-                    }
-                }, 2000);
-            };
+    // Create a flag to ensure the background music is only triggered once
+    let bgMusicStarted = false;
+
+    // 监听 Intro 音乐的播放进度 (Monitor playback progress)
+    introMusic.ontimeupdate = () => {
+        // Check if the remaining time is 0.5 seconds or less
+        if (!bgMusicStarted && (introMusic.duration - introMusic.currentTime <= 0.5)) {
+            bgMusicStarted = true; // Lock the flag so this doesn't run multiple times
             
+            if (bgMusic) {
+                bgMusic.volume = 0;
+                bgMusic.play().catch(e => console.log("bgMusic unlock error:", e));
+                // Start fading in the background music while the intro is still finishing
+                fadeVolume(bgMusic, 1, 2000); 
+            }
+        }
+    };
         } else if (bgMusic) {
-            // 如果没有 intro 音乐，则直接播放背景音乐
-            fadeVolume(bgMusic, 1, 2000);
+    // 如果没有 intro 音乐，则直接播放背景音乐
+    bgMusic.volume = 0;
+    bgMusic.play().catch(e => console.log("bgMusic playback error:", e));
+    fadeVolume(bgMusic, 1, 2000);
         }
 
+        
         if (entranceHeader) entranceHeader.style.opacity = '0';
         if (instructionText) instructionText.style.opacity = '0';
         openEnvelopeBtn.style.opacity = '0'; 
