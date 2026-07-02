@@ -105,7 +105,24 @@
         }
         body.english-mode img.lang-en { display: block !important; }
 
-       
+  /* --- 1. Text-length line for the Location h3 tags --- */
+        .address-container h3 {
+    display: inline-block;        /* Shrinks the element's width to match the text length */
+    border-bottom: 1px solid #3A3836; /* The horizontal line (change color if needed) */
+    padding-bottom: 8px;          /* The gap between the text and the line */
+    margin-bottom: 15px;          /* The gap between the line and the paragraph below it */
+}
+
+/* --- 2. Larger gap between Venue, Transport, and Catering blocks --- */
+/* Assuming each of these sections is wrapped in its own <div> inside .address-container */
+        .address-container > div {
+    margin-bottom: 50px;          /* Adjust this number to make the gap larger or smaller */
+}
+
+/* Removes the large gap after the very last item so your page bottom doesn't have dead space */
+        .address-container > div:last-child {
+    margin-bottom: 0;
+}     
         
         
 /* --- NAVIGATION BAR --- */
