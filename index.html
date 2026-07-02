@@ -861,21 +861,47 @@ nav {
         
         .details-wrapper .info-section:last-child { margin-bottom: 0; } 
         
-        /* --- SUB-HEADERS (The Venue, Getting There, Accommodation) --- */
+        /* --- 哪儿见 (LOCATION) 页面：排版与间距优化 --- */
+        /* ========================================================= */
+
+        /* --- 1. 区块之间的超大间距 (场地、交通、餐饮之间) --- */
+        .details-wrapper .info-section {
+            margin-bottom: 30px !important; /* 调整这个数值来控制区块间距 */
+        }
+        
+        .details-wrapper .info-section:last-child {
+            margin-bottom: 0 !important; /* 最后一个区块底部不留白 */
+        }
+
+        /* --- 2. H3 子标题 (保留了好看的字体，并加上了刚好包裹文字的下划线) --- */
         .info-section h3 { 
             font-size: 18px; 
             text-transform: uppercase; 
             letter-spacing: 3px; 
-            margin: 0 0 10px 0; 
             font-weight: bold; 
             color: #3A3836;
+            
+            /* 下划线魔法 */
+            display: inline-block;          
+            border-bottom: 1px solid #3A3836; 
+            padding-bottom: 8px;            
+            margin: 0 0 20px 0; 
+        }
+
+        /* --- 3. 正文排版 (段落) --- */
+        .info-section p { 
+            font-size: 16px; 
+            line-height: 1.6; 
+            color: #555; 
+            margin: 0; 
             text-align: center; 
         }
-        .info-section p { font-size: 16px; line-height: 1.6; color: #555; margin: 0; text-align: center; }
+
+        /* --- 4. 交通列表项的排版 --- */
         .transport-item {
-            margin-bottom: 15px; /* Adds space between lines */
+            margin-bottom: 15px; 
             line-height: 1.6;
-            color: #555; /* ADD THIS LINE to match the other paragraphs */
+            color: #555; 
             text-align: center;
         }
         
@@ -1352,7 +1378,7 @@ nav {
                     </p>
                 </div>
 
-                <div class="info-section with-border" style="margin-bottom: 20px;">
+                <div class="info-section with-border">
                     <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
                     
                     <div class="lang-zh">
@@ -1363,7 +1389,7 @@ nav {
                             <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
                         </div>
                         <div class="transport-item">
-                            <strong>自驾：</strong>东景缘提供的停车场位置较远，如果您选择自驾，可以停车后步行前往，步行路线可参考下方地图。
+                            <strong>自驾：</strong>东景缘位于胡同内，停车较为不便，推荐您优先选择其他出行方式。如果您选择自驾， 请提前联系我们，我们会尽力安排。
                         </div>
                     </div>
                      <div class="map-figure" style="margin-bottom: 60px;">
@@ -1374,20 +1400,15 @@ nav {
                  <div class="info-section with-border">
                     <h3><span class="lang-zh">餐饮</span><span class="lang-en">Dinner</span></h3>
                     <p>
-                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。卢卡斯主厨的烹饪风格“独具匠心且原汁原味”，深谙法国传统烹饪精髓，并巧妙融入现代灵感。<br><br>
-                        为了给您带来别具一格的体验，本次晚宴将有别于传统的中式圆桌筵席，而是精心为您准备了经典的法式套餐（4 courses）。主厨将采撷初秋最鲜美的应季食材，将层次丰富的口感与艺术品般的摆盘完美交织，让每一道菜肴都娓娓道来一个独特的故事。席间，我们更准备了精选红白葡萄酒为您无限量供应。期待这场精致的味觉与微醺盛宴，能为您留下难忘的美好回忆。   
+                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。<br><br>
+                        为了给您带来别具一格的体验，本次晚宴将有别于传统的中式圆桌筵席。主厨将采撷初秋最鲜美的应季食材，将层次丰富的口感与艺术品般的摆盘完美交织，组成一套经典的法式套餐（4 courses）。席间，我们更准备了精选红白葡萄酒为您无限量供应。期待这场精致的味觉与微醺盛宴，能为您留下难忘的美好回忆。   
                         </span>
-                        <span class="lang-en">Our wedding dinner will be catered by the renowned French restaurant TRB Hutong, thoughtfully curated by Chef Lucas Garigliano. "Creative and authentic" perfectly describe Chef Lucas’s culinary style. Deeply inspired by classic French traditions, he masterfully elevates his dishes with a modern twist.<br><br>
-                        To offer you a truly unique experience, our reception will step away from the traditional Chinese family-style banquet. Instead, we have carefully prepared a classic, individually plated 4-course French menu. Featuring the finest seasonal ingredients of early autumn, Chef Lucas beautifully blends rich flavors with artistic presentations, ensuring every dish tells its own unique story.<br><br>
-                        Throughout the evening, you will also enjoy an unlimited flow of carefully selected red and white wines. We hope this extraordinary culinary experience will leave you with beautiful and lasting memories of our special night.</span>
-                    </p>
                 </div>
                 
                 <div class="info-section with-border">
                     <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
                     <p> 
                         <span class="lang-zh">我们为外地宾客在附近的酒店预留了两晚（9/11-9/13）房间。如果您有其他安排，请提前告知。</span>
-                        <span class="lang-en">We have reserved a block of rooms at a nearby hotel for our out-of-town guests. If you require accommodations, please let us know in advance so that we may finalize your booking.</span>
                     </p>          
                 </div>
 
