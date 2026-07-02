@@ -583,92 +583,113 @@ nav {
             pointer-events: none;
         }
         
-/* --- NEW SCROLL-STACK STORY STYLES --- */
-.about-scroll-wrapper {
-    position: relative;
-    width: 90%;
-    max-width: 500px;
-    margin: 0 auto;
-}
+/* --- TIMELINE STORY STYLES --- */
+        #about-us-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
 
-/* 1. The Pinned Text Container */
-.pinned-text-container {
-    position: sticky;
-    top: 80px; 
-    height: 25vh; /* REDUCED from 35vh to give images more room */
-    display: flex;
-    align-items: flex-start; /* Keeps text at the top */
-    justify-content: center;
-    padding-top: 0px; /* REDUCED from 20px */
-    z-index: 50; 
-    background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 70%, rgba(250, 248, 245, 0) 100%);
-    pointer-events: none; 
-}
+        /* Sticky Timeline Navigation */
+        .timeline-nav {
+            position: sticky;
+            top: 80px; /* Sits right below your main navigation */
+            z-index: 110;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 80%, rgba(250, 248, 245, 0) 100%);
+            padding: 15px 0 25px 0;
+            border-bottom: 1px solid rgba(221, 221, 221, 0.5); /* Very faint border */
+        }
 
-/* Add this to remove any hidden default spacing above the H2 title */
-.text-content .year-title {
-    margin-top: 0; 
-}
+        /* Default state: Small, grey, and smooth transitions */
+        .timeline-link {
+            text-decoration: none;
+            color: #999999; 
+            font-size: 14px; 
+            font-weight: normal;
+            transition: all 0.4s ease;
+            white-space: nowrap;
+        }
 
+        /* Active state: Enlarged and dark */
+        .timeline-link.active {
+            color: #3A3836; 
+            font-size: 24px; 
+            font-weight: bold;
+        }
 
-.image-track {
-    /* REDUCED from 70vh. This gives the last image just a tiny moment 
-       to stick before the whole section gets dragged up! */
-    padding-bottom: 20vh; 
-}
+        /* Timeline Sections */
+        .timeline-content {
+            padding-top: 20px;
+        }
 
+        .timeline-section {
+            padding: 40px 20px 80px 20px;
+            opacity: 0.3; /* Fade effect before scrolling into view */
+            transition: opacity 0.6s ease;
+            border-bottom: 1px dashed #e0e0e0;
+        }
         
-/* 2. The Image Track & Cards */
+        .timeline-section:last-child {
+             border-bottom: none;
+        }
 
-.stack-card {
-    position: sticky;
-    top: 45vh; /* All cards lock into this exact position */
-    background: #fff;
-    padding: 15px 15px 40px 15px; 
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    border-radius: 4px;
-    margin-bottom: 60vh; /* The scroll gap before the next image arrives */
-    will-change: transform;
-}
+        .timeline-section.in-view {
+            opacity: 1;
+        }
 
+        .timeline-section .year-desc {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            text-align: center;
+            margin-bottom: 40px;
+            letter-spacing: 1px;
+        }
 
-.stack-card img {
-    width: 100%;
-    height: auto;
-    max-height: 380px;
-    object-fit: cover;
-    border-radius: 2px;
-}
+        /* Image Gallery Layout */
+        .image-gallery {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
 
-.stack-card:last-child {
-    margin-bottom: 45vh; 
-}
+        .gallery-item {
+            width: 90%;
+            max-width: 500px;
+            background: #fff;
+            padding: 15px 15px 40px 15px; 
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        /* Slight rotation for a scattered look */
+        .gallery-item:nth-child(even) { transform: rotate(1.5deg); }
+        .gallery-item:nth-child(odd) { transform: rotate(-1.5deg); }
 
-/* We kept your caption style! */
-.card-caption {
-    position: absolute;
-    bottom: 12px;
-    left: 0;
-    width: 100%;
-    text-align: center;
-    font-size: 14px;
-    color: #555;
-    font-family: 'Times New Roman', Times, serif;
-    letter-spacing: 1px;
-}
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 2px;
+            display: block;
+        }
 
-/* Creates the messy, realistic photo stack look automatically */
-.stack-card:nth-child(3n+1) { transform: rotate(-2deg); }
-.stack-card:nth-child(3n+2) { transform: rotate(1.5deg); }
-.stack-card:nth-child(3n) { transform: rotate(-1deg); }
-
-/* --- MOBILE ADJUSTMENTS FOR THE NEW LAYOUT --- */
-@media (max-width: 768px) {
-    .pinned-text-container { top: 60px; height: 40vh; }
-    .stack-card { top: 48vh; margin-bottom: 65vh; }
-    .stack-card img { max-height: 250px; }
-    .stack-card:last-child { margin-bottom: 50vh; }
-}
+        @media (max-width: 768px) {
+            .timeline-nav { 
+                top: 60px; 
+                overflow-x: auto; 
+                justify-content: flex-start;
+                gap: 20px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+             .timeline-nav::-webkit-scrollbar { display: none; }
+        }
         
 
         
@@ -1171,107 +1192,133 @@ nav {
         </div>
     </div>
 
-
     <div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
-    <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+        <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
 
-    <div class="about-scroll-wrapper">
-        
-        <div class="pinned-text-container">
-            <div class="text-content" id="pinned-text-content">
-                <h2 class="year-title" id="dynamic-year">2022年</h2>
-                <p class="year-desc" id="dynamic-desc">
-                    <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
-                </p>
+        <div id="about-us-wrapper">
+            
+            <div class="timeline-nav">
+                <a href="#year-2022" class="timeline-link active">2022年</a>
+                <a href="#year-2023" class="timeline-link">2023年</a>
+                <a href="#year-2024" class="timeline-link">2024年</a>
+                <a href="#year-2025-3" class="timeline-link">2025年3月</a>
+                <a href="#year-2025-10" class="timeline-link">2025年10月</a>
+            </div>
+
+            <div class="timeline-content">
+                
+                <div id="year-2022" class="timeline-section">
+                     <p class="year-desc">
+                        <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
+                    </p>
+                    <div class="image-gallery">
+                         <div class="gallery-item">
+                            <img src="images/us1.png" alt="2022 Photo 1">
+                            <div class="card-caption">华盛顿过圣诞</div>
+                        </div>
+                         <div class="gallery-item">
+                            <img src="images/us2.png" alt="2022 Photo 2">
+                            <div class="card-caption">罗利跨年</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="year-2023" class="timeline-section">
+                    <p class="year-desc">
+                        <span class="lang-zh">借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，我们对双方的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.</span>
+                    </p>
+                    <div class="image-gallery">
+                        <div class="gallery-item">
+                            <img src="images/us4.jpg" alt="2023 Photo 1">
+                            <div class="card-caption">Duke毕业典礼</div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="images/us3.png" alt="2023 Photo 2">
+                            <div class="card-caption">佛罗里达划船</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="year-2024" class="timeline-section">
+                    <p class="year-desc">
+                        <span class="lang-zh">我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。</span>
+                    </p>
+                    <div class="image-gallery">
+                        <div class="gallery-item">
+                            <img src="images/us1.jpg" alt="2024 Photo 1">
+                            <div class="card-caption">第一次爬山看日出</div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="images/us2.jpg" alt="2024 Photo 2">
+                            <div class="card-caption">山顶上与雪山合影</div>
+                        </div>
+                         <div class="gallery-item">
+                            <img src="images/us3.jpg" alt="2024 Photo 3">
+                            <div class="card-caption">露营的篝火边</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="year-2025-3" class="timeline-section">
+                     <p class="year-desc">
+                        <span class="lang-zh">在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，让我们俩认真的打扮一下。其实张维翀为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。</span>
+                    </p>
+                    <div class="image-gallery">
+                        <div class="gallery-item">
+                             <img src="images/engage1.jpg" alt="2025 Cancun Photo 1">
+                            <div class="card-caption">大惊喜</div>
+                        </div>
+                         <div class="gallery-item">
+                            <img src="images/engage2.jpg" alt="2025 Cancun Photo 2">
+                            <div class="card-caption">I SAID YES!</div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="images/engage3.jpg" alt="2025 Cancun Photo 3">
+                             <div class="card-caption">YESSS!!</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="year-2025-10" class="timeline-section">
+                    <p class="year-desc">
+                        <span class="lang-zh">这一天，我们在平时最喜欢坐着看雪山发呆的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。</span>
+                    </p>
+                    <div class="image-gallery">
+                        <div class="gallery-item">
+                            <img src="images/ceremony1.jpg" alt="Wedding Photo 1">
+                            <div class="card-caption">在湖边</div>
+                        </div>
+                        <div class="gallery-item">
+                            <img src="images/ceremony2.jpg" alt="Wedding Photo 2">
+                            <div class="card-caption">许下誓言</div>
+                        </div>
+                         <div class="gallery-item">
+                             <img src="images/ceremony3.jpg" alt="Wedding Photo 3">
+                            <div class="card-caption">Officially Tied</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    
+        <div class="scrolling-text-container">
+            <div class="scrolling-text line-1">
+                <span class="lang-zh">
+                    “晚上吃什么!”        “晚上吃什么!”        “晚上吃什么!”        “晚上吃什么!”        “晚上吃什么!”
+                </span>
+            </div>
+            <div class="scrolling-text line-2">
+                <span class="lang-zh">
+                    “我来做!”        “我来做!”        “我来做!”        “我来做!”        “我来做!”        “我来做!”
+                </span>
             </div>
         </div>
 
-    <div class="image-track">
-    
-    <div class="stack-card" 
-         data-year="2022年" 
-         data-desc="我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。">
-        <img src="images/us1.png" alt="2022 Photo 1">
-        <div class="card-caption"> 华盛顿过圣诞 </div>
-    </div>
-    <div class="stack-card" data-year="2022年" data-desc="我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。">
-        <img src="images/us2.png" alt="2022 Photo 2">
-        <div class="card-caption">罗利跨年 </div>
     </div>
 
-    <div class="stack-card" 
-         data-year="2023年" 
-         data-desc="借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，我们对双方的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.">
-        <img src="images/us4.jpg" alt="2023 Photo 1">
-        <div class="card-caption">Duke毕业典礼</div>
-    </div>
-    <div class="stack-card" data-year="2023年" data-desc="借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，我们对双方的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹.">
-        <img src="images/us3.png" alt="2023 Photo 2">
-        <div class="card-caption">佛罗里达划船</div>
-    </div>
 
-    <div class="stack-card" 
-         data-year="2024年" 
-         data-desc="我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。">
-        <img src="images/us1.jpg" alt="2024 Photo 1">
-        <div class="card-caption">第一次爬山看日出</div>
-    </div>
-    <div class="stack-card" data-year="2024年" data-desc="我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。">
-        <img src="images/us2.jpg" alt="2024 Photo 2">
-        <div class="card-caption">山顶上与雪山合影</div>
-    </div>
-    <div class="stack-card" data-year="2024年" data-desc="我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。">
-        <img src="images/us3.jpg" alt="2024 Photo 3">
-        <div class="card-caption">露营的篝火边</div>
-    </div>
 
-    <div class="stack-card" 
-         data-year="2025年3月31日" 
-         data-desc="在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，让我们俩认真的打扮一下。其实张维翀为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。">
-        <img src="images/engage1.jpg" alt="2025 Cancun Photo 1">
-        <div class="card-caption">大惊喜</div>
-    </div>
-    <div class="stack-card" data-year="2025年3月31日" data-desc="在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，让我们俩认真的打扮一下。其实张维翀为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。">
-        <img src="images/engage2.jpg" alt="2025 Cancun Photo 2">
-        <div class="card-caption">依然惊喜</div>
-    </div>
-    <div class="stack-card" data-year="2025年3月31日" data-desc="在我们在坎昆度假旅行要结束的前一天，张维翀定了落日晚餐，让我们俩认真的打扮一下。其实张维翀为了这个晚上一整天都在紧张的忙碌中，但是钝感力十足的叶子毫无察觉。我们走到沙滩上，叶子看到了被布置好的场地以及摄像师的时候，仍然以为是落日晚餐套餐的一部分，直到拍完背影合照后看到张维翀单膝跪地。">
-        <img src="images/engage3.jpg" alt="2025 Cancun Photo 3">
-        <div class="card-caption">还在惊喜</div>
-    </div>
-
-    <div class="stack-card" 
-         data-year="2025年10月16日" 
-         data-desc="这一天，我们在平时最喜欢坐着看雪山发呆的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。">
-        <img src="images/ceremony1.jpg" alt="Wedding Photo 1">
-        <div class="card-caption">在湖边</div>
-    </div>
-    <div class="stack-card" data-year="2025年10月16日" data-desc="这一天，我们在平时最喜欢坐着看雪山发呆的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。">
-        <img src="images/ceremony2.jpg" alt="Wedding Photo 2">
-        <div class="card-caption">许下誓言</div>
-    </div>
-    <div class="stack-card" data-year="2025年10月16日" data-desc="这一天，我们在平时最喜欢坐着看雪山发呆的湖边officially tie the knot。在我们准备迈向人生新篇章时，这些照片定格了我们当下的种种心情——喜悦、紧张、欢笑和爱。希望你在看这些照片时，能感受到和当时的我们一样的快乐。">
-        <img src="images/ceremony3.jpg" alt="Wedding Photo 3">
-        <div class="card-caption">Officially Tied</div>
-    </div>
-
-</div>
-        </div>
-    
-            <div class="scrolling-text-container">
-                <div class="scrolling-text line-1">
-                    <span class="lang-zh">
-                        “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “晚上吃什么!”
-                    </span>
-                </div>
-                <div class="scrolling-text line-2">
-                    <span class="lang-zh">
-                        “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!” &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; “我来做!”
-                    </span>
-                </div>
-            </div>
-
-    </div>
     
     <div id="attire-page" class="content-page">
         
@@ -1695,49 +1742,86 @@ nav {
     document.addEventListener('DOMContentLoaded', setupScrollReveal);
 
     // ===================================================================
-    // --- NEW: DYNAMIC SCROLL TRACKING FOR TEXT CROSSFADE (ABOUT US) ---
+    // --- TIMELINE INTERACTION OBSERVER (ABOUT US) ---
     // ===================================================================
-    function handleContinuousStack() {
-        const cards = document.querySelectorAll('.stack-card');
-        const dynamicYear = document.getElementById('dynamic-year');
-        const dynamicDesc = document.getElementById('dynamic-desc');
-        const textContent = document.getElementById('pinned-text-content');
+    function setupTimelineObserver() {
+        const timelineLinks = document.querySelectorAll('.timeline-link');
+        const timelineSections = document.querySelectorAll('.timeline-section');
 
-        // Only run if the elements actually exist on the page
-        if (!dynamicYear || !dynamicDesc || !textContent || cards.length === 0) return;
-
-        let currentYear = dynamicYear.innerText; 
-        const triggerPoint = window.innerHeight * 0.50; 
-
-        let activeCard = null;
-        cards.forEach(card => {
-            const rect = card.getBoundingClientRect();
-            // Check if the card has scrolled up into the active viewing area
-            if (rect.top <= triggerPoint) {
-                activeCard = card;
-            }
+        // Smooth scroll to the year when a timeline link is clicked
+        timelineLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                
+                if(targetSection) {
+                    // Calculate offset to account for both main nav and timeline nav
+                    const mainNavHeight = document.querySelector('nav').offsetHeight;
+                    const timelineNavHeight = document.querySelector('.timeline-nav').offsetHeight;
+                    const totalOffset = mainNavHeight + timelineNavHeight + 20; 
+                    
+                    const elementPosition = targetSection.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.scrollY - totalOffset;
+                  
+                    window.scrollTo({
+                         top: offsetPosition,
+                         behavior: "smooth"
+                    });
+                }
+            });
         });
 
-        if (activeCard) {
-            const cardYear = activeCard.getAttribute('data-year');
-            const cardDesc = activeCard.getAttribute('data-desc');
+        // Use IntersectionObserver to change the active timeline link during scroll
+        const observerOptions = {
+            root: null,
+            // Trigger when the section is near the middle of the screen
+            rootMargin: '-30% 0px -40% 0px', 
+            threshold: 0
+        };
 
-            if (cardYear !== currentYear) {
-                currentYear = cardYear; 
-                
-                // Fade out text
-                textContent.style.opacity = 0;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    // Fade in the section content
+                    entry.target.classList.add('in-view');
 
-                // Wait for fade out, swap text, then fade back in
-                setTimeout(() => {
-                    dynamicYear.innerText = cardYear;
-                    dynamicDesc.innerHTML = `<span class="lang-zh">${cardDesc}</span>`;
-                    textContent.style.opacity = 1;
-                }, 400); 
-            }
-        }
+                    // Find the ID of the section currently on screen
+                    const currentId = entry.target.getAttribute('id');
+                    
+                    // Update active state on timeline navigation
+                    timelineLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${currentId}`) {
+                            link.classList.add('active');
+                            
+                            // Optional: Automatically scroll the timeline nav horizontally on mobile
+                            if (window.innerWidth <= 768) {
+                                const navContainer = document.querySelector('.timeline-nav');
+                                const linkRect = link.getBoundingClientRect();
+                                const navRect = navContainer.getBoundingClientRect();
+                                
+                                if (linkRect.left < navRect.left || linkRect.right > navRect.right) {
+                                    link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        // Start observing all sections
+        timelineSections.forEach(section => {
+            observer.observe(section);
+        });
     }
-
+    
+    // Call this setup function when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        setupScrollReveal(); // Your existing function
+        setupTimelineObserver(); // The new timeline function
+    });
     // ===================================================================
     // --- MAIN SCROLL LISTENER ---
     // ===================================================================
