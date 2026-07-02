@@ -1039,6 +1039,8 @@ nav {
             flex-direction: column;
             gap: 10px; /* 3条波浪线之间的间距 */
             margin-bottom: 40px; 
+            position: relative;
+            z-index: 100;
         }
 
         .wave-track {
@@ -1083,7 +1085,7 @@ nav {
     
 </head>
 <body>
-    <div style="overflow-x: hidden; width: 100%;"> </div> </body>
+    <div style="overflow-x: hidden; width: 100%;"> </div> 
 
     <audio id="bgMusic" loop>
         <source src="music.mp3" type="audio/mpeg">
@@ -1796,3 +1798,5 @@ nav {
     });
 
 </script>
+</body>
+</html>
