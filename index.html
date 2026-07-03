@@ -668,6 +668,7 @@ nav {
     border-radius: 4px;
     margin-bottom: 60vh; 
     will-change: transform;
+    z-index: 120;
 }
 
 .stack-card img {
@@ -729,13 +730,15 @@ nav {
             padding: 25px 0;
             box-sizing: border-box;
             
-            /* The top and bottom borders */
             border-top: 1px solid #ddd; 
-            border-bottom: 1px solid #ddd; /* ADDED THIS LINE */
+            border-bottom: 1px solid #ddd; 
             
             display: flex;
             flex-direction: column; 
             gap: 12px; 
+            position: relative; 
+            z-index: 130; 
+            background-color: #FAF8F5;
         }
 
         /* --- REDUCE THE GAP BETWEEN PAGES --- */
