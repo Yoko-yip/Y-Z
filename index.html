@@ -605,13 +605,14 @@ nav {
             overflow: hidden;
         }
 
-        .timeline-nav {
+        ..timeline-nav {
             display: flex;
             justify-content: space-evenly;
             align-items: center;
-            padding: 15px 0 25px 0;
+            padding: 20px 0 25px 0;
             z-index: 110;
-            background: #FAF8F5; /* Solid background to block content passing behind it */
+            background: #FAF8F5; 
+            gap: 15px; /* Adds breathing room between the circles */
         }
 
         .timeline-link {
@@ -619,22 +620,41 @@ nav {
             color: #999999; 
             font-size: 14px; 
             font-weight: normal;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
             white-space: nowrap;
+            
+            /* --- NEW CIRCLE STYLES --- */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 1px solid #e0e0e0;
+            background-color: transparent;
         }
 
         .timeline-link.active {
-            color: #3A3836; 
-            font-size: 24px; 
+            color: #ffffff; 
             font-weight: bold;
+            background-color: #3A3836;
+            border-color: #3A3836;
+            transform: scale(1.1); /* Slight pop effect for the active year */
+        }
+
+        /* TBC styling (dashed border, no hover) */
+        .tbc-node {
+            cursor: default;
+            color: #bbbbbb;
+            border-style: dashed;
         }
 
         .pinned-text-container {
-            height: 15vh;
+            height: 20vh;
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            padding: 0 20px;
+            padding: 10px 30px;
             z-index: 50;
             pointer-events: none;
         }
@@ -650,6 +670,7 @@ nav {
             text-align: center;
             margin: 0;
             letter-spacing: 1px;
+            max-width: 90%;
         }
 
         .cards-container-wrapper {
@@ -703,9 +724,8 @@ nav {
 
         @media (max-width: 768px) {
             .custom-sticky-view { top: 60px; height: calc(100vh - 60px); }
-            .timeline-nav { justify-content: flex-start; gap: 20px; padding: 15px 20px; overflow-x: auto; scrollbar-width: none; }
-            .timeline-nav::-webkit-scrollbar { display: none; }
-            #cards-container { max-width: 350px; }
+            .timeline-nav { justify-content: flex-start; gap: 15px; padding: 15px 20px; overflow-x: auto; scrollbar-width: none; }            .timeline-nav::-webkit-scrollbar { display: none; }
+            .timeline-link { width: 42px; height: 42px; font-size: 13px; flex-shrink: 0; } 
             .polaroid { padding: 10px 10px 50px 10px; }
             .polaroid-caption { bottom: 12px; font-size: 14px; }
         }
@@ -1214,15 +1234,15 @@ nav {
     <div id="about-us-wrapper">
         <div id="about-scroll-track">
             <div class="custom-sticky-view">
-                
                 <div class="timeline-nav" id="custom-timeline-nav">
-                    <a href="#" class="timeline-link active" data-target="2022年">2022年</a>
-                    <a href="#" class="timeline-link" data-target="2023年">2023年</a>
-                    <a href="#" class="timeline-link" data-target="2024年">2024年</a>
-                    <a href="#" class="timeline-link" data-target="2025年3月31日">2025年3月</a>
-                    <a href="#" class="timeline-link" data-target="2025年10月16日">2025年10月</a>
+                    <a href="#" class="timeline-link active" data-target="2022年">22</a>
+                    <a href="#" class="timeline-link" data-target="2023年">23</a>
+                    <a href="#" class="timeline-link" data-target="2024年">24</a>
+                    <a href="#" class="timeline-link" data-target="2025年3月31日">25/03</a>
+                    <a href="#" class="timeline-link" data-target="2025年10月16日">25/10</a>
+                    <span class="timeline-link tbc-node">TBC</span>
                 </div>
-
+                
                 <div class="pinned-text-container">
                     <div class="text-content" id="pinned-text-content">
                         <p class="year-desc" id="dynamic-desc">
