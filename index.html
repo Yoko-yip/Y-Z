@@ -590,7 +590,7 @@ nav {
         #about-us-wrapper { position: relative; width: 100%; }
         
         #about-scroll-track {
-            height: 1200vh;
+            height: 500vh;
             position: relative;
             width: 100%;
         }
@@ -653,30 +653,32 @@ nav {
         }
 
         .pinned-text-container {
-            height: 20vh;
+            min-height: 22vh;
+            height: auto;
             display: flex;
-            align-items: center;
+            align-items: flex-start; 
             justify-content: center;
-            padding: 0px 20px;
+            padding: 20px 20px 0px 20px;
             z-index: 50;
             pointer-events: none;
             width: 100%;
+            box-sizing: border-box;
         }
         
         .text-content {
             text-align: center;
-            max-width: 80%;
+            max-width: 85%;
             transition: opacity 0.4s ease-in-out;
         }
 
         .year-desc {
-            font-size: 15px;
-            line-height: 1.8;
+            font-size: 14px;
+            line-height: 1.6;
             color: #555;
             text-align: center;
             margin: 0;
             letter-spacing: 1px;
-            max-width: 90%;
+            max-width: 100%;
         }
 
         .cards-container-wrapper {
@@ -1719,7 +1721,7 @@ nav {
         },
         {
             year: "2023年",
-            desc: "2023年，借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，我们对双方的了解又多了很多。这一年我们也一起解锁了更多地图，我们在南卡罗莱纳山顶的教堂看了日出，在纽约的寒风中排队看乐队演出，在坦帕一起浮潜看海牛，也一起划船从暴雨划到出彩虹。",
+            desc: "2023年，借着参加张维翀研究生毕业典礼的机会，叶子见到了张维翀的父母，我们对双方的了解又多了很多。这一年我们也一起解锁了更多地图，比如山顶教堂的日出, 暴雨中的海牛。",
             images: [
                 { url: "images/us4.jpg", caption: "Duke毕业典礼" },
                 { url: "images/us3.png", caption: "佛罗里达划船" }
@@ -1727,7 +1729,7 @@ nav {
         },
         {
             year: "2024年",
-            desc: "2024年，叶子也毕业后，我们搬到了美西，从此一发不可收拾爱上了爬山&露营。也是这段时间我们的关系有了很多”安静“的时刻，我们指的是那些坐在篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁等等。",
+            desc: "2024年，叶子也毕业后，我们搬到了美西。这段时间我们的关系有了很多”安静“的时刻：篝火前的夜晚，雪山旁的夜路，雨中的湖畔旁，也让我们爱上了露营。",
             images: [
                 { url: "images/us1.jpg", caption: "第一次爬山看日出" },
                 { url: "images/us2.jpg", caption: "山顶上与雪山合影" },
@@ -1857,7 +1859,10 @@ nav {
                 if (link.getAttribute('data-target') === latestVisibleYear) {
                     link.classList.add('active');
                     if (window.innerWidth <= 768) {
-                        link.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                        // FIX: Calculate scroll position manually to prevent the whole page from shifting left
+                        const navContainer = document.querySelector('.timeline-nav');
+                        const scrollPos = link.offsetLeft - (navContainer.clientWidth / 2) + (link.clientWidth / 2);
+                        navContainer.scrollTo({ left: scrollPos, behavior: 'smooth' });
                     }
                 }
             });
