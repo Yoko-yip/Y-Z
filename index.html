@@ -1818,6 +1818,7 @@ nav {
         cardElements.forEach((card, index) => {
             const start = (index - 1) * windowPerCard;
             const end = start + windowPerCard;
+            const finalRot = parseFloat(card.dataset.rot);
 
             if (progress < start) {
                 card.style.transform = `translateY(100vh) rotate(0deg) scale(0.9)`;
