@@ -584,141 +584,131 @@ nav {
         }
 
 
-        /* --- HYBRID TIMELINE & SCROLL-STACK STYLES --- */
-#about-us-wrapper {
-    position: relative;
-    width: 100%;
-}
-
-/* 1. Sticky Timeline Navigation */
-.timeline-nav {
-    position: sticky;
-    top: 80px; 
-    z-index: 110;
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 70%, rgba(250, 248, 245, 0) 100%);
-    padding: 15px 0 25px 0;
-}
-
-.timeline-link {
-    text-decoration: none;
-    color: #999999; 
-    font-size: 14px; 
-    font-weight: normal;
-    transition: all 0.4s ease;
-    white-space: nowrap;
-}
-
-.timeline-link.active {
-    color: #3A3836; 
-    font-size: 24px; 
-    font-weight: bold;
-}
-
-/* 2. Scroll Wrapper */
-.about-scroll-wrapper {
-    position: relative;
-    width: 90%;
-    max-width: 500px;
-    margin: 0 auto;
-}
-
-/* 3. The Pinned Text Container (Moved down to avoid the timeline nav!) */
-.pinned-text-container {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 130px; 
-    height: 25vh; 
-    display: flex;
-    align-items: flex-start; 
-    justify-content: center;
-    padding-top: 10px; 
-    z-index: 50; 
-    background: linear-gradient(to bottom, rgba(250, 248, 245, 1) 70%, rgba(250, 248, 245, 0) 100%);
-    pointer-events: none; 
-}
-
-.text-content {
-    transition: opacity 0.4s ease-in-out;
-}
-
-.year-desc {
-    font-size: 15px;
-    line-height: 1.8;
-    color: #555;
-    text-align: center;
-    margin: 0;
-    letter-spacing: 1px;
-}
-
-/* 4. The Image Track & Cards */
-.image-track {
-    padding-bottom: 2vh; 
-}
-
-.stack-card {
-    position: -webkit-sticky;
-    position: sticky;
-    top: 45vh; 
-    background: #fff;
-    padding: 15px 15px 40px 15px; 
-    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
-    border-radius: 4px;
-    margin-bottom: 60vh; 
-    will-change: transform;
-    z-index: 120;
-}
-
-.stack-card img {
-    width: 100%;
-    height: auto;
-    max-height: 380px;
-    object-fit: cover;
-    border-radius: 2px;
-}
-
-.stack-card:last-child {
-    margin-bottom: 50vh; 
-}
-
-/* Centered Captions! */
-.card-caption {
-    position: absolute;
-    bottom: 12px;
-    left: 0;
-    width: 100%;
-    text-align: center; /* Forces the text to the center */
-    font-size: 14px;
-    color: #555;
-    font-family: 'Times New Roman', Times, serif;
-    letter-spacing: 1px;
-}
-
-/* Creates the messy, realistic photo stack look automatically */
-.stack-card:nth-child(3n+1) { transform: rotate(-2deg); }
-.stack-card:nth-child(3n+2) { transform: rotate(1.5deg); }
-.stack-card:nth-child(3n) { transform: rotate(-1deg); }
-
-/* Mobile Adjustments */
-@media (max-width: 768px) {
-    .timeline-nav { 
-        top: 60px; 
-        overflow-x: auto; 
-        justify-content: flex-start;
-        gap: 20px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
-    .timeline-nav::-webkit-scrollbar { display: none; }
-    
-    .pinned-text-container { top: 120px; height: 35vh; }
-    .stack-card { top: 48vh; margin-bottom: 65vh; }
-    .stack-card img { max-height: 250px; }
-    .stack-card:last-child { margin-bottom: 50vh; }
-}
+        /* ========================================================= */
+        /* --- NEW SMOOTH POLAROID STACK STYLES --- */
+        /* ========================================================= */
+        #about-us-wrapper { position: relative; width: 100%; }
         
+        #about-scroll-track {
+            height: 1200vh;
+            position: relative;
+            width: 100%;
+        }
+
+        .custom-sticky-view {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 80px; /* Sits below the navbar */
+            height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .timeline-nav {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 15px 0 25px 0;
+            z-index: 110;
+            background: #FAF8F5; /* Solid background to block content passing behind it */
+        }
+
+        .timeline-link {
+            text-decoration: none;
+            color: #999999; 
+            font-size: 14px; 
+            font-weight: normal;
+            transition: all 0.4s ease;
+            white-space: nowrap;
+        }
+
+        .timeline-link.active {
+            color: #3A3836; 
+            font-size: 24px; 
+            font-weight: bold;
+        }
+
+        .pinned-text-container {
+            height: 15vh;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 0 20px;
+            z-index: 50;
+            pointer-events: none;
+        }
+        
+        .text-content {
+            transition: opacity 0.4s ease-in-out;
+        }
+
+        .year-desc {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #555;
+            text-align: center;
+            margin: 0;
+            letter-spacing: 1px;
+        }
+
+        .cards-container-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+            pointer-events: none;
+            padding-bottom: 60px;
+        }
+
+        #cards-container {
+            position: relative;
+            width: 70vw;
+            max-width: 320px;
+            aspect-ratio: 3/4;
+        }
+
+        .polaroid {
+            position: absolute;
+            inset: 0;
+            background-color: #ffffff;
+            padding: 12px 12px 60px 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            will-change: transform, opacity;
+        }
+
+        .polaroid-img {
+            width: 100%;
+            height: calc(100% - 20px);
+            object-fit: cover;
+            background-color: #EAE7E0;
+            border-radius: 2px;
+            margin-bottom: 10px;
+        }
+
+        .polaroid-caption {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 16px;
+            color: #555;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 768px) {
+            .custom-sticky-view { top: 60px; height: calc(100vh - 60px); }
+            .timeline-nav { justify-content: flex-start; gap: 20px; padding: 15px 20px; overflow-x: auto; scrollbar-width: none; }
+            .timeline-nav::-webkit-scrollbar { display: none; }
+            #cards-container { max-width: 260px; }
+            .polaroid { padding: 10px 10px 50px 10px; }
+            .polaroid-caption { bottom: 12px; font-size: 14px; }
+        }
 
         
         /* --- SCROLLING TEXT EFFECT (TWO LINES) --- */
