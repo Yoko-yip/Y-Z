@@ -697,7 +697,7 @@ nav {
             position: absolute;
             inset: 0;
             background-color: #ffffff;
-            padding: 12px 12px 60px 12px;
+            padding: 12px 12px 40px 12px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             border: 1px solid #e5e7eb;
             border-radius: 4px;
@@ -706,7 +706,7 @@ nav {
 
         .polaroid-img {
             width: 100%;
-            height: calc(100% - 20px);
+            height: calc(100% - 30px);
             object-fit: cover;
             background-color: #EAE7E0;
             border-radius: 2px;
@@ -715,9 +715,15 @@ nav {
 
         .polaroid-caption {
             position: absolute;
-            bottom: 15px;
+            bottom: 5px;
             left: 0;
             width: 100%;
+            height: 40px;
+            
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            
             text-align: center;
             font-family: 'Times New Roman', Times, serif;
             font-size: 16px;
@@ -1803,12 +1809,12 @@ nav {
         let latestVisibleYear = memoriesData[0].year;
         const totalCards = cardElements.length;
         const usableProgress = 0.9; 
-        const windowPerCard = usableProgress / totalCards;
+        const totalAnimatedCards = Math.max(1, totalCards - 1); 
+        const windowPerCard = usableProgress / totalAnimatedCards;
 
         cardElements.forEach((card, index) => {
-            const start = index * windowPerCard;
+            const start = (index - 1) * windowPerCard;
             const end = start + windowPerCard;
-            const finalRot = parseFloat(card.dataset.rot);
 
             if (progress < start) {
                 card.style.transform = `translateY(100vh) rotate(0deg) scale(0.9)`;
@@ -1865,8 +1871,19 @@ nav {
             if (firstCardIndex !== -1 && track) {
                 const totalCards = cardElements.length;
                 const usableProgress = 0.9;
-                const windowPerCard = usableProgress / totalCards;
-                const targetProgress = (firstCardIndex * windowPerCard) + (windowPerCard * 0.9); 
+                
+                // 【修改点】：与上面的逻辑保持同步
+                const totalAnimatedCards = Math.max(1, totalCards - 1);
+                const windowPerCard = usableProgress / totalAnimatedCards;
+                
+                // 【修改点】：计算目标进度。第一年(index 0)的进度就是 0。
+                let targetProgress = firstCardIndex * windowPerCard;
+                
+                // 稍微增加一点缓冲，确保跳转后照片完全稳定在屏幕中央
+                if (firstCardIndex !== 0) {
+                    targetProgress += (windowPerCard * 0.1); 
+                }
+                
                 const rect = track.getBoundingClientRect();
                 const maxScroll = rect.height - window.innerHeight;
                 const navOffset = window.innerWidth <= 768 ? 60 : 80;
