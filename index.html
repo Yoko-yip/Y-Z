@@ -1156,6 +1156,333 @@ nav {
             100% { transform: translateX(0); }
         }
 
+        /* 1. 全局 CSS 变量设定 */
+            :root {
+              --imap-bg: #FAF8F5;
+              --imap-text: #3A3836;
+              --imap-text-muted: #888888;
+              --imap-text-light: #999999;
+              --imap-text-hover: #555555;
+              --imap-accent: #B85C47;
+              --imap-border: #EAE5DE;
+              --imap-border-dark: #E4DFD8;
+            }
+
+            /* 2. 基础容器样式 */
+            .imap-wrapper {
+              width: 90%;
+              max-width: 900px;
+              height: 600px;
+              margin: 20px auto 50px auto;
+              background-color: var(--imap-bg);
+              border: 1px solid var(--imap-border);
+              border-radius: 1rem;
+              box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+              position: relative;
+              font-family: sans-serif;
+              display: flex;
+              flex-direction: column;
+              box-sizing: border-box;
+              /* CRITICAL: overflow: hidden is REMOVED so sticky nav can work */
+            }
+            .imap-wrapper * { box-sizing: border-box; }
+
+            /* 3. 顶部导航栏 (Sticky NavBar) */
+            .imap-top-bar {
+              /* CRITICAL: Makes the nav sticky below your main website menu */
+              position: -webkit-sticky;
+              position: sticky;
+              top: 90px; 
+              
+              left: 0;
+              width: 100%;
+              z-index: 50; /* Keeps it above the pins */
+              pointer-events: none;
+              padding: 1rem 1rem 0;
+              display: flex;
+              justify-content: center;
+              
+              /* Pulls the map up underneath the sticky bar so it overlaps perfectly */
+              margin-bottom: -70px; 
+            }
+            @media (max-width: 768px) { 
+              .imap-top-bar { top: 70px; padding-top: 0.5rem; margin-bottom: -60px; } 
+            }
+            
+            .imap-chips-bg {
+              background-color: rgba(250, 248, 245, 0.9);
+              backdrop-filter: blur(12px);
+              -webkit-backdrop-filter: blur(12px);
+              border-radius: 9999px;
+              padding: 0.375rem;
+              pointer-events: auto;
+              border: 1px solid rgba(255, 255, 255, 0.5);
+              box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            }
+            .imap-chips-container {
+              display: flex;
+              gap: 0.25rem;
+              overflow-x: auto;
+              scrollbar-width: none; 
+            }
+            .imap-chips-container::-webkit-scrollbar { display: none; }
+            
+            .imap-chip {
+              flex-shrink: 0;
+              padding: 0.625rem 1.5rem;
+              border-radius: 9999px;
+              font-size: 0.875rem;
+              font-weight: bold;
+              cursor: pointer;
+              border: none;
+              outline: none;
+              transition: all 0.3s ease;
+            }
+            .imap-chip.active {
+              background-color: var(--imap-accent);
+              color: var(--imap-bg);
+              transform: scale(1.05);
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+            .imap-chip.inactive {
+              background-color: transparent;
+              color: var(--imap-text-muted);
+            }
+            .imap-chip.inactive:hover {
+              background-color: var(--imap-border);
+              color: var(--imap-text-hover);
+            }
+
+            /* 4. 地图滚动区域 */
+            .imap-scroll-container {
+              flex: 1;
+              width: 100%;
+              height: 100%;
+              overflow: auto;
+              scrollbar-width: none;
+              touch-action: pan-x pan-y;
+              position: relative;
+              
+              /* Keeps the corners rounded since we removed hidden overflow from the wrapper */
+              border-radius: 1rem; 
+            }
+            .imap-scroll-container::-webkit-scrollbar { display: none; }
+            
+            .imap-canvas {
+              position: relative;
+              width: 1200px;
+              height: 1200px;
+              background-color: var(--imap-bg);
+            }
+            .imap-svg-layer {
+              position: absolute;
+              inset: 0;
+              width: 100%;
+              height: 100%;
+              pointer-events: none;
+            }
+            .imap-bg-block {
+              position: absolute;
+              background-color: rgba(184, 92, 71, 0.05);
+              border: 1px solid rgba(184, 92, 71, 0.1);
+              border-radius: 2px;
+              z-index: 0;
+            }
+
+            /* 路线动画 */
+            @keyframes imap-flow {
+              0% { stroke-dashoffset: 24; }
+              100% { stroke-dashoffset: 0; }
+            }
+            .imap-path-anim {
+              animation: imap-flow 1.5s linear infinite;
+              opacity: 0.7;
+            }
+
+            /* 5. 坐标图钉 */
+            .imap-pin {
+              position: absolute;
+              transform: translate(-50%, -100%);
+              cursor: pointer;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              transition: all 0.5s ease-out;
+            }
+            .imap-pin.route-active { opacity: 1; transform: translate(-50%, -100%) scale(1); z-index: 20; }
+            .imap-pin.route-inactive { opacity: 0.4; transform: translate(-50%, -100%) scale(0.9); filter: grayscale(100%); z-index: 10; }
+            .imap-pin.route-inactive:hover { opacity: 1; filter: grayscale(0%); z-index: 25; }
+            .imap-pin.selected { z-index: 30 !important; }
+
+            .imap-pin-label {
+              position: absolute;
+              top: -32px;
+              left: 50%;
+              transform: translateX(-50%);
+              background-color: rgba(255, 255, 255, 0.95);
+              backdrop-filter: blur(4px);
+              -webkit-backdrop-filter: blur(4px);
+              padding: 0.25rem 0.625rem;
+              border-radius: 0.5rem;
+              font-size: 11px;
+              font-weight: bold;
+              white-space: nowrap;
+              color: var(--imap-text-muted);
+              box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+              transition: all 0.3s ease;
+            }
+            .imap-pin.selected .imap-pin-label {
+              color: var(--imap-text);
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+              transform: translate(-50%, -4px) scale(1.1);
+            }
+
+            .imap-pin-icon-wrap {
+              position: relative;
+              width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border-radius: 50%;
+              border: 3px solid var(--imap-bg);
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+              transition: transform 0.3s ease;
+            }
+            .imap-pin:not(.selected):hover .imap-pin-icon-wrap { transform: scale(1.1); }
+            .imap-pin.selected .imap-pin-icon-wrap {
+              transform: scale(1.25);
+              box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 0 0 4px rgba(58, 56, 54, 0.1);
+            }
+
+            .imap-pin-arrow {
+              position: absolute;
+              bottom: -5px;
+              left: 50%;
+              transform: translateX(-50%) rotate(45deg);
+              width: 12px;
+              height: 12px;
+              border-right: 3px solid var(--imap-bg);
+              border-bottom: 3px solid var(--imap-bg);
+            }
+
+            /* 6. 底部详情面板 */
+            .imap-bottom-sheet {
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 100%;
+              background-color: var(--imap-bg);
+              
+              /* Bottom corners matched to the outer wrapper */
+              border-radius: 32px 32px 1rem 1rem; 
+              
+              box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.08);
+              z-index: 40;
+              display: flex;
+              flex-direction: column;
+              padding-bottom: env(safe-area-inset-bottom);
+              transition: all 0.4s ease-out;
+              
+              /* Fade in/out instead of dropping out of the frame */
+              transform: translateY(20px);
+              opacity: 0;
+              pointer-events: none;
+            }
+            .imap-bottom-sheet.open { 
+              transform: translateY(0); 
+              opacity: 1; 
+              pointer-events: auto; 
+            }
+            
+            .imap-bs-content { padding: 1.5rem; position: relative; }
+            @media (min-width: 768px) { .imap-bs-content { padding: 2rem; } }
+            
+            .imap-bs-handle {
+              position: absolute;
+              top: 12px;
+              left: 50%;
+              transform: translateX(-50%);
+              width: 48px;
+              height: 6px;
+              background-color: var(--imap-border);
+              border-radius: 9999px;
+            }
+            .imap-bs-close {
+              position: absolute;
+              top: 24px;
+              right: 24px;
+              padding: 0.5rem;
+              background-color: #fff;
+              border: 1px solid var(--imap-border);
+              border-radius: 50%;
+              color: var(--imap-text-muted);
+              cursor: pointer;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.2s;
+            }
+            .imap-bs-close:hover { color: var(--imap-text-hover); }
+            .imap-bs-close:active { background-color: var(--imap-border); }
+
+            .imap-bs-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; padding-right: 2.5rem; margin-top: 0.5rem; }
+            .imap-bs-icon {
+              width: 56px;
+              height: 56px;
+              border-radius: 1rem;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-shrink: 0;
+              box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+            }
+            .imap-bs-title { font-size: 1.25rem; font-weight: bold; color: var(--imap-text); margin: 0 0 0.25rem 0; line-height: 1.2; }
+            .imap-bs-subtitle { font-size: 0.875rem; color: var(--imap-text-light); margin: 0; display: flex; align-items: center; }
+            
+            .imap-bs-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+            .imap-bs-tag {
+              background-color: #fff;
+              color: var(--imap-text-hover);
+              border: 1px solid var(--imap-border);
+              padding: 0.25rem 0.75rem;
+              border-radius: 0.5rem;
+              font-size: 0.75rem;
+              font-weight: bold;
+            }
+            
+            .imap-bs-desc {
+              background-color: #fff;
+              border-radius: 1rem;
+              padding: 1rem;
+              margin-bottom: 1.5rem;
+              display: flex;
+              align-items: flex-start;
+              gap: 0.75rem;
+              border: 1px solid var(--imap-border);
+            }
+            .imap-bs-desc-icon { color: var(--imap-text-light); flex-shrink: 0; margin-top: 2px; }
+            .imap-bs-desc-text { font-size: 0.875rem; color: var(--imap-text-hover); line-height: 1.6; margin: 0; font-weight: 500; }
+            
+            .imap-btn-nav {
+              width: 100%;
+              background-color: var(--imap-text);
+              color: var(--imap-bg);
+              font-weight: bold;
+              padding: 1rem;
+              border-radius: 1rem;
+              border: none;
+              box-shadow: 0 10px 15px -3px rgba(58, 56, 54, 0.2);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 0.5rem;
+              cursor: pointer;
+              font-size: 1rem;
+              transition: transform 0.2s;
+            }
+            .imap-btn-nav:active { transform: scale(0.95); }
+
     </style>
     
 </head>
@@ -1507,7 +1834,44 @@ nav {
             </p>
         </div>
     </div>
-</div>
+        <div id="interactive-map-wrapper" class="imap-wrapper">
+            <div class="imap-top-bar">
+            <div class="imap-chips-bg">
+              <div class="imap-chips-container" id="map-route-chips">
+                </div>
+            </div>
+          </div>
+
+          <div id="map-scroll-container" class="imap-scroll-container">
+            <div class="imap-canvas">
+              
+              <svg class="imap-svg-layer" viewBox="0 0 1200 1200">
+                <path d="M 400 420 Q 430 450 420 480 T 400 580 Q 420 620 400 680 Q 380 720 380 750" fill="none" stroke="#EAE5DE" stroke-width="60" stroke-linecap="round" />
+                <path d="M 750 350 Q 850 350 950 380" fill="none" stroke="#EAE5DE" stroke-width="20" stroke-linecap="round" />
+                <rect x="250" y="300" width="600" height="600" rx="40" fill="none" stroke="#E4DFD8" stroke-width="12" />
+                <line x1="500" y1="150" x2="500" y2="1050" stroke="#ffffff" stroke-width="24" stroke-linecap="round" />
+                <line x1="500" y1="150" x2="500" y2="1050" stroke="#DCD7D0" stroke-width="2" stroke-dasharray="10, 10" />
+                <line x1="150" y1="680" x2="1050" y2="680" stroke="#ffffff" stroke-width="32" stroke-linecap="round" />
+                <line x1="150" y1="680" x2="1050" y2="680" stroke="#EAE5DE" stroke-width="16" stroke-linecap="round" />
+
+                <path id="map-route-path" d="" fill="none" stroke="" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="12, 12" class="imap-path-anim" />
+              </svg>
+
+              <div class="imap-bg-block" style="left: 450px; top: 610px; width: 100px; height: 80px;"></div>
+
+              <div id="map-pins-container"></div>
+            </div>
+          </div>
+
+          <div id="map-bottom-sheet" class="imap-bottom-sheet">
+            <div class="imap-bs-content" id="map-bottom-sheet-content">
+              </div>
+          </div>
+
+        </div>
+            </div>
+
+
     
 
     <script>
@@ -1934,6 +2298,178 @@ nav {
             }
         });
     });
+
+        (function() {
+          const ROUTES = [
+            { id: 'r1', short: '中轴历史', lineColor: '#B85C47', pathPoints: 'M 500 820 L 500 650 L 400 580 L 500 580 L 600 600 L 640 580' },
+            { id: 'r2', short: '胡同烟火', lineColor: '#A08770', pathPoints: 'M 550 480 L 500 400 L 420 450 L 720 400' },
+            { id: 'r3', short: '潮流微醺', lineColor: '#7D746D', pathPoints: 'M 880 750 L 800 500 L 850 450 L 880 350' }
+          ];
+
+          const PLACES = [
+            { id: 'p1_1', routeId: 'r1', type: 'landmark', x: 500, y: 650, name: '故宫博物院', desc: '明清两代的皇家宫殿，宏伟壮丽，建议预留半天时间细细游览。', tags: ['皇家气象', '必去'] },
+            { id: 'p1_2', routeId: 'r1', type: 'landmark', x: 500, y: 820, name: '前门大街', desc: '历史悠久的商业街，有铛铛车穿梭其中。', tags: ['老字号', '步行街'] },
+            { id: 'p1_3', routeId: 'r1', type: 'park', x: 400, y: 580, name: '北海公园', desc: '看白塔与湖景，体验“让我们荡起双桨”的童年回忆。', tags: ['皇家园林', '游船'] },
+            { id: 'p1_4', routeId: 'r1', type: 'park', x: 500, y: 580, name: '景山公园', desc: '登高祈万春亭，俯瞰紫禁城全貌及中轴线壮丽景观。', tags: ['俯瞰故宫', '日落绝佳'] },
+            { id: 'p1_5', routeId: 'r1', type: 'landmark', x: 600, y: 600, name: '中国美术馆', desc: '欣赏国家级艺术展，主楼建筑极具民族特色。', tags: ['艺术展览', '文化打卡'] },
+            { id: 'p1_6', routeId: 'r1', type: 'landmark', x: 640, y: 580, name: '隆福寺', desc: '感受新旧交替的潮流文创街区，常有艺术市集。', tags: ['潮流文创', '新旧交融'] },
+            { id: 'p1_7', routeId: 'r1', type: 'cafe', x: 520, y: 800, name: '铁手咖啡 Metal Hands', desc: '游览前先在这里点一杯“开心果 dirty”唤醒感官。', tags: ['胡同咖啡', '特色特调'] },
+            { id: 'p1_8', routeId: 'r1', type: 'restaurant', x: 540, y: 680, name: '四季民福 / 全聚德', desc: '逛完故宫享用一顿正宗的烤鸭，补充体力。', tags: ['正宗烤鸭', '必吃榜'] },
+            { id: 'p1_9', routeId: 'r1', type: 'restaurant', x: 640, y: 540, name: '小吊梨汤', desc: '清甜润肺的梨汤与精致京菜，创意设计餐厅的代表。', tags: ['京菜', '创意餐厅'] },
+            { id: 'p2_1', routeId: 'r2', type: 'landmark', x: 550, y: 480, name: '南锣鼓巷', desc: '北京最古老的街区之一，纵横交错的胡同保留了元代格局。', tags: ['胡同游', '网红小吃'] },
+            { id: 'p2_2', routeId: 'r2', type: 'landmark', x: 500, y: 400, name: '鼓楼 / 钟楼', desc: '红墙灰瓦的鼓楼，听暮鼓晨钟，感受老北京的时间刻度。', tags: ['历史遗迹', '拍照出片'] },
+            { id: 'p2_3', routeId: 'r2', type: 'park', x: 420, y: 450, name: '什刹海', desc: '傍晚沿着湖边散步，看一场绝美的日落与波光粼粼。', tags: ['湖景', '日落', '酒吧街'] },
+            { id: 'p2_4', routeId: 'r2', type: 'cafe', x: 570, y: 490, name: '静水 Still Water', desc: '在南锣鼓巷周边喝一杯国产咖啡豆手冲或拿铁，闹中取静。', tags: ['精品手冲', '安静空间'] },
+            { id: 'p2_5', routeId: 'r2', type: 'restaurant', x: 530, y: 460, name: '方砖厂炸酱面', desc: '中午在胡同里吃一碗地道的老北京炸酱面，面条筋道酱香浓郁。', tags: ['老北京风味', '平价小吃'] },
+            { id: 'p2_6', routeId: 'r2', type: 'restaurant', x: 480, y: 420, name: '汇友餐厅', desc: '吃一顿地道的老北京铜锅涮羊肉，麻酱配糖蒜绝了。', tags: ['铜锅涮肉', '烟火气'] },
+            { id: 'p2_7', routeId: 'r2', type: 'restaurant', x: 720, y: 400, name: '簋街 (夜宵)', desc: '深夜必须安排大家来这感受北京最热闹的宵夜氛围，小龙虾与烤鱼必点。', tags: ['深夜食堂', '红火热闹'] },
+            { id: 'p2_8', routeId: 'r2', type: 'bar', x: 680, y: 420, name: 'shifter / 十条', desc: '饭后在周边喝一杯精心调制的鸡尾酒，享受微醺夜晚。', tags: ['鸡尾酒', '氛围佳'] },
+            { id: 'p3_1', routeId: 'r3', type: 'landmark', x: 880, y: 750, name: 'SKP / SKP-S', desc: '高端时尚的代名词，SKP-S的艺术陈列充满了未来科技感。', tags: ['高端购物', '未来感'] },
+            { id: 'p3_2', routeId: 'r3', type: 'landmark', x: 800, y: 500, name: '三里屯太古里', desc: '北京潮流地标，街拍胜地，汇聚全球首店与时尚达人。', tags: ['潮流打卡', '购物街区'] },
+            { id: 'p3_3', routeId: 'r3', type: 'landmark', x: 850, y: 450, name: '使馆区', desc: '街道两旁绿树成荫，异国风情建筑林立，秋天银杏极美。', tags: ['异国风情', '林荫漫步'] },
+            { id: 'p3_4', routeId: 'r3', type: 'park', x: 880, y: 350, name: '亮马河风情水岸', desc: '被称为“北京塞纳河”的滨水步道，夜晚灯光璀璨，极其浪漫。', tags: ['滨水漫步', '浪漫夜景'] },
+            { id: 'p3_5', routeId: 'r3', type: 'cafe', x: 810, y: 530, name: '阿嬷手作 / 去茶山', desc: '逛街时买一杯季节性新品茶饮，或是坐下享受悠闲茶歇。', tags: ['人气茶饮', '排队预警'] },
+            { id: 'p3_6', routeId: 'r3', type: 'restaurant', x: 840, y: 480, name: '大董 / 国际餐厅', desc: '在使馆区吃一顿正宗外国菜，或是品尝有现代感的高端大董烤鸭。', tags: ['高端餐饮', '异国料理'] },
+            { id: 'p3_7', routeId: 'r3', type: 'bar', x: 760, y: 520, name: '北平机器', desc: '精酿啤酒爱好者的天堂，氛围轻松，年轻人的聚集地。', tags: ['精酿啤酒', '社交'] },
+            { id: 'p3_8', routeId: 'r3', type: 'bar', x: 880, y: 400, name: 'longfang', desc: '沿着亮马河畔，点一杯特色的结构苹果马提尼。', tags: ['特色调酒', '河畔微醺'] }
+          ];
+
+          const ICONS = {
+            restaurant: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>`,
+            cafe: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>`,
+            bar: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 22h8"/><path d="M7 10h10"/><path d="M12 15v7"/><path d="M12 15a5 5 0 0 0 5-5c0-2-.5-4-2-8H9c-1.5 4-2 6-2 8a5 5 0 0 0 5 5Z"/></svg>`,
+            landmark: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>`,
+            park: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 14 3 3.3a1 1 0 0 1-.7 1.7H4.7a1 1 0 0 1-.7-1.7L7 14h-.3a1 1 0 0 1-.7-1.7L9 9h-.2A1 1 0 0 1 8 7.3L12 3l4 4.3a1 1 0 0 1-.8 1.7H15l3 3.3a1 1 0 0 1-.8 1.7H17Z"/><path d="M12 22v-3"/></svg>`,
+            info: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>`,
+            nav: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>`,
+            x: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`
+          };
+
+          function getHexColor(type) {
+            switch(type) {
+              case 'restaurant': return '#B85C47';
+              case 'cafe': return '#A08770';
+              case 'bar': return '#7D746D';
+              case 'landmark': return '#3A3836';
+              case 'park': return '#8F9779';
+              default: return '#555555';
+            }
+          }
+
+          let activeRoute = 'r1';
+          let selectedPlace = null;
+
+          const chipsContainer = document.getElementById('map-route-chips');
+          const pinsContainer = document.getElementById('map-pins-container');
+          const bottomSheet = document.getElementById('map-bottom-sheet');
+          const bottomSheetContent = document.getElementById('map-bottom-sheet-content');
+          const routePath = document.getElementById('map-route-path');
+          const scrollContainer = document.getElementById('map-scroll-container');
+
+          function renderChips() {
+            chipsContainer.innerHTML = ROUTES.map(r => {
+              const isActive = r.id === activeRoute;
+              const classList = isActive ? 'imap-chip active' : 'imap-chip inactive';
+              return `<button onclick="window.__map_setRoute('${r.id}')" class="${classList}">${r.short}</button>`;
+            }).join('');
+          }
+
+          function renderMap() {
+            const routeData = ROUTES.find(r => r.id === activeRoute);
+            if(routeData) {
+              routePath.setAttribute('d', routeData.pathPoints);
+              routePath.setAttribute('stroke', routeData.lineColor);
+            }
+
+            pinsContainer.innerHTML = PLACES.map(p => {
+              const isActiveRoute = p.routeId === activeRoute;
+              const isSelected = selectedPlace && selectedPlace.id === p.id;
+              const hexColor = getHexColor(p.type);
+              const icon = ICONS[p.type] || ICONS.landmark;
+              
+              let classStr = 'imap-pin';
+              classStr += isActiveRoute ? ' route-active' : ' route-inactive';
+              if (isSelected) classStr += ' selected';
+
+              return `
+                <div onclick="window.__map_selectPlace('${p.id}', '${p.routeId}')" class="${classStr}" style="left: ${p.x}px; top: ${p.y}px;">
+                     <div class="imap-pin-label">${p.name}</div>
+                     <div class="imap-pin-icon-wrap" style="background-color: ${hexColor};">
+                        ${icon}
+                        <div class="imap-pin-arrow" style="background-color: ${hexColor};"></div>
+                     </div>
+                </div>
+              `;
+            }).join('');
+          }
+
+          function updateBottomSheet() {
+            if (!selectedPlace) {
+              bottomSheet.classList.remove('open');
+              return;
+            }
+            bottomSheet.classList.add('open');
+
+            const routeName = ROUTES.find(r => r.id === selectedPlace.routeId)?.short;
+            const hexColor = getHexColor(selectedPlace.type);
+            const icon = ICONS[selectedPlace.type] || ICONS.landmark;
+            const tags = selectedPlace.tags.map(t => `<span class="imap-bs-tag">${t}</span>`).join('');
+
+            bottomSheetContent.innerHTML = `
+              <div class="imap-bs-handle"></div>
+              <button onclick="window.__map_selectPlace(null)" class="imap-bs-close">${ICONS.x}</button>
+              <div class="imap-bs-header">
+                <div class="imap-bs-icon" style="background-color: ${hexColor};">${icon}</div>
+                <div>
+                  <h2 class="imap-bs-title">${selectedPlace.name}</h2>
+                  <p class="imap-bs-subtitle">所属路线：${routeName}</p>
+                </div>
+              </div>
+              <div class="imap-bs-tags">${tags}</div>
+              <div class="imap-bs-desc">
+                <div class="imap-bs-desc-icon">${ICONS.info}</div>
+                <p class="imap-bs-desc-text">${selectedPlace.desc}</p>
+              </div>
+              <button class="imap-btn-nav">
+                ${ICONS.nav}<span>导航去这里</span>
+              </button>
+            `;
+          }
+
+          window.__map_setRoute = function(routeId) {
+            activeRoute = routeId;
+            selectedPlace = null;
+            renderChips();
+            renderMap();
+            updateBottomSheet();
+
+            let targetX = 0, targetY = 0;
+            if (activeRoute === 'r1') { targetX = 350; targetY = 300; }
+            else if (activeRoute === 'r2') { targetX = 350; targetY = 150; }
+            else if (activeRoute === 'r3') { targetX = 600; targetY = 200; }
+            scrollContainer.scrollTo({ left: targetX, top: targetY, behavior: 'smooth' });
+          };
+
+          window.__map_selectPlace = function(placeId, routeId) {
+            if (!placeId) {
+              selectedPlace = null;
+            } else {
+              selectedPlace = PLACES.find(p => p.id === placeId);
+              if (routeId && routeId !== activeRoute) {
+                activeRoute = routeId;
+                renderChips();
+              }
+            }
+            renderMap();
+            updateBottomSheet();
+          };
+
+          // 初始化
+          renderChips();
+          renderMap();
+          setTimeout(() => window.__map_setRoute('r1'), 100);
+
+        })();
 
     </script>
 </body>
