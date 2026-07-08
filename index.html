@@ -2303,19 +2303,19 @@ nav {
           const ROUTES = [
               { 
           id: 'r1', 
-          short: '中轴历史', 
+          short: '经典', 
           lineColor: '#B85C47', 
           pathPoints: 'M 620 890 L 580 880 L 500 820 L 500 650 L 400 580 L 500 580 L 600 600 L 640 580' 
         },
               { 
           id: 'r2', 
-          short: '胡同烟火', 
+          short: '胡同', 
           lineColor: '#A08770', 
           pathPoints: 'M 420 450 L 500 400 L 550 480 L 580 410 L 680 420 L 720 400' 
         },
             { 
           id: 'r3', 
-          short: '潮流微醺', 
+          short: '微醺', 
           lineColor: '#7D746D', 
           pathPoints: 'M 880 750 L 800 500 L 850 450 L 880 350' 
         }
@@ -2323,35 +2323,41 @@ nav {
 
           const PLACES = [
             // Route 1 Spaced Out
-            { id: 'p1_1', routeId: 'r1', type: 'landmark', x: 500, y: 650, name: '故宫博物院', desc: '明清两代的皇家宫殿，宏伟壮丽，建议预留半天时间细细游览。', tags: ['皇家气象', '必去'] },
+            { id: 'p1_1', routeId: 'r1', type: 'landmark', x: 500, y: 650, name: '故宫博物院', desc: '经典景点，跟着会讲故事的导游会让体验感升级。', tags: ['皇家气象'] },
             { id: 'p1_2', routeId: 'r1', type: 'landmark', x: 470, y: 820, name: '前门大街', desc: '历史悠久的商业街，有铛铛车穿梭其中。', tags: ['老字号', '步行街'] },
             { id: 'p1_3', routeId: 'r1', type: 'park', x: 350, y: 580, name: '北海公园', desc: '看白塔与湖景，体验“让我们荡起双桨”的童年回忆。', tags: ['皇家园林', '游船'] },
             { id: 'p1_4', routeId: 'r1', type: 'park', x: 500, y: 540, name: '景山公园', desc: '登高祈万春亭，俯瞰紫禁城全貌及中轴线壮丽景观。', tags: ['俯瞰故宫', '日落绝佳'] },
-            { id: 'p1_5', routeId: 'r1', type: 'landmark', x: 620, y: 620, name: '中国美术馆', desc: '欣赏国家级艺术展，主楼建筑极具民族特色。', tags: ['艺术展览', '文化打卡'] },
-            { id: 'p1_6', routeId: 'r1', type: 'landmark', x: 680, y: 580, name: '隆福寺', desc: '感受新旧交替的潮流文创街区，常有艺术市集。', tags: ['潮流文创', '新旧交融'] },
-            { id: 'p1_8', routeId: 'r1', type: 'restaurant', x: 560, y: 720, name: '四季民福 / 全聚德', desc: '逛完故宫享用一顿正宗的烤鸭，补充体力。', tags: ['正宗烤鸭', '必吃榜'] },
-            { id: 'p1_9', routeId: 'r1', type: 'restaurant', x: 680, y: 500, name: '小吊梨汤', desc: '清甜润肺的梨汤与精致京菜，创意设计餐厅的代表。', tags: ['京菜', '创意餐厅'] },
-            { id: 'p1_10', routeId: 'r1', type: 'restaurant', x: 550, y: 880, name: '汇友餐厅', desc: '吃一顿地道的老北京铜锅涮羊肉，麻酱配糖蒜绝了。', tags: ['铜锅涮肉', '烟火气'] },
-            { id: 'p1_11', routeId: 'r1', type: 'park', x: 660, y: 910, name: '龙潭湖公园', desc: '风景秀丽的城市水景公园，吃完涮肉在此散步消食，感受宁静的北京日常。', tags: ['湖景漫步', '本地休闲'] },
+            { id: 'p1_5', routeId: 'r1', type: 'landmark', x: 680, y: 580, name: '隆福寺', desc: '感受新旧交替的潮流文创街区，常有艺术市集。', tags: ['潮流文创', '新旧交融'] },
+            { id: 'p1_6', routeId: 'r1', type: 'restaurant', x: 560, y: 720, name: '四季民福', desc: '逛完故宫享用一顿正宗的烤鸭，补充体力。', tags: ['正宗烤鸭', '必吃榜'] },
+            { id: 'p1_7', routeId: 'r1', type: 'restaurant', x: 680, y: 500, name: '小吊梨汤', desc: '清甜润肺的梨汤与精致京菜，创意设计餐厅的代表。', tags: ['京菜', '创意餐厅'] },
+            { id: 'p1_8', routeId: 'r1', type: 'restaurant', x: 550, y: 880, name: '汇友餐厅', desc: '隐藏在社区里的地道老北京铜锅涮羊肉，麻酱配糖蒜绝了。', tags: ['铜锅涮肉', '烟火气'] },
+            { id: 'p1_9', routeId: 'r1', type: 'park', x: 660, y: 910, name: '龙潭湖公园', desc: '对于我们俩很有意义的公园，可以吃完涮肉在此散步消食，感受宁静的北京日常。', tags: ['湖景漫步', '本地休闲'] },
+            { id: 'p1_10', routeId: 'r1', type: 'bar', x: 390, y: 840, name: '十条', desc: '隐于前门文华东方酒店内的精致酒吧。逛完前门老街，不妨来这里点一杯特色调酒，享受老北京历史底蕴与现代奢华交织的微醺之夜。', tags: ['氛围感', '静吧'] },
+            { id: 'p1_11', routeId: 'r1', type: 'cafe', x: 530, y: 800, name: '铁手咖啡 Metal Hands【前门店】', desc: '唯一入选亚洲Top50的咖啡店，有不少分店但我们最喜欢前门的位置，坐在窗边点一杯经典的“开心果 dirty”唤醒感官。', tags: ['胡同咖啡', '特色特调'] },
+            { id: 'p1_12', routeId: 'r1', type: 'bar', x: 740, y: 640, name: 'shifter', desc: '必喝榜Top，饭后在周边喝一杯精心调制的鸡尾酒，享受微醺夜晚。', tags: ['鸡尾酒', '氛围佳'] }
+
+
             
             // Route 2 Spaced Out
-            { id: 'p2_1', routeId: 'r2', type: 'landmark', x: 550, y: 480, name: '南锣鼓巷', desc: '北京最古老的街区之一，纵横交错的胡同保留了元代格局。', tags: ['胡同游', '网红小吃'] },
-            { id: 'p2_2', routeId: 'r2', type: 'landmark', x: 480, y: 380, name: '鼓楼 / 钟楼', desc: '红墙灰瓦的鼓楼，听暮鼓晨钟，感受老北京的时间刻度。', tags: ['历史遗迹', '拍照出片'] },
-            { id: 'p2_3', routeId: 'r2', type: 'park', x: 400, y: 460, name: '什刹海', desc: '傍晚沿着湖边散步，看一场绝美的日落与波光粼粼。', tags: ['湖景', '日落', '酒吧街'] },
+            { id: 'p2_1', routeId: 'r2', type: 'landmark', x: 550, y: 480, name: '南锣鼓巷', desc: '北京最古老的街区之一，纵横交错的胡同保留了元代格局。', tags: ['胡同游', '游客区'] },
+            { id: 'p2_2', routeId: 'r2', type: 'landmark', x: 480, y: 380, name: '鼓楼', desc: '红墙灰瓦的鼓楼，听暮鼓晨钟，感受老北京的时间刻度。', tags: ['历史遗迹', '拍照出片'] },
+            { id: 'p2_3', routeId: 'r2', type: 'park', x: 400, y: 460, name: '什刹海', desc: '日落时分沿着湖边散步，看一场绝美的日落与波光粼粼。', tags: ['湖景', '酒吧街'] },
             { id: 'p2_4', routeId: 'r2', type: 'cafe', x: 600, y: 520, name: '静水 Still Water', desc: '在南锣鼓巷周边喝一杯国产咖啡豆手冲或拿铁，闹中取静。', tags: ['精品手冲', '安静空间'] },
             { id: 'p2_5', routeId: 'r2', type: 'restaurant', x: 500, y: 450, name: '方砖厂炸酱面', desc: '中午在胡同里吃一碗地道的老北京炸酱面，面条筋道酱香浓郁。', tags: ['老北京风味', '平价小吃'] },
-            { id: 'p2_7', routeId: 'r2', type: 'restaurant', x: 760, y: 380, name: '簋街 (夜宵)', desc: '深夜必须安排大家来这感受北京最热闹的宵夜氛围，小龙虾与烤鱼必点。', tags: ['深夜食堂', '红火热闹'] },
-            { id: 'p2_8', routeId: 'r2', type: 'bar', x: 700, y: 450, name: 'shifter / 十条', desc: '饭后在周边喝一杯精心调制的鸡尾酒，享受微醺夜晚。', tags: ['鸡尾酒', '氛围佳'] },
-            { id: 'p2_9', routeId: 'r2', type: 'cafe', x: 600, y: 380, name: '铁手咖啡 Metal Hands', desc: '游览胡同前先在这里点一杯“开心果 dirty”唤醒感官。', tags: ['胡同咖啡', '特色特调'] },
+            { id: 'p2_7', routeId: 'r2', type: 'restaurant', x: 760, y: 380, name: '簋街', desc: '来这感受北京最热闹的宵夜氛围。', tags: ['深夜食堂', '红火热闹'] },
+            { id: 'p2_8', routeId: 'r2', type: 'restaurant', x: 430, y: 330, name: '和木归', desc: '坐落于宏恩观内，将中式经典与现代美学完美融合的独特餐厅，二楼露台可以望着鼓楼喝咖啡，饮茶。', tags: ['中轴线','大隐于市'] },
+            { id: 'p2_9', routeId: 'r2', type: 'park', x: 320, y: 410, name: '后海公园', desc: '紧邻什刹海，夏赏荷花秋吹风，沿岸分布着许多安静的茶馆与宝藏小店，非常适合午后慢节奏散步或者日落时分到湖上划船。', tags: ['滨水漫步','休闲消度'] }
+            { id: 'p2_10', routeId: 'r2', type: 'landmark', x: 610, y: 360, name: '国子监', desc: '元明清三代的最高学府，红墙夹道，槐树成荫。旁边的五道营胡同藏着许多安静精美的小店，极具京城慢生活的文艺格调。', tags: ['人文历史', '胡同漫步'] },
+            { id: 'p2_11', routeId: 'r2', type: 'park', x: 620, y: 280, name: '地坛公园', desc: '明清两代帝王祭祀地神的皇家坛庙，古树参天，开阔沉静。如果恰逢秋日到访，满园金黄的银杏大道更是北京不可错过的绝美风景。', tags: ['皇家坛庙', '古树银杏'] }
             
             // Route 3 Spaced Out
-            { id: 'p3_1', routeId: 'r3', type: 'landmark', x: 900, y: 780, name: 'SKP / SKP-S', desc: '高端时尚的代名词，SKP-S的艺术陈列充满了未来科技感。', tags: ['高端购物', '未来感'] },
-            { id: 'p3_2', routeId: 'r3', type: 'landmark', x: 780, y: 500, name: '三里屯太古里', desc: '北京潮流地标，街拍胜地，汇聚全球首店与时尚达人。', tags: ['潮流打卡', '购物街区'] },
-            { id: 'p3_3', routeId: 'r3', type: 'landmark', x: 860, y: 440, name: '使馆区', desc: '街道两旁绿树成荫，异国风情建筑林立，秋天银杏极美。', tags: ['异国风情', '林荫漫步'] },
+            { id: 'p3_1', routeId: 'r3', type: 'landmark', x: 900, y: 780, name: 'SKP / SKP-S', desc: '消磨时间的商场，SKP-S的艺术陈列充满了未来科技感。', tags: ['高端购物', '未来感'] },
+            { id: 'p3_2', routeId: 'r3', type: 'landmark', x: 780, y: 500, name: '三里屯太古里', desc: '仍然是北京潮流地标，街拍胜地。', tags: ['潮流打卡', '购物街区'] },
+            { id: 'p3_3', routeId: 'r3', type: 'restaurant', x: 860, y: 440, name: '使馆区', desc: '街道两旁绿树成荫，不仅藏着各国大使馆，也藏着各国美食餐厅。', tags: ['异国风情', '林荫漫步'] },
             { id: 'p3_4', routeId: 'r3', type: 'park', x: 900, y: 320, name: '亮马河风情水岸', desc: '被称为“北京塞纳河”的滨水步道，夜晚灯光璀璨，极其浪漫。', tags: ['滨水漫步', '浪漫夜景'] },
-            { id: 'p3_5', routeId: 'r3', type: 'cafe', x: 780, y: 580, name: '阿嬷手作 / 去茶山', desc: '逛街时买一杯季节性新品茶饮，或是坐下享受悠闲茶歇。', tags: ['人气茶饮', '排队预警'] },
-            { id: 'p3_6', routeId: 'r3', type: 'restaurant', x: 880, y: 500, name: '大董 / 国际餐厅', desc: '在使馆区吃一顿正宗外国菜，或是品尝有现代感的高端大董烤鸭。', tags: ['高端餐饮', '异国料理'] },
-            { id: 'p3_7', routeId: 'r3', type: 'bar', x: 720, y: 540, name: '北平机器', desc: '精酿啤酒爱好者的天堂，氛围轻松，年轻人的聚集地。', tags: ['精酿啤酒', '社交'] },
+            { id: 'p3_5', routeId: 'r3', type: 'cafe', x: 780, y: 580, name: '阿嬷手作', desc: '逛街时买一杯季节性新品茶饮，或是坐下享受悠闲茶歇。', tags: ['人气茶饮', '新鲜果茶'] },
+            { id: 'p3_6', routeId: 'r3', type: 'restaurant', x: 880, y: 500, name: '大董', desc: '如果想尝试有现代感的高端烤鸭，大董是不错的选择。', tags: ['新派烤鸭'] },
+            { id: 'p3_7', routeId: 'r3', type: 'bar', x: 720, y: 540, name: '北平机器', desc: '精酿啤酒爱好者的天堂，氛围轻松，年轻人的聚集地。', tags: ['精酿啤酒'] },
             { id: 'p3_8', routeId: 'r3', type: 'bar', x: 940, y: 400, name: 'longfang', desc: '沿着亮马河畔，点一杯特色的结构苹果马提尼。', tags: ['特色调酒', '河畔微醺'] }
           ];
 
@@ -2436,6 +2442,7 @@ nav {
             const icon = ICONS[selectedPlace.type] || ICONS.landmark;
             const tags = selectedPlace.tags.map(t => `<span class="imap-bs-tag">${t}</span>`).join('');
 
+            // 下方代码已经删除了原有的 <button class="imap-btn-nav"> 模块
             bottomSheetContent.innerHTML = `
               <div class="imap-bs-handle"></div>
               <button onclick="window.__map_selectPlace(null)" class="imap-bs-close">${ICONS.x}</button>
@@ -2451,9 +2458,6 @@ nav {
                 <div class="imap-bs-desc-icon">${ICONS.info}</div>
                 <p class="imap-bs-desc-text">${selectedPlace.desc}</p>
               </div>
-              <button class="imap-btn-nav">
-                ${ICONS.nav}<span>导航去这里</span>
-              </button>
             `;
           }
 
