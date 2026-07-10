@@ -1483,6 +1483,83 @@ nav {
             }
             .imap-btn-nav:active { transform: scale(0.95); }
 
+        /* Minimalist Countdown Section */
+.countdown-section {
+  padding: 80px 20px;
+  background-color: transparent; /* Adjust if you want a specific background color */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.countdown-container {
+  max-width: 600px;
+  width: 100%;
+}
+
+.countdown-title {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 300;
+  letter-spacing: 4px;
+  margin-bottom: 40px;
+  text-transform: uppercase;
+}
+
+.countdown-timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.time-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 70px;
+}
+
+.time-block span:first-child {
+  font-size: 2.5rem;
+  font-weight: 200;
+  color: #333;
+  line-height: 1;
+}
+
+.time-label {
+  font-size: 0.65rem;
+  color: #999;
+  margin-top: 12px;
+  letter-spacing: 2px;
+}
+
+.divider {
+  font-size: 1.5rem;
+  font-weight: 100;
+  color: #ddd;
+  margin-top: -25px; /* Aligns the slash with the numbers */
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .countdown-timer {
+    gap: 10px;
+  }
+  .time-block span:first-child {
+    font-size: 2rem;
+  }
+  .time-block {
+    min-width: 55px;
+  }
+  .divider {
+    font-size: 1.2rem;
+    margin-top: -20px;
+  }
+}
+
     </style>
     
 </head>
@@ -1532,9 +1609,9 @@ nav {
     <nav id="navbar">
         <ul class="nav-links" id="navLinks">
             <li><a onclick="scrollToSection('home-page')" id="link-home" class="active">主页</a></li>
-            <li><a onclick="scrollToSection('about-page')" id="link-about">我们</a></li>
-            <li><a onclick="scrollToSection('attire-page')" id="link-attire">穿什么</a></li>
             <li><a onclick="scrollToSection('address-page')" id="link-address">哪儿见</a></li>
+            <li><a onclick="scrollToSection('attire-page')" id="link-attire">穿什么</a></li>
+            <li><a onclick="scrollToSection('about-page')" id="link-about">我们</a></li>
             <li><a onclick="scrollToSection('play-page')" id="link-play">哪儿玩</a></li>
         </ul>
     </nav>
@@ -1573,56 +1650,113 @@ nav {
         </div>
     </div>
 
-<div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
-    <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
-    <div id="about-us-wrapper">
-        <div id="about-scroll-track">
-            <div class="custom-sticky-view">
-                <div class="timeline-nav" id="custom-timeline-nav">
-                    <a href="#" class="timeline-link active" data-target="2022年">22</a>
-                    <a href="#" class="timeline-link" data-target="2023年">23</a>
-                    <a href="#" class="timeline-link" data-target="2024年">24</a>
-                    <a href="#" class="timeline-link" data-target="2025年3月31日">25/03</a>
-                    <a href="#" class="timeline-link" data-target="2025年10月16日">25/10</a>
-                    <span class="timeline-link tbc-node">TBC</span>
+    <div id="countdown-page" class="countdown-section">
+  <div class="countdown-container">
+    <h2 class="countdown-title">距离我们的婚礼开始还有</h2>
+    <div class="countdown-timer">
+      <div class="time-block">
+        <span id="cd-days">00</span>
+        <span class="time-label">DAYS</span>
+      </div>
+      <span class="divider">/</span>
+      <div class="time-block">
+        <span id="cd-hours">00</span>
+        <span class="time-label">HOURS</span>
+      </div>
+      <span class="divider">/</span>
+      <div class="time-block">
+        <span id="cd-minutes">00</span>
+        <span class="time-label">MINS</span>
+      </div>
+      <span class="divider">/</span>
+      <div class="time-block">
+        <span id="cd-seconds">00</span>
+        <span class="time-label">SECS</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <div id="address-page" class="content-page" style="padding-left:0; padding-right:0;">
+        
+        <div class="address-container" style="margin: 0 auto;">
+            <h1><span class="lang-zh">仪式场地</span><span class="lang-en">Location</span></h1>
+        </div>
+
+        <div class="map-banner">
+            <img src="images/map1.jpg" alt="Venue Layout">
+            <p class="map-save-hint">
+                <span class="lang-zh">长按可保存图片</span>
+                <span class="lang-en">Long press to save image</span>
+            </p>
+        </div>
+
+        <div class="address-container" style="margin: 0 auto;">
+            
+            <div class="details-wrapper">                
+                <div class="info-section with-border">
+                    <h3><span class="lang-zh">场地</span><span class="lang-en">The Venue</span></h3>
+                    <p>
+                        <span class="lang-zh">仪式将于<strong>东景缘主殿——智珠寺</strong>举行。从正门进入后根据指示牌方向即可到达。</span>
+                        <span class="lang-en">The ceremony will be held at the <strong>Zhizhusi (Main Hall of The Temple)</strong>. Please arrive through the main gate and follow the signs to the garden area.</span>
+                    </p>
+                </div>
+
+                <div class="info-section with-border">
+                    <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
+                    
+                    <div class="lang-zh">
+                        <div class="transport-item">
+                            <strong>打车：</strong>导航至 <a href="https://maps.app.goo.gl/6m3UzfCGfLBapb1B7?g_st=ic" target="_blank" style="text-decoration: underline; color: #5d4037; font-weight: bold;">北京市东城区沙滩北街二十三号智珠寺</a>                        </div>
+                        <div class="transport-item">
+                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
+                        </div>
+                        <div class="transport-item">
+                            <strong>自驾：</strong>东景缘位于胡同内，停车较为不便，推荐您优先选择其他出行方式。如果您选择自驾，请提前联系我们，我们会尽力安排。
+                        </div>
+                    </div>
+                     <div class="map-figure" style="margin-bottom: 60px;">
+                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
+                     </div>
                 </div>
                 
-                <div class="pinned-text-container">
-                    <div class="text-content" id="pinned-text-content">
-                        <p class="year-desc" id="dynamic-desc">
-                            <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
-                        </p>
-                    </div>
+                 <div class="info-section with-border">
+                    <h3><span class="lang-zh">餐饮</span><span class="lang-en">Dinner</span></h3>
+                    <p>
+                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。<br><br>
+                        为了给您带来别具一格的体验，本次晚宴将有别于传统的中式圆桌筵席。主厨将采撷初秋最鲜美的应季食材，将层次丰富的口感与艺术品般的摆盘完美交织，组成一套经典的法式套餐（4 courses）。席间，我们更准备了精选红白葡萄酒为您无限量供应。期待这场精致的味觉与微醺盛宴，能为您留下难忘的美好回忆。   
+                        </span>
                 </div>
-
-                <div class="cards-container-wrapper">
-                    <div id="cards-container">
-                        </div>
+                
+                <div class="info-section with-border">
+                    <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
+                    <p> 
+                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了两晚（9/11-9/13）房间。如果您有其他安排，请提前告知。</span>
+                    </p>          
                 </div>
-
+                
             </div>
+
+           
+            <div class="info-section why-we-chose">
+                <h2><span class="lang-zh">为什么选这里？</span><span class="lang-en">Why We Chose Here?</span></h2>
+                
+                <div class="lang-zh"> 
+                    <p>选择北京，是因为这座城市在我们的生命里，不仅仅是一个地理坐标，更是无数具体而鲜活的记忆。对于从小在北京长大的张维翀而言，尽管平日里没少调侃这里的拥堵与柳絮，但每当远行，心头最挥之不去的，偏偏是回家路上那声声隐约的鸽哨。而叶子对北京的偏爱，则源于一种心境——唯有在这片土地上，她才最喜欢那个松弛、自在，且最真实的自己。</p>
+                    <br>
+                    <p>筹备婚礼的时候我们一直在想，到底什么样的空间，能把我们对这座城市的感情，以及它对我们的意义装进去呢？直到我们找到了“东景缘”。几乎是同一时间，我们毫不犹豫地说：“就是这儿了。”</p>
+                    <br>
+                    <p>在成为我们许下誓言的殿堂之前，智珠寺已经在这片胡同深处静静伫立了六百余年。站在这里，那些古老的木梁和安静的院落，就是有一种能让人瞬间平静下来的力量。厚重的历史和现代艺术在这里交织得很自然，好像在喧闹的市中心辟出了一块净土。在这样一个历经岁月洗礼的地方，去开启我们共同的未来，这种不言而喻的浪漫让我们特别着迷。</p>
+                    <br>
+                    <p>而且熟悉我们的朋友都知道，我们俩在探索吃这件事上有着无穷的热情。场地里的 TRB Hutong 餐厅拥有一位把法餐和北京豆汁儿奇妙融合在一起的大厨Lucas。这也算是满足了我们的一点儿探店小私心。</p>
+                    <br>
+                    <p>我们迫不及待想在这个低调又宁静的空间里，和最爱的亲友们一起分享这份踏实感。</p>
+                </div> 
+            </div>
+
         </div>
     </div>
-
-
-    
-        <div class="scrolling-text-container">
-            <div class="scrolling-text line-1">
-                <span class="lang-zh">
-                    “晚上吃什么!”  &emsp;&emsp;       “晚上吃什么!”   &emsp;&emsp;      “晚上吃什么!”   &emsp;&emsp;      “晚上吃什么!”    &emsp;&emsp;     “晚上吃什么!”
-                </span>
-            </div>
-            <div class="scrolling-text line-2">
-                <span class="lang-zh">
-                    “我来做!”   &emsp;&emsp;      “我来做!”    &emsp;&emsp;     “我来做!”   &emsp;&emsp;      “我来做!”  &emsp;&emsp;       “我来做!”    &emsp;&emsp;     “我来做!”
-                </span>
-            </div>
-        </div>
-
-    </div>
-
-
-
     
     <div id="attire-page" class="content-page">
         
@@ -1698,84 +1832,51 @@ nav {
 
     </div>
 
-    <div id="address-page" class="content-page" style="padding-left:0; padding-right:0;">
-        
-        <div class="address-container" style="margin: 0 auto;">
-            <h1><span class="lang-zh">仪式场地</span><span class="lang-en">Location</span></h1>
-        </div>
 
-        <div class="map-banner">
-            <img src="images/map1.jpg" alt="Venue Layout">
-            <p class="map-save-hint">
-                <span class="lang-zh">长按可保存图片</span>
-                <span class="lang-en">Long press to save image</span>
-            </p>
-        </div>
-
-        <div class="address-container" style="margin: 0 auto;">
-            
-            <div class="details-wrapper">                
-                <div class="info-section with-border">
-                    <h3><span class="lang-zh">场地</span><span class="lang-en">The Venue</span></h3>
-                    <p>
-                        <span class="lang-zh">仪式将于<strong>东景缘主殿——智珠寺</strong>举行。从正门进入后根据指示牌方向即可到达。</span>
-                        <span class="lang-en">The ceremony will be held at the <strong>Zhizhusi (Main Hall of The Temple)</strong>. Please arrive through the main gate and follow the signs to the garden area.</span>
-                    </p>
+    <div id="about-page" class="content-page" style="padding-left:0; padding-right:0;">
+    <h1><span class="lang-zh">我们的故事</span><span class="lang-en">Our Story</span></h1>
+    <div id="about-us-wrapper">
+        <div id="about-scroll-track">
+            <div class="custom-sticky-view">
+                <div class="timeline-nav" id="custom-timeline-nav">
+                    <a href="#" class="timeline-link active" data-target="2022年">22</a>
+                    <a href="#" class="timeline-link" data-target="2023年">23</a>
+                    <a href="#" class="timeline-link" data-target="2024年">24</a>
+                    <a href="#" class="timeline-link" data-target="2025年3月31日">25/03</a>
+                    <a href="#" class="timeline-link" data-target="2025年10月16日">25/10</a>
+                    <span class="timeline-link tbc-node">TBC</span>
                 </div>
-
-                <div class="info-section with-border">
-                    <h3><span class="lang-zh">交通</span><span class="lang-en">Transportation</span></h3>
-                    
-                    <div class="lang-zh">
-                        <div class="transport-item">
-                            <strong>打车：</strong>导航至 <a href="https://maps.app.goo.gl/6m3UzfCGfLBapb1B7?g_st=ic" target="_blank" style="text-decoration: underline; color: #5d4037; font-weight: bold;">北京市东城区沙滩北街二十三号智珠寺</a>                        </div>
-                        <div class="transport-item">
-                            <strong>地铁：</strong>地铁8号线到达南锣鼓巷站后，从F出口出站。步行路线可参考下方地图。
-                        </div>
-                        <div class="transport-item">
-                            <strong>自驾：</strong>东景缘位于胡同内，停车较为不便，推荐您优先选择其他出行方式。如果您选择自驾， 请提前联系我们，我们会尽力安排。
-                        </div>
+                
+                <div class="pinned-text-container">
+                    <div class="text-content" id="pinned-text-content">
+                        <p class="year-desc" id="dynamic-desc">
+                            <span class="lang-zh">我们在校园里相识，从朋友开始，但是很快意识到我们可以打几个小时的电话，而且最开心的时刻就是跟对方待在一起的时间，于是我们约着一起过假期。</span>
+                        </p>
                     </div>
-                     <div class="map-figure" style="margin-bottom: 60px;">
-                <img src="images/map_ZH.jpg" class="lang-zh" alt="Event Location Map (ZH)">
-                     </div>
                 </div>
-                
-                 <div class="info-section with-border">
-                    <h3><span class="lang-zh">餐饮</span><span class="lang-en">Dinner</span></h3>
-                    <p>
-                        <span class="lang-zh">晚宴将由米其林法餐厅<strong>TRB HUTONG</strong>提供，并由主厨卢卡斯（Lucas Garigliano）为大家倾心主理。<br><br>
-                        为了给您带来别具一格的体验，本次晚宴将有别于传统的中式圆桌筵席。主厨将采撷初秋最鲜美的应季食材，将层次丰富的口感与艺术品般的摆盘完美交织，组成一套经典的法式套餐（4 courses）。席间，我们更准备了精选红白葡萄酒为您无限量供应。期待这场精致的味觉与微醺盛宴，能为您留下难忘的美好回忆。   
-                        </span>
-                </div>
-                
-                <div class="info-section with-border">
-                    <h3><span class="lang-zh">住宿</span><span class="lang-en">Accommodation</span></h3>
-                    <p> 
-                        <span class="lang-zh">我们为外地宾客在附近的酒店预留了两晚（9/11-9/13）房间。如果您有其他安排，请提前告知。</span>
-                    </p>          
-                </div>
-                
-            </div>
 
-           
-            <div class="info-section why-we-chose">
-                <h2><span class="lang-zh">为什么选这里？</span><span class="lang-en">Why We Chose Here?</span></h2>
-                
-                <div class="lang-zh"> 
-                    <p>选择北京，是因为这座城市在我们的生命里，不仅仅是一个地理坐标，更是无数具体而鲜活的记忆。对于从小在北京长大的张维翀而言，尽管平日里没少调侃这里的拥堵与柳絮，但每当远行，心头最挥之不去的，偏偏是回家路上那声声隐约的鸽哨。而叶子对北京的偏爱，则源于一种心境——唯有在这片土地上，她才最喜欢那个松弛、自在，且最真实的自己。</p>
-                    <br>
-                    <p>筹备婚礼的时候我们一直在想，到底什么样的空间，能把我们对这座城市的感情，以及它对我们的意义装进去呢？直到我们找到了“东景缘”。几乎是同一时间，我们毫不犹豫地说：“就是这儿了。”</p>
-                    <br>
-                    <p>在成为我们许下誓言的殿堂之前，智珠寺已经在这片胡同深处静静伫立了六百余年。站在这里，那些古老的木梁和安静的院落，就是有一种能让人瞬间平静下来的力量。厚重的历史和现代艺术在这里交织得很自然，好像在喧闹的市中心辟出了一块净土。在这样一个历经岁月洗礼的地方，去开启我们共同的未来，这种不言而喻的浪漫让我们特别着迷。</p>
-                    <br>
-                    <p>而且熟悉我们的朋友都知道，我们俩在探索吃这件事上有着无穷的热情。场地里的 TRB Hutong 餐厅拥有一位把法餐和北京豆汁儿奇妙融合在一起的大厨Lucas。这也算是满足了我们的一点儿探店小私心。</p>
-                    <br>
-                    <p>我们迫不及待想在这个低调又宁静的空间里，和最爱的亲友们一起分享这份踏实感。</p>
-                </div> 
-            </div>
+                <div class="cards-container-wrapper">
+                    <div id="cards-container">
+                        </div>
+                </div>
 
+            </div>
         </div>
+    </div>
+    
+        <div class="scrolling-text-container">
+            <div class="scrolling-text line-1">
+                <span class="lang-zh">
+                    “晚上吃什么!”  &emsp;&emsp;       “晚上吃什么!”   &emsp;&emsp;      “晚上吃什么!”   &emsp;&emsp;      “晚上吃什么!”    &emsp;&emsp;     “晚上吃什么!”
+                </span>
+            </div>
+            <div class="scrolling-text line-2">
+                <span class="lang-zh">
+                    “我来做!”   &emsp;&emsp;      “我来做!”    &emsp;&emsp;     “我来做!”   &emsp;&emsp;      “我来做!”  &emsp;&emsp;       “我来做!”    &emsp;&emsp;     “我来做!”
+                </span>
+            </div>
+        </div>
+
     </div>
 
     <div class="wavy-section">
@@ -1798,27 +1899,6 @@ nav {
                 </text>
             </svg>
         </div>
-
-        <div class="wave-track reverse">
-            <svg class="wave-item lang-zh" style="overflow: visible;" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <path id="wavePath2-1" d="M 0 25 Q 62.5 0 125 25 T 250 25 T 375 25 T 500 25 T 625 25 T 750 25 T 875 25 T 1000 25 T 1125 25 T 1250 25 T 1375 25 T 1500 25 T 1625 25 T 1750 25 T 1875 25 T 2000 25 T 2125 25 T 2250 25 T 2375 25 T 2500 25" fill="none"/>
-                <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
-                    <textPath href="#wavePath2-1" xlink:href="#wavePath2-1" startOffset="0">
-                        北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。&emsp;&emsp; 北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。&emsp;&emsp;北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。
-                    </textPath>
-                </text>
-            </svg>
-            <svg class="wave-item lang-zh" style="overflow: visible;" viewBox="0 0 2500 45" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                <path id="wavePath2-2" d="M 0 25 Q 62.5 0 125 25 T 250 25 T 375 25 T 500 25 T 625 25 T 750 25 T 875 25 T 1000 25 T 1125 25 T 1250 25 T 1375 25 T 1500 25 T 1625 25 T 1750 25 T 1875 25 T 2000 25 T 2125 25 T 2250 25 T 2375 25 T 2500 25" fill="none"/>
-                <text font-family="'Courier New', Courier, monospace" font-size="16" fill="#aaa" letter-spacing="2">
-                    <textPath href="#wavePath2-2" xlink:href="#wavePath2-2" startOffset="0">
-                        北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。&emsp;&emsp; 北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。&emsp;&emsp;北京城像一块大豆腐，四方四正。城里有大街，有胡同。大街、胡同都是正南正北，正东正西。
-                    </textPath>
-                </text>
-            </svg>
-        </div>
-
-    </div>
     
 
     
@@ -1869,7 +1949,7 @@ nav {
           </div>
 
         </div>
-            </div>
+    </div>
 
 
     
@@ -2280,7 +2360,7 @@ nav {
         }
 
         // Trigger Navigation Highlighting
-        const sections = ['home-page', 'about-page', 'attire-page', 'address-page', 'play-page']; 
+        const sections = ['home-page', 'address-page', 'attire-page', 'about-page', 'play-page']; 
         let current = '';
 
         sections.forEach(id => {
@@ -2495,6 +2575,32 @@ nav {
           setTimeout(() => window.__map_setRoute('r1'), 100);
 
         })();
+
+        // Set the target date and time (Format: Month DD, YYYY HH:MM:SS)
+const countDownDate = new Date("August 28, 2026 18:00:00").getTime();
+
+const countdownFunction = setInterval(function() {
+  const now = new Date().getTime();
+  const distance = countDownDate - now;
+
+  // Time calculations
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Output the result in the elements (pads single digits with a zero)
+  document.getElementById("cd-days").innerText = days.toString().padStart(2, '0');
+  document.getElementById("cd-hours").innerText = hours.toString().padStart(2, '0');
+  document.getElementById("cd-minutes").innerText = minutes.toString().padStart(2, '0');
+  document.getElementById("cd-seconds").innerText = seconds.toString().padStart(2, '0');
+
+  // If the countdown is finished, display a message
+  if (distance < 0) {
+    clearInterval(countdownFunction);
+    document.querySelector(".countdown-timer").innerHTML = "<div style='font-size: 1.2rem; font-weight: 300; letter-spacing: 2px; color: #555;'>晚宴已经开始啦！</div>";
+  }
+}, 1000);
 
     </script>
 </body>
